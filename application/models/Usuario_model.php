@@ -22,9 +22,9 @@ class Usuario_model extends CI_Model
     }
     public function listaModulo($data)
     {
-        $this->db->select('modulo.idmodulo,descripcion,menu,icono,url,modulo_rol.activo,imagen,mini');
-        $this->db->from('modulo');
-        $this->db->join('modulo_rol', 'modulo_rol.idmodulo = modulo.idmodulo');
+        $this->db->select('m.idmodulo,descripcion,menu,icono,url,mp.activo,imagen,mini');
+        $this->db->from('modulos m');
+        $this->db->join('modulo_perfil mp', 'mp.idmodulo = m.idmodulo');
         $this->db->where($data);
         $this->db->order_by('orden', 'asc');
         $result = $this->db->get();

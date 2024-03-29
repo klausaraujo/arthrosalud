@@ -5,7 +5,21 @@
 		<?php	require_once('inc/header.php');	?>
 		<title>Login</title>
 		<style>
-			body{ background: #1f373a; }
+			body{ background: rgba(134, 131, 125, 1) }
+			.sign-info { margin-top: 10px; }
+			.sign-in-from { padding: 20px 30px }
+			.sign-in-detail { padding: 40px 20px 5px 20px; }
+			@media (min-width: 992px){
+				.sign-in-detail { min-height: 100vh; }
+				.sign-in-from { bottom: 15%; }
+			}
+			@media (max-width: 992px){
+				.sign-in-detail { height: 85vh; }
+				.sign-in-from { bottom: 5%; }
+			}
+			@media (max-width: 1199px){
+				.sign-in-detail { padding: 100px 20px 5px 20px; }
+			}
 		</style>
 	</head>
    <body>
@@ -21,29 +35,7 @@
                 <div class="row no-gutters">
                     <div class="col-md-6 text-center">
                         <div class="sign-in-detail text-white">
-                            <a class="sign-in-logo mb-5" href="#"><img src="<?=base_url()?>/public/images/logo-white.png" class="img-fluid" alt="logo"></a>
-                            <div class="owl-carousel" data-autoplay="true" data-loop="true" data-nav="false" data-dots="true" data-items="1" data-items-laptop="1" data-items-tab="1" data-items-mobile="1" data-items-mobile-sm="1" data-margin="0">
-                                <div class="item">
-                                    <img src="<?=base_url()?>/public/images/1.png" class="img-fluid mb-4" alt="logo">
-                                    <h4 class="mb-1 text-white">Anuncian Construcción del Nuevo Hospital Alberto Sabogal</h4>
-                                    <p>El presidente ejecutivo de #EsSalud, Dr. César Linares, anunció el inicio formal de los trámites para la construcción del nuevo Hospital Alberto Sabogal durante la ceremonia por el 82 aniversario del emblemático hospital chalaco.</p>
-                                </div>
-                                <div class="item">
-                                    <img src="<?=base_url()?>/public/images/2.png" class="img-fluid mb-4" alt="logo">
-                                    <h4 class="mb-1 text-white">Inaguran Unidade de Medicina Fetal</h4>
-                                    <p>El titular de #EsSalud, César Linares, inauguró la unidad de medicina fetal en el Hospital Alberto Sabogal. Este ambiente está equipado con un ecógrafo Doppler y un monitor para un diagnóstico temprano de posibles problemas congénitos que afecten a los bebés en gestación.</p>
-                                </div>
-                                <div class="item">
-                                    <img src="<?=base_url()?>/public/images/3.png" class="img-fluid mb-4" alt="logo">
-                                    <h4 class="mb-1 text-white">Caminata  5k Corazones Turquesas</h4>
-                                    <p>#Deporte El Sindicato Nacional de Enfermeras del Seguro Social del Perú desarrolla en estos momentos la Caminata  5k Corazones Turquesas, en el marco del Día de la Enfermera.</p>
-                                </div>
-                                <div class="item">
-                                    <img src="<?=base_url()?>/public/images/4.png" class="img-fluid mb-4" alt="logo">
-                                    <h4 class="mb-1 text-white">Abuelita de 72 años supera extraño «síndrome de wilkie»</h4>
-                                    <p>Flavia Domitila Real Minaya, de 72 años de edad, llegó al hospital Negreiros con una prominente y dolorosa inflamación en el estómago y, tras los exámenes médicos, se le diagnosticó «Síndrome de Wilkie», la extraña enfermedad que provoca una obstrucción en el estómago e impide ingerir todo tipo de alimento.</p>
-                                </div>
-                            </div>
+                            <a class="" href="#"><img src="<?=base_url()?>/public/images/principal/portada.jpg" class="img-fluid mb-5" alt="logo"></a>
                         </div>
                     </div>
                     <div class="col-md-6 position-relative">
