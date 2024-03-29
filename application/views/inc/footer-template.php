@@ -8,7 +8,7 @@
 								</ul>
 							</div>
 							<div class="col-lg-8 text-right">
-							Copyright © 2022 - <a href="<?=base_url()?>" target="_blank" class="font-sabogal"> Red Prestacional SABOGAL</a> 
+							Copyright © 2024 - <a href="<?=base_url()?>" target="_blank" class="font-sabogal"> Grupo Arthromeds</a> 
 							- Todos los Derechos Reservados
 							</div>
 						</div>

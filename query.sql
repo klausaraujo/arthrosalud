@@ -1941,7 +1941,7 @@ CREATE TABLE perfil  (
 	PRIMARY KEY (idperfil)) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
 
 	insert into perfil (perfil) values('ADMINISTRADOR');
-	insert into perfil (perfil) values('ESTANDAR');
+	insert into perfil (perfil) values('LOGISTICO');
 
 create table tipo_documento(
 	idtipodocumento smallint(4) NOT NULL AUTO_INCREMENT,
@@ -1954,6 +1954,8 @@ create table tipo_documento(
 
 	INSERT INTO tipo_documento(idtipodocumento,codigo_curl,codigo_sunat,tipo_documento,longitud) VALUES(1,'01','1','D.N.I.',8);
 	INSERT INTO tipo_documento(idtipodocumento,codigo_curl,codigo_sunat,tipo_documento,longitud) VALUES(2,'03','4','CARNET ETX.',9);
+	INSERT INTO tipo_documento(idtipodocumento,codigo_curl,codigo_sunat,tipo_documento,longitud) VALUES(3,'06','6','R.U.C.',11);
+	INSERT INTO tipo_documento(idtipodocumento,codigo_curl,codigo_sunat,tipo_documento,longitud) VALUES(4,'06','6','PASAPORTE',12);
 
 CREATE TABLE usuarios  (
 	idusuario smallint(4) NOT NULL AUTO_INCREMENT,
@@ -1985,7 +1987,9 @@ CREATE TABLE modulos  (
 PRIMARY KEY (idmodulo)) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
   
 	INSERT INTO modulos (idmodulo,descripcion,menu,icono,url,imagen,mini,orden) VALUES (1,'Módulo de Registro de Usuarios y Accesos Personalizados','Módulo Usuarios','usuarios.png','usuarios','1','fa fa-users',1);
-		
+	INSERT INTO modulos (idmodulo,descripcion,menu,icono,url,imagen,mini,orden) VALUES (2,'Módulo de Configuración de Parámetros del Sistema','Módulo Parámetros','parametros.png','parametros','1','fa fa-cubes',2);
+	INSERT INTO modulos (idmodulo,descripcion,menu,icono,url,imagen,mini,orden) VALUES (3,'Módulo de Logística Gestión de Proveedores','Módulo Logística','logistica.png','parametros','1','fa fa-truck',3);
+
 CREATE TABLE modulo_perfil  (	
 	idmoduloperfil smallint(4) NOT NULL AUTO_INCREMENT,
 	idmodulo smallint(4) NOT NULL,
@@ -1996,9 +2000,12 @@ CREATE TABLE modulo_perfil  (
 	FOREIGN KEY (idperfil) REFERENCES perfil (idperfil) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
 	/*Administrador*/
 	INSERT INTO modulo_perfil(idmoduloperfil,idmodulo,idperfil,activo) VALUES(1,1,1,'1');
-		
+	INSERT INTO modulo_perfil(idmoduloperfil,idmodulo,idperfil,activo) VALUES(2,2,1,'1');	
+	INSERT INTO modulo_perfil(idmoduloperfil,idmodulo,idperfil,activo) VALUES(3,3,1,'1');	
 	/*Estandar*/
-	INSERT INTO modulo_perfil(idmoduloperfil,idmodulo,idperfil,activo) VALUES(2,1,2,'0');
+	INSERT INTO modulo_perfil(idmoduloperfil,idmodulo,idperfil,activo) VALUES(4,1,2,'0');
+	INSERT INTO modulo_perfil(idmoduloperfil,idmodulo,idperfil,activo) VALUES(5,2,2,'0');
+	INSERT INTO modulo_perfil(idmoduloperfil,idmodulo,idperfil,activo) VALUES(6,3,2,'1');
 	
 CREATE TABLE menu  (
 	idmenu smallint(4) NOT NULL AUTO_INCREMENT,
@@ -2014,6 +2021,16 @@ CREATE TABLE menu  (
 	/*Menus del Módulo de Usuarios*/
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(1,1,'Lista Usuarios','0','usuarios','fa fa-list');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(2,1,'Nuevo Registro','0','nuevousuario','fa fa-pencil-square-o');
+	
+	/*Menus del Módulo de Parámetros*/
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(3,2,'Registro Empresas','0','','fa fa-pencil-square-o');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(4,2,'Centros de Costos','0','','fa fa-pencil-square-o');
+
+	/*Menus del Módulo Logistica*/
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(5,3,'Registro Proveedores','0','','fa fa-pencil-square-o');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(6,3,'Catálogo Bienes','0','','fa fa-pencil-square-o');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(7,3,'Catálogo Servicios','0','','fa fa-pencil-square-o');
+
 	
 CREATE TABLE menu_detalle  (
 	idmenudetalle smallint(4) NOT NULL AUTO_INCREMENT,
@@ -2034,7 +2051,6 @@ CREATE TABLE permisos_menu_detalle  (
 	PRIMARY KEY (idpermisosmenudetalle),
 	FOREIGN KEY (idmenudetalle) REFERENCES menu_detalle (idmenudetalle) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
-
 
 CREATE TABLE botones  (
 	idboton smallint(4) NOT NULL AUTO_INCREMENT,
