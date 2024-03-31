@@ -2108,7 +2108,7 @@ CREATE TABLE permisos_botones  (
 	
 CREATE TABLE tipo_cuenta (
 	idtipocuenta smallint(4) NOT NULL AUTO_INCREMENT,
-	tipo_cuenta varchar(15) NOT NULL,
+	tipo_cuenta varchar(20) NOT NULL,
 	activo char(1) DEFAULT '1',
 	PRIMARY KEY (idtipocuenta))ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
 	
@@ -2120,7 +2120,7 @@ CREATE TABLE tipo_cuenta (
 
 CREATE TABLE tipo_moneda (
 	idtipomoneda smallint(4) NOT NULL AUTO_INCREMENT,
-	tipo_moneda varchar(15) NOT NULL,
+	tipo_moneda varchar(20) NOT NULL,
 	simbolo varchar(5),
 	activo char(1) DEFAULT '1',
 	PRIMARY KEY (idtipomoneda))ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
