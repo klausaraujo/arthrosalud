@@ -59,9 +59,9 @@ class Usuarios_model extends CI_Model
 	public function buscaPermisos($data)
 	{
 		$this->db->select('*');
-		$this->db->from('permisos_opcion');
+		$this->db->from('permisos_botones');
 		$this->db->where($data);
-		$this->db->order_by('idpermisoopcion','asc');
+		$this->db->order_by('idpermisosbotones','asc');
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
@@ -130,9 +130,9 @@ class Usuarios_model extends CI_Model
 	public function permisosModulos($where)
 	{
 		$this->db->select('mr.idmodulo,md.url');
-		$this->db->from('modulo_rol mr');
+		$this->db->from('modulo_perfil mr');
 		$this->db->join('usuarios u', 'u.idperfil = mr.idperfil');
-		$this->db->join('modulo md', 'mr.idmodulo = md.idmodulo');
+		$this->db->join('modulos md', 'mr.idmodulo = md.idmodulo');
 		$this->db->where($where);
 		$this->db->order_by('idmodulo','asc');
 		$result = $this->db->get();

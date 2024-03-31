@@ -82,10 +82,10 @@
 			let btnEditUser = false, btnPermisos = false, btnClave = false, btnActiva = false;
 			
 			$.each(botonesUser,function(i,e){
-				if(e.idpermiso === '1') btnEditUser = true;
-				else if(e.idpermiso === '2') btnPermisos = true;
-				else if(e.idpermiso === '3') btnClave = true;
-				else if(e.idpermiso === '4') btnActiva = true;
+				if(e.idboton === '1') btnEditUser = true;
+				else if(e.idboton === '2') btnPermisos = true;
+				else if(e.idboton === '3') btnClave = true;
+				else if(e.idboton === '4') btnActiva = true;
 			});
 			<?}?>
 		</script>
