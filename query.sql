@@ -2031,6 +2031,22 @@ CREATE TABLE menu  (
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(6,3,'Catálogo Bienes','0','','fa fa-pencil-square-o');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(7,3,'Catálogo Servicios','0','','fa fa-pencil-square-o');
 
+CREATE TABLE permisos_menu  (
+	idpermisosmenu smallint(4) NOT NULL AUTO_INCREMENT,
+	idmenu smallint(4) NOT NULL,
+	idusuario smallint(4) NOT NULL,
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idpermisosmenu),
+	FOREIGN KEY (idmenu) REFERENCES menu (idmenu) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idusuario) REFERENCES usuarios (idusuario) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+	
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(1,1,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(2,2,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(3,3,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(4,4,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(5,5,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(6,6,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(7,7,1);
 	
 CREATE TABLE menu_detalle  (
 	idmenudetalle smallint(4) NOT NULL AUTO_INCREMENT,
