@@ -2056,7 +2056,6 @@ CREATE TABLE permisos_menu  (
 	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(5,5,1);
 	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(6,6,1);
 	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(7,7,1);
-	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(8,8,1);
 	
 CREATE TABLE menu_detalle  (
 	idmenudetalle smallint(4) NOT NULL AUTO_INCREMENT,
