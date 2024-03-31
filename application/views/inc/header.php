@@ -51,4 +51,9 @@ label, .btn, .pagination, .form-control, .nav-pills .nav-item.nav-link, a, li, s
 .btnTable:hover{ color: #000 }
 .btnDesactivar{ color: green; /*border: 1px solid darkgrey*/ } .btnDesactivar:hover{ color: red; /*border: 1px solid darkgreen*/ }
 .btnActivar{ color: red; /*border: 1px solid darkgrey*/ } .btnActivar:hover{ color: green; /*border: 1px solid darkred*/ }
+
+div.dataTables_wrapper div.dataTables_length .form-control-sm{
+	line-height: 1.5;
+	background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.75rem center/8px 10px;
+}
 </style>
