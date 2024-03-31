@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS lista_ubigeo;
 DROP TABLE IF EXISTS anio;
 DROP TABLE IF EXISTS mes;
 DROP TABLE IF EXISTS permisos_botones;
@@ -12,7 +13,14 @@ DROP TABLE IF EXISTS usuarios;
 DROP TABLE IF EXISTS perfil;
 DROP TABLE IF EXISTS ubigeo;
 DROP TABLE IF EXISTS tipo_documento;
-DROP VIEW IF EXISTS lista_ubigeo;
+
+DROP TABLE IF EXISTS tipo_cuenta;
+DROP TABLE IF EXISTS tipo_moneda;
+DROP TABLE IF EXISTS banco;
+DROP TABLE IF EXISTS almacen;
+DROP TABLE IF EXISTS sucursal;
+DROP TABLE IF EXISTS empresa;
+
 
 CREATE TABLE ubigeo(
 	idubigeo smallint(4) NOT NULL AUTO_INCREMENT,
@@ -1988,7 +1996,7 @@ PRIMARY KEY (idmodulo)) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_gene
   
 	INSERT INTO modulos (idmodulo,descripcion,menu,icono,url,imagen,mini,orden) VALUES (1,'Módulo de Registro de Usuarios y Accesos Personalizados','Módulo Usuarios','usuarios.png','usuarios','1','fa fa-users',1);
 	INSERT INTO modulos (idmodulo,descripcion,menu,icono,url,imagen,mini,orden) VALUES (2,'Módulo de Configuración de Parámetros del Sistema','Módulo Parámetros','parametros.png','parametros','1','fa fa-cubes',2);
-	INSERT INTO modulos (idmodulo,descripcion,menu,icono,url,imagen,mini,orden) VALUES (3,'Módulo de Logística Gestión de Proveedores','Módulo Logística','logistica.png','parametros','1','fa fa-truck',3);
+	INSERT INTO modulos (idmodulo,descripcion,menu,icono,url,imagen,mini,orden) VALUES (3,'Módulo de Logística Gestión de Proveedores','Módulo Logística','logistica.png','logistica','1','fa fa-truck',3);
 
 CREATE TABLE modulo_perfil  (	
 	idmoduloperfil smallint(4) NOT NULL AUTO_INCREMENT,
@@ -2098,11 +2106,69 @@ CREATE TABLE permisos_botones  (
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(3,3,1);
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(4,4,1);
 	
-
-
-
-
-
-
+CREATE TABLE tipo_cuenta (
+	idtipocuenta smallint(4) NOT NULL AUTO_INCREMENT,
+	tipo_cuenta varchar(15) NOT NULL,
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idtipocuenta))ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
 	
+	INSERT INTO tipo_cuenta(idtipocuenta,tipo_cuenta)values(1,'CUENTA DE AHORROS');
+	INSERT INTO tipo_cuenta(idtipocuenta,tipo_cuenta)values(2,'CUENTA CORRIENTE');
+	INSERT INTO tipo_cuenta(idtipocuenta,tipo_cuenta)values(3,'CUENTA A PLAZO FIJO');
+	INSERT INTO tipo_cuenta(idtipocuenta,tipo_cuenta)values(4,'CUENTA SUELDO');
+	INSERT INTO tipo_cuenta(idtipocuenta,tipo_cuenta)values(5,'CUENTA CTS');
+
+CREATE TABLE tipo_moneda (
+	idtipomoneda smallint(4) NOT NULL AUTO_INCREMENT,
+	tipo_moneda varchar(15) NOT NULL,
+	simbolo varchar(5),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idtipomoneda))ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+	
+	INSERT INTO tipo_moneda(idtipomoneda,tipo_moneda,simbolo)values(1,'SOLES','S/.');
+	INSERT INTO tipo_moneda(idtipomoneda,tipo_moneda,simbolo)values(2,'DOLARES','US$');
+	INSERT INTO tipo_moneda(idtipomoneda,tipo_moneda,simbolo)values(3,'EURO','EUR');
+
+CREATE TABLE banco (
+	idbanco smallint(4) NOT NULL AUTO_INCREMENT,
+	banco varchar(50) NOT NULL,
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idbanco))ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+	
+	INSERT INTO banco(idbanco,banco)values(1,'BANCO DE COMERCIO');
+	INSERT INTO banco(idbanco,banco)values(2,'BANCO DE CRÉDITO DEL PERÚ');
+	INSERT INTO banco(idbanco,banco)values(3,'BANCO INTERAMERICANO DE FINANZAS (BANBIF)');
+	INSERT INTO banco(idbanco,banco)values(4,'BANCO PICHINCHA');
+	INSERT INTO banco(idbanco,banco)values(5,'BBVA');
+	INSERT INTO banco(idbanco,banco)values(6,'CITIBANK PERÚ');
+	INSERT INTO banco(idbanco,banco)values(7,'INTERBANK');
+	INSERT INTO banco(idbanco,banco)values(8,'MIBANCO');
+	INSERT INTO banco(idbanco,banco)values(9,'SCOTIABANK PERÚ');
+	INSERT INTO banco(idbanco,banco)values(10,'BANCO GNB PERÚ');
+	INSERT INTO banco(idbanco,banco)values(11,'BANCO FALABELLA');
+	INSERT INTO banco(idbanco,banco)values(12,'BANCO RIPLEY');
+	INSERT INTO banco(idbanco,banco)values(13,'BANCO SANTANDER PERÚ');
+	INSERT INTO banco(idbanco,banco)values(14,'ALFIN BANCO');
+	INSERT INTO banco(idbanco,banco)values(15,'BANK OF CHINA');
+	INSERT INTO banco(idbanco,banco)values(16,'BCI PERÚ');
+	INSERT INTO banco(idbanco,banco)values(17,'ICBC PERU BANK');
+	
+CREATE TABLE empresa (
+	idempresa smallint(4) NOT NULL AUTO_INCREMENT,
+	ruc varchar(11) NOT NULL,
+	razon_social varchar(100) NOT NULL,
+	domicilio varchar(100) NOT NULL,
+	ubigeo varchar(6),
+	latitud varchar(25),
+	longitud varchar(25),
+	logotipo varchar(30),
+	renipress varchar(8),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idempresa))ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+
+
+
+
+
+
 
