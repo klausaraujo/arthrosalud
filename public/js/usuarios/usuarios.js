@@ -140,6 +140,7 @@ $('#tablaUsuarios').bind('click','a',function(e){
 		}
 	}else if($(a).hasClass('permisos')){
 		e.preventDefault();
+		console.log('permisos');
 		$.ajax({
 			url: $(a).attr('href'),
 			type: 'GET',
@@ -148,10 +149,11 @@ $('#tablaUsuarios').bind('click','a',function(e){
 			error: function(xhr){ /*a.removeClass('disabled'); a.html('<i class="far fa-cog" aria-hidden="true"></i>');*/ },
 			//beforeSend: function(){},
 			success: function(data){
+				console.log(data);
 				$('#idusuarioPer').val(data.idusuario);
 				$.each(data.data,function(i,e){
 					$('.permisos').each(function(){
-						if(e.idpermiso === this.value) $(this).prop('checked',true);
+						if(e.idboton === this.value) $(this).prop('checked',true);
 					});
 				});
 				$.each(data.menus,function(i,e){
