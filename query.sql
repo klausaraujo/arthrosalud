@@ -2097,12 +2097,3 @@ CREATE TABLE permisos_botones  (
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(2,2,1);
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(3,3,1);
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(4,4,1);
-	
-
-
-
-
-
-
-	
-

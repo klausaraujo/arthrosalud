@@ -92,7 +92,7 @@
 																			?>
 																			<div class="custom-control custom-switch col-12 ml-3">
 																				<input type="checkbox" class="custom-control-input permisos" name="permisos[]"
-																					value="<?=$row->idpermiso?>" id="checkPermisos<?=$j?>">
+																					value="<?=$row->idboton?>" id="checkPermisos<?=$j?>">
 																				<label class="custom-control-label" for="checkPermisos<?=$j?>">&nbsp;&nbsp;<?=$row->descripcion?></label>
 																			</div>
 																		<?php

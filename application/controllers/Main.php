@@ -38,7 +38,7 @@ class Main extends CI_Controller
 				$idmodulo = $valor->idmodulo; break;
 			}
 		endforeach;
-		$bot = $this->Usuarios_model->buscaPerByModByUser(['idusuario' => $this->usuario->idusuario,'idmodulo' => $idmodulo,'po.activo' => 1]);
+		$bot = $this->Usuarios_model->buscaPerByModByUser(['idusuario' => $this->usuario->idusuario,'idmodulo' => $idmodulo,'b.activo' => 1]);
 		$this->session->set_userdata('perUser', json_encode($bot));
 		$permisos = $this->Usuarios_model->permisosOpciones();
 		$modulos = $this->Usuarios_model->buscaModulos();

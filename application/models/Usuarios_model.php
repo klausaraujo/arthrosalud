@@ -50,7 +50,7 @@ class Usuarios_model extends CI_Model
 	public function permisosOpciones()
 	{
 		$this->db->select('*');
-		$this->db->from('permiso');
+		$this->db->from('botones');
 		$this->db->where('activo', 1);
 		$this->db->order_by('orden','asc');
 		$result = $this->db->get();
@@ -84,9 +84,9 @@ class Usuarios_model extends CI_Model
 	}
 	public function buscaPerByModByUser($where)
 	{
-		$this->db->select('p.idpermiso');
-		$this->db->from('permiso p');
-		$this->db->join('permisos_opcion po','po.idpermiso = p.idpermiso');
+		$this->db->select('b.idboton');
+		$this->db->from('permisos_botones pb');
+		$this->db->join('botones b','b.idboton = pb.idboton');
 		$this->db->where($where);
 		$this->db->order_by('orden','asc');
 		$result = $this->db->get();
@@ -113,7 +113,7 @@ class Usuarios_model extends CI_Model
 	public function buscaModulos()
 	{
 		$this->db->select('idmodulo,descripcion,url');
-		$this->db->from('modulo');
+		$this->db->from('modulos');
 		$this->db->order_by('orden','asc');
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
