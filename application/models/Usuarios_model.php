@@ -110,11 +110,12 @@ class Usuarios_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
-	public function buscaModulos()
+	public function buscamenus($tabla,$where,$orden)
 	{
-		$this->db->select('idmodulo,descripcion,url');
-		$this->db->from('modulos');
-		$this->db->order_by('orden','asc');
+		$this->db->select('*');
+		$this->db->from($tabla);
+		$this->db->where($where);
+		$this->db->order_by($orden,'asc');
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}

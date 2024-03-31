@@ -81,7 +81,7 @@
 								<div class="container-fluid row"><hr class="col-sm-12"></div>
 								<div class="col-sm-12 mx-auto pb-2">
 									<button type="submit" class="btn btn-sabogal ml-3 mr-4" id="btnEnviar">Guardar registro</button>
-									<button type="reset" class="btn btn-cancel btn-cancelar">Cancelar</button>
+									<button type="reset" class="btn btn-light btn-cancelar">Cancelar</button>
 								</div>
 							</form>
 						</div>

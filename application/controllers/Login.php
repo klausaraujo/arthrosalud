@@ -32,14 +32,12 @@ class Login extends CI_Controller
                 $this->session->set_flashdata('loginError', 'Usuario deshabilitado');
                 header('location:' .base_url(). 'login');
             }else{
-				$usuario->modulos = $this->Usuario_model->listaModulo(['idperfil' => $usuario->idperfil]);
-				$usuario->menus = $this->Menu_model->listaMenuPermisos(['idusuario' => $usuario->idusuario]);
-				$usuario->submenus = $this->Menu_model->listaSubMenuPermisos(['idusuario' => $usuario->idusuario]);
-				$usuario->menugeneral = $this->Menu_model->listaMenu();
-				$usuario->submenugeneral = $this->Menu_model->listaSubMenu();
+				$usuario->modulos = $this->Usuario_model->listaModulo(['idperfil' => $usuario->idperfil,'activo' => 1]);
+				$usuario->menus = $this->Menu_model->mnusuario(['idusuario' => $usuario->idusuario,'pm.activo' => 1]);
+				$usuario->submenus = $this->Menu_model->smnusuario(['idusuario' => $usuario->idusuario,'pm.activo' => 1]);
+				$usuario->modulosid = $this->Menu_model->modulosid();
 				//$userialize = serialize($usuario);*/
 				$this->session->set_userdata('user', json_encode($usuario));
-				
 				header('location:' .base_url());
 			}
 		}else {

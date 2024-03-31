@@ -1,4 +1,4 @@
-let btnCurl = $('.btn_curl'), btnCancelar = $('.btn-cancelar'), imgperfil = $('.profile-pic'), perfiltop = $('.top-avatar');
+let btnCancelar = $('.btn-cancelar'), imgperfil = $('.profile-pic'), perfiltop = $('.top-avatar');
 
 $(document).ready(function (){
 	$('html, body').animate({ scrollTop: 0 }, 'fast');
@@ -56,75 +56,6 @@ $('.mayusc').bind('input',function(e){
 });
 btnCancelar.bind('click', function(){ $(location).attr('href',base_url+segmento); });
 
-btnCurl.bind('click',function(){
-	let doc = $('.doc').val(), tipodoc = '', tabla = $('#tabla').val();
-	$('.nombres').val(''); $('.direccion').val(''); $('.ruc').val(''); $('.apellidos').val(''); 
-	
-	if($('.tipodoc').val() === '1') tipodoc = '01'; else if($('.tipodoc').val() === '2') tipodoc = '03';
-	
-	if(tipodoc !== '' && doc !== ''){
-		if(doc.length < 8){ alert('Debe ingresar un documento válido'); $('#doc').focus(); return}
-		if(tipodoc === '01' && doc.length !== 8){ alert('Debe ingresar un número de doc válido, 8 caracteres'); $('#doc').focus(); return}
-		if(tipodoc === '03' && doc.length < 9){ alert('Debe ingresar un número de documento válido, 9 caracteres'); $('#doc').focus(); return}
-		/*if(tipodoc === '04')tipodoc = '0' + (parseInt(tipodoc)-1).toString();*/
-		$('.error_curl').html('');
-		
-		$.ajax({
-			data: { tipo: tipodoc, doc: doc, tabla: tabla },
-			url: base_url + 'main/curl',
-			method: 'POST',
-			dataType: 'json',
-			error: function (xhr) { btnCurl.removeAttr('disabled'); btnCurl.html('<i class="fa fa-search aria-hidden="true"></i>'); },
-			beforeSend: function () { btnCurl.html('<i class="fa fa-spinner fa-pulse"></i>'); btnCurl.attr('disabled', 'disabled'); },
-			success: function (resp) {
-				let data = JSON.parse(resp.data);
-				let msg = data.errors? data.errors[0].detail : '';
-				btnCurl.html('<i class="fa fa-search aria-hidden="true"></i>');
-				btnCurl.removeAttr("disabled");
-
-				if(resp.valida){
-					alert('El Documento ya se encuentra registrado'); $('#doc').val(''); $('#doc').focus();
-				}else{
-					if(msg === ''){
-						//let data = JSON.parse(resp.data);
-						
-						if(data.data.attributes.es_persona_viva) $('#btnEnviar').removeClass('disabled'), $('.fallecido').html('');
-						else $('#btnEnviar').addClass('disabled'), $('.fallecido').html('FALLECIDO');
-						//console.log(data);
-						if(tipodoc === '01' || tipodoc === '03'){
-							if(segmento === 'proveedores' || segmento === 'ventas' || segmento === 'tostado'){
-								$('.direccion').val(data.data.attributes.domicilio_direccion);
-								$('.nombres').val(data.data.attributes.apellido_paterno+' '+data.data.attributes.apellido_materno+' '+data.data.attributes.nombres);
-								$('#ruc').val('00000000000');
-								//$('#ruc').prop('readonly', true);
-								//$('.direccion').prop('readonly', true);
-							}else if(segmento === 'usuarios'){
-								$('.apellidos').val(data.data.attributes.apellido_paterno+' '+data.data.attributes.apellido_materno);
-								$('.nombres').val(data.data.attributes.nombres); $('.usuario').val(doc);
-								//$('.apellidos').prop('readonly', true);
-							}else if(segmento === 'certificaciones'){
-								$('.apellidos').val(data.data.attributes.apellido_paterno+' '+data.data.attributes.apellido_materno);
-								$('.nombres').val(data.data.attributes.nombres);
-								//$('.apellidos').prop('readonly', true);
-							}
-							//$('.nombres').prop('readonly', true);
-						}//else console.log(data);
-					}else{
-						alert(msg);
-						$('.doc').val(''), $('.doc').focus();
-						//$('.nombres').prop('readonly', false); $('.direccion').prop('readonly', false); $('.apellidos').prop('readonly', false);
-					}
-				}
-			}
-		}).fail( function( jqXHR, textStatus, errorThrown ) {
-			btnCurl.html('<i class="fa fa-search aria-hidden="true"></i>'); btnCurl.removeAttr("disabled"); alert(jqXHR + ",  " + textStatus + ",  " + errorThrown);
-		});
-	}else{ 
-		if(tipodoc == ''){ alert('Debe elegir un tipo de Documento'); $('#tipodoc').focus(); }
-		else{ alert('Debe ingresar un número de documento válido'); $('#doc').focus(); }
-	}
-});
-
 $('#formPassword').validate({
 	errorClass: 'form_error',
 	rules: {
@@ -160,6 +91,7 @@ $('#formPassword').validate({
 				if (parseInt(data.status) === 200) {
 					$('.resp').html(data.message);
 					setTimeout(function () { $('.resp').html('&nbsp;'); }, 1500);
+					$('#formPassword input').val('');
 				}else {
 					$('.resp').html(data.message);
 					setTimeout(function () { $('.resp').html('&nbsp;'); }, 1500);
@@ -186,6 +118,84 @@ $('table').on('click','tr',function(event){
 			if(!$(e).hasClass('disabled')){ $(e).css('color','#fff'); }
 			if($(e).hasClass('btnActivar')){ $(e).css('color','red'); }
 			if($(e).hasClass('btnDesactivar')){ $(e).css('color','green'); }
+		});
+	}
+});
+$('.dep').bind('change', function(){
+	let cod = this.value, html = '<option value="">-- Seleccione --</option>';
+	$.ajax({
+		data: { cod_dep: cod },
+		url: base_url + 'main/provincias',
+		method: 'POST',
+		dataType: 'JSON',
+		beforeSend: function () {
+			$('.dis').html('<option>-- Seleccione --</option>'); $('.pro').html('<option> Cargando...</option>');
+		},
+		success: function (data) {
+			$.each(data, function (i, e){ html += '<option value="' + e.cod_pro + '">' + e.provincia + '</option>'; });
+			$('.pro').html(html);
+			//console.log(data);
+		}
+	});
+});
+$('.pro').bind('change', function(){
+	let cod = this.value, html = '<option value="">-- Seleccione --</option>';
+	$.ajax({
+		data: { cod_dep: $('.dep').val(),cod_pro: cod },
+		url: base_url + 'main/distritos',
+		method: 'POST',
+		dataType: 'JSON',
+		beforeSend: function () {
+			$('.dis').html('<option> Cargando...</option>');
+		},
+		success: function (data) {
+			$.each(data, function (i, e){ html += '<option value="' + e.cod_dis + '">' + e.distrito + '</option>'; });
+			$('.dis').html(html);
+			//console.log(data);
+		}
+	});
+});
+$('.dis').change(function(){
+	let id = this.value, dpto = $('.dep').val(), prov = $('.pro').val();
+    if (id.length > 0) {
+		$.ajax({
+			data: { cod_dep: dpto, cod_pro: prov, cod_dis: id },
+			url: base_url + 'main/cargarLatLng',
+			method: 'POST',
+			dataType: 'JSON',
+			beforeSend: function(){},
+			success: function (data) {
+				var opt = {lat: parseFloat(data[0].latitud), lng: parseFloat(data[0].longitud), zoom: 16};
+				map.setCenter(opt);
+				$('.ajaxMap').removeClass('d-none');
+			}
+		});
+	}
+});
+$('#busca_ruc').on('click',function(){
+	let ruc = $('#ruc').val(), val = true, bot = $(this); $('#nombres').val(''), $('#direccion').val('');
+	if(ruc.length == ''){ alert('Debe indicar un número de RUC'); val = false; $('#ruc').val(''); $('#ruc').focus(); return false; }
+	if(ruc.length < 11){ alert('El RUC debe tener 11 dígitos'); val = false; $('#ruc').val(''); $('#ruc').focus(); return false; }
+	
+	if(val){
+		$.ajax({
+			data: { ruc: ruc },
+			url: base_url + 'main/ruccurl',
+			method: 'POST',
+			dataType: 'JSON',
+			beforeSend: function(){ bot.addClass('pt-0'), bot.html('<span class="spinner-border spinner-border-sm"></span>'); },
+			success: function (data) {
+				bot.removeClass('pt-0'), bot.html('<i class="fa fa-search aria-hidden="true"></i>');
+				if(data.data.estado === 'ACTIVO'){
+					$('#btnEnviar').removeClass('disabled');
+					if(data.status === 200){
+						$('#nombres').val((data.data.nombre).toLocaleUpperCase()), $('#doc').val('00000000'); $('#tipodoc').prop('selectedIndex',0);
+						$('.direccion').val((data.data.direccion).toLocaleUpperCase());
+					}else{ alert(data.data.error); $('#ruc').val(''); $('#ruc').focus(); }
+				}else{
+					$('#btnEnviar').addClass('disabled');
+				}
+			}
 		});
 	}
 });

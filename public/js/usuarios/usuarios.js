@@ -1,7 +1,7 @@
 let tablaUser = null;
 
 $(document).ready(function (){
-	if(segmento2 == ''){
+	if(segmento2 == '' || segmento2 === 'usuarios'){
 		tablaUser = $('#tablaUsuarios').DataTable({
 			ajax: {
 				url: base_url + 'usuarios/lista',
@@ -16,7 +16,7 @@ $(document).ready(function (){
 						let hrefEdit = 'href="'+base_url+'usuarios/editar?id='+data.idusuario+'"';
 						let hrefPer = 'href="'+base_url+'usuarios/permisos?id='+data.idusuario+'"';
 						let hrefReset = 'href="'+base_url+'usuarios/reset?id='+data.idusuario+'&doc='+data.numero_documento+'&stat='+data.activo+'"';
-						let hrefActiva = 'href="'+base_url+'usuarios/habilitar?id='+data.idusuario+'"';
+						let hrefActiva = 'href="'+base_url+'usuarios/habilitar?id='+data.idusuario+'&stat='+data.activo+'"';
 						let btnAccion =
 						/* Boton de edicion */
 						'<div class="btn-group"><a title="Editar Usuario" '+((data.activo === '1' && btnEditUser)? hrefEdit:'')+' class="bg-warning btnTable '+
@@ -29,7 +29,7 @@ $(document).ready(function (){
 						'<a title="Resetear Clave" '+((data.activo === '1' && btnClave)? hrefReset:'')+' class="bg-info btnTable '+
 							((data.activo === '0' || !btnClave)?'disabled':'')+' resetclave" '+style+'><i class="fa fa-key" aria-hidden="true"></i></a>'+
 						/* Boton de activacion */
-						'<a title="'+(data.activo === '0'?'Habilitar Usuario':'Deshabilitar Usuario')+'" '+((data.activo === '1' && btnActiva)? hrefActiva:'')+
+						'<a title="'+(data.activo === '0'?'Habilitar Usuario':'Deshabilitar Usuario')+'" '+(btnActiva? hrefActiva:'')+
 							' class="bg-light btnTable '+(data.activo === '1'? 'btnDesactivar':'btnActivar')+' '+(!btnActiva?'disabled':'')+' activar" '+style+'>'+
 							'<i class="fa '+(data.activo === '1'? 'fa-unlock':'fa-lock')+'" aria-hidden="true"></i></a></div>';
 						return btnAccion;

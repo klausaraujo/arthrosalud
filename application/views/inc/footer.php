@@ -78,7 +78,7 @@
 		<script src="<?=base_url()?>public/js/usuarios/usuarios.js"></script>
 		<script>
 			let botonesUser = JSON.parse('<?=$this->session->userdata('perUser')?>');
-			<?if($this->uri->segment(2) == ''){?>
+			<?if($this->uri->segment(2) == '' || $this->uri->segment(2) === 'usuarios'){?>
 			let btnEditUser = false, btnPermisos = false, btnClave = false, btnActiva = false;
 			
 			$.each(botonesUser,function(i,e){
@@ -89,25 +89,32 @@
 			});
 			<?}?>
 		</script>
-		<?}elseif($this->uri->segment(1) === 'locadores'){ ?>
-		<script src="<?=base_url()?>public/js/locadores/locadores.js"></script>
+		<?}elseif($this->uri->segment(1) === 'parametros'){ ?>
 		<script>
-			let botonesLoc = JSON.parse('<?=$this->session->userdata('perLocadores')?>');
+			let botonesLoc = JSON.parse('<?=$this->session->userdata('perParametros')?>');
 			<?if($this->uri->segment(2) == ''){?>
 			let btnEdit = false, btnCan = false, btnEval = false, btnPub = false;
 			
 			$.each(botonesLoc,function(i,e){
-				if(e.idpermiso === '5') btnEdit = true;
-				else if(e.idpermiso === '6') btnCan = true;
-				else if(e.idpermiso === '7') btnEval = true;
-				else if(e.idpermiso === '8') btnPub = true;
+				if(e.idboton === '5') btnEdit = true;
+				else if(e.idboton === '6') btnCan = true;
+				else if(e.idboton === '7') btnEval = true;
+				else if(e.idboton === '8') btnPub = true;
 			});
-			<?}elseif($this->uri->segment(2) === 'evaluar'){?>
-				const postulantes = JSON.parse('<?=json_encode($data)?>');
 			<?}?>
 		</script>
+			<?	if($this->uri->segment(2) === 'empresas'){?>
+			<script src="<?=base_url()?>public/js/mapa/map.js"></script>
+			<script>
+				let map = null;
+				window.onload = function(){
+					var opt = {lat: parseFloat(<?=$lat?>), lng: parseFloat(<?=$lng?>),zoom: 16};
+					map = mapa(opt);
+				}
+			</script>
+			<?}?>
 		<?}
-		if(($this->uri->segment(1) === 'usuarios' || $this->uri->segment(1) === 'locadores') && $this->uri->segment(2) == ''){ ?>
+		if(($this->uri->segment(1) === 'usuarios' || $this->uri->segment(1) === 'locadores') && ($this->uri->segment(2) == '' || $this->uri->segment(2) === 'usuarios')){ ?>
 		<script>
 			const headers = JSON.parse('<?=json_encode($headers)?>');
 		</script>

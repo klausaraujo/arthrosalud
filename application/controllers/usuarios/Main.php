@@ -23,7 +23,7 @@ class Main extends CI_Controller
 	}
 	public function nuevo()
 	{
-		if($this->uri->segment(1) === 'nuevousuario')header('location:' .base_url(). 'usuarios/nuevo');
+		if($this->uri->segment(2) === 'nuevousuario')header('location:' .base_url(). 'usuarios/nuevo');
 		else{
 			$this->load->model('Usuarios_model');
 			$tipodoc = $this->Usuarios_model->tipodoc();
@@ -141,7 +141,7 @@ class Main extends CI_Controller
 		
 		if(!empty($permisos)){
 			foreach($permisos as $row):
-				$arrayPer[$i] = ['idpermiso'=>$row,'idusuario'=>$id,'activo'=>1];
+				$arrayPer[$i] = ['idboton'=>$row,'idusuario'=>$id,'activo'=>1];
 				$i++;
 			endforeach;
 		}
@@ -159,7 +159,7 @@ class Main extends CI_Controller
 				$i++;
 			endforeach;
 		}
-		$regPer = $this->Usuarios_model->registrarPer(['idusuario'=>$id],$arrayPer,'permisos_opcion');
+		$regPer = $this->Usuarios_model->registrarPer(['idusuario'=>$id],$arrayPer,'permisos_botones');
 		$regMenu = $this->Usuarios_model->registrarPer(['idusuario'=>$id],$arrayMenu,'permisos_menu');
 		$regSub = $this->Usuarios_model->registrarPer(['idusuario'=>$id],$arraySubm,'permisos_menu_detalle');
 		

@@ -66,10 +66,15 @@ $route['main/ruccurl'] = 'main/ruccurl';
 $route['main/upload'] = 'main/upload';
 /* Cambiar perfil del usuario */
 $route['main/perfil'] = 'main/perfil';
+$route['main/cambiapass'] = 'main/password';
+$route['main/provincias'] = 'main/provincias';
+$route['main/distritos'] = 'main/distritos';
+$route['main/cargarLatLng'] = 'main/cargarLatLng';
 
 /* Usuarios */
-$route['usuarios/lista'] = 'usuarios/main/listaUsuarios';
-$route['nuevousuario'] = 'usuarios/main/nuevo';
+$route['usuarios/usuarios'] = 'main/usuarios';
+$route['usuarios/nuevousuario'] = 'usuarios/main/nuevo';
+$route['usuarios/lista']['get'] = 'usuarios/main/listaUsuarios';
 $route['usuarios/nuevo'] = 'usuarios/main/nuevo';
 $route['usuarios/editar'] = 'usuarios/main/nuevo';
 $route['usuarios/registrar'] = 'usuarios/main/registrar';
@@ -78,18 +83,9 @@ $route['usuarios/reset'] = 'usuarios/main/resetear';
 $route['usuarios/permisos'] = 'usuarios/main/permisosUsuario';
 $route['usuarios/permisos/asignar'] = 'usuarios/main/asignarPermisos';
 
-/* Locadores */
-$route['locadores/lista'] = 'locadores/main/listaLocadores';
-$route['nuevaconvocatoria'] = 'locadores/main/nueva';
-$route['locadores/nueva'] = 'locadores/main/nueva';
-$route['locadores/editar'] = 'locadores/main/nueva';
-$route['locadores/cancelar'] = 'locadores/main/cancelar';
-$route['locadores/registrar'] = 'locadores/main/registrar';
-$route['locadores/descargar'] = 'locadores/main/descargar';
-$route['locadores/descargarp'] = 'locadores/main/descargarp';
-$route['locadores/evaluar'] = 'locadores/main/evaluar';
-$route['locadores/evaluado'] = 'locadores/main/evaluado';
-$route['locadores/ver'] = 'locadores/main/ver';
+/* Parametros */
+$route['parametros/empresas'] = 'parametros/empresas';
+$route['parametros/regempresa'] = 'parametros/regempresa';
 
 /**/
 $route['404_override'] = '';

@@ -51,14 +51,14 @@
 																			<h5 class="my-2 ml-3 font-weight-bold">Permisos Men&uacute;s</h5>
 																			<?php 
 																				$j = 1; $subnivel = []; $k = 0;
-																				foreach($usuario->menugeneral as $row):
+																				foreach($menus as $row):
 																					if($row->idmodulo === $mod->idmodulo){
 																						if($row->nivel === '1'){ $subnivel[$k] = $row->idmenu; $k++; }
 																			?>
 																			<div class="custom-control custom-switch col-12 ml-3">
 																				<input type="checkbox" class="custom-control-input menus" name="menus[]" data-nivel="<?=$row->nivel?>"
-																					value="<?=$row->idmenu?>" id="checkMenus<?=$j?>" data-menu="<?=$row->idmenu?>" >
-																				<label class="custom-control-label" for="checkMenus<?=$j?>">&nbsp;&nbsp;<?=$row->descripcion?></label>
+																					value="<?=$row->idmenu?>" id="<?=$mod->url?>_checkMenus<?=$j?>" data-menu="<?=$row->idmenu?>" >
+																				<label class="custom-control-label" for="<?=$mod->url?>_checkMenus<?=$j?>">&nbsp;&nbsp;<?=$row->descripcion?></label>
 																			</div>
 																		<?php
 																						$j++;
@@ -69,14 +69,14 @@
 																			<h5 class="my-2 ml-3 font-weight-bold">Permisos Submen&uacute;s</h5>
 																			<?php 
 																				$j = 1; $submenu = false;
-																				foreach($usuario->submenugeneral as $row):
+																				foreach($submenus as $row):
 																					for($k = 0;$k < count($subnivel);$k++){ if($subnivel[$k] === $row->idmenu && $row->activo === '1') $submenu = true; }
 																					if($submenu){
 																			?>
 																			<div class="custom-control custom-switch col-12 ml-3">
 																				<input type="checkbox" class="custom-control-input submenu" name="submenus[]"
-																					value="<?=$row->idmenudetalle?>" id="checkSubMenus<?=$j?>" data-submenu="<?=$row->idmenu?>">
-																				<label class="custom-control-label" for="checkSubMenus<?=$j?>">&nbsp;&nbsp;<?=$row->descripcion?></label>
+																					value="<?=$row->idmenudetalle?>" id="<?=$mod->url?>_checkSubMenus<?=$j?>" data-submenu="<?=$row->idmenu?>">
+																				<label class="custom-control-label" for="<?=$mod->url?>_checkSubMenus<?=$j?>">&nbsp;&nbsp;<?=$row->descripcion?></label>
 																			</div>
 																		<?php
 																						$j++;
@@ -92,8 +92,8 @@
 																			?>
 																			<div class="custom-control custom-switch col-12 ml-3">
 																				<input type="checkbox" class="custom-control-input permisos" name="permisos[]"
-																					value="<?=$row->idboton?>" id="checkPermisos<?=$j?>">
-																				<label class="custom-control-label" for="checkPermisos<?=$j?>">&nbsp;&nbsp;<?=$row->descripcion?></label>
+																					value="<?=$row->idboton?>" id="<?=$mod->url?>_checkPermisos<?=$j?>">
+																				<label class="custom-control-label" for="<?=$mod->url?>_checkPermisos<?=$j?>">&nbsp;&nbsp;<?=$row->descripcion?></label>
 																			</div>
 																		<?php
 																						$j++;
@@ -113,7 +113,7 @@
 										<div class="modal-footer">
 											<div class="row">
 												<div class="col-md-12">
-													<button class="btn btn-cancel mr-3" data-dismiss="modal" id="cancelPer">Cancelar</button>
+													<button class="btn btn-light mr-3" data-dismiss="modal" id="cancelPer">Cancelar</button>
 													<button type="submit" class="btn btn-sabogal" data-dismiss="modal" id="asignarPer">Asignar Permisos</button>
 												</div>
 											</div>

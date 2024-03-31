@@ -20,74 +20,51 @@
 						</li>
 				<? 
 						$idmodulo = '';
-						if($this->uri->segment(1) == ''){
+						foreach($usuario->modulosid as $row): if($this->uri->segment(1) === $row->url){ $idmodulo = $row->idmodulo; break; } endforeach;
+						
+						if($idmodulo == ''){
 							foreach($usuario->modulos as $row): ?>
 						<li>
-				<?				if($row->activo > 0){ ?>
 							<a href="<?=base_url().$row->url?>" class="iq-waves-effect"><i class="<?=$row->mini?>" aria-hidden="true"></i><span><?=$row->menu?></span></a>
-				<?				}else { ?>
-							<span class="disable"><div class="pull-left">
-								<i class="<?=$row->mini?> mr-20" aria-hidden="true"></i><span class="right-nav-text"><?=$row->menu?></span></div>
-								<div class="clearfix"></div>
-							</span>
-						
-				<?				} ?>
 						</li>
 				<?			endforeach;
 						}else{
-						// Area del bucle del menu
-							foreach($usuario->modulos as $row): if($row->url === $this->uri->segment(1)) $idmodulo = $row->idmodulo; endforeach;
-								
-							$permiso = false; $subpermiso = false;
-								
-							foreach($usuario->menugeneral as $row):
-								if($idmodulo === $row->idmodulo){	?>
-						<li>
-				<?					foreach($usuario->menus as $fila): if($fila->idmenu === $row->idmenu && $fila->activo === '1') $permiso = true; endforeach;
-									if($permiso && $row->activo === '1'){
-										if($row->nivel === '0'){
+							// Area del bucle del menu
+							foreach($usuario->menus as $row):
+								if($row->idmodulo === $idmodulo){
 				?>
-							<a href="<?=base_url().$row->url?>" class="iq-waves-effect"><i class="<?=$row->icono?>"></i><span><?=$row->descripcion?></span></a>
-				<?						}else{	?>
+						<li>
+				<?
+									if($row->nivel === '0'){
+				?>
+							<a href="<?=base_url().$this->uri->segment(1).'/'.$row->url?>" class="iq-waves-effect"><i class="<?=$row->icono?>"></i><span><?=$row->descripcion?></span></a>
+				<?					}else{	?>
 						<!-- Area de submenus -->
 							<a href="#submenu_<?=$row->idmenu?>" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false">
 								<i class="<?=$row->icono?>"></i><span><?=$row->descripcion?></span><i class="ri-arrow-right-s-line iq-arrow-right"></i>
 							</a>
 							<ul id="submenu_<?=$row->idmenu?>" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-				<?							foreach($usuario->submenugeneral as $row2):
-												if($row2->idmenu === $row->idmenu){	?>
+				<?						foreach($usuario->submenus as $row2):
+											if($row->idmenu === $row2->idmenu){
+				?>
 								<li>
-				<?									foreach($usuario->submenus as $fila1):
-														if($fila1->idmenudetalle === $row2->idmenudetalle && $fila1->activo === '1') $subpermiso = true;
-													endforeach;
-													if($subpermiso && $row2->activo === '1'){	?>
-									<a href="<?=base_url().$this->uri->segment(1).'/'.$row2->url?>" style="color:#117428" ><i class="<?=$row2->icono?>"></i><?=$row2->descripcion?></a>
-				<?									}else{	?>
-									<span class="disable"><div class="pull-left">
-										<i class="<?=$row2->icono?> mr-20" aria-hidden="true"></i><span class="right-nav-text"><?=$row2->descripcion?></span></div>
-										<div class="clearfix"></div>
-									</span>
-									<!--<i class="<?=$row2->icono?>"></i><span><?=$row2->descripcion?></span>-->
-				<?									}
-												}
-												$subpermiso = false;	?>
+									<a href="<?=base_url().$this->uri->segment(1).'/'.$row2->url?>" style="color:#117428" >
+										<i class="<?=$row2->icono?>"></i><?=$row2->descripcion?>
+									</a>
 								</li>
-				<?							endforeach;	?>	
+				<?							}
+										endforeach;
+				?>	
 							</ul>
 						<!-- Fin del Area de submenus -->
-				<?							}
-									}else{	?>
-							<span class="disable"><div class="pull-left">
-								<i class="<?=$row->icono?> mr-20" aria-hidden="true"></i><span class="right-nav-text"><?=$row->descripcion?></span></div>
-								<div class="clearfix"></div>
-							</span>
-							<!--<i class="<?=$row->icono?>"></i><span><?=$row->descripcion?></span>-->
 				<?					}
-								$permiso = false;
-								}	?>
+				?>
 						</li>
-				<?			endforeach;
-						}	?>
+				<?
+								}
+							endforeach;
+						}
+				?>
 						<!-- Fin del area del bucle del menu -->
                     </ul>
 				</nav>
