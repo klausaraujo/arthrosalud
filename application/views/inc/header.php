@@ -44,4 +44,11 @@
 *::-moz-selection { background: rgba(239, 149, 47, 0.8); color: #fff; text-shadow: none; }
 ::-moz-selection { background: rgba(239, 149, 47, 0.8); color: #fff; text-shadow: none; }
 ::selection { background: rgba(239, 149, 47, 0.8); color: #fff; text-shadow: none; }
+
+.btn { padding: 0.3rem 0.7rem 0.3rem 0.7rem; }
+label, .btn, .pagination, .form-control, .nav-pills .nav-item.nav-link, a, li, span { font-size: 12.5px }
+.btnTable{ -webkit-transition-duration: 0.4s;transition-duration: 0.4s;margin-right:5px;padding:1.5px;border-radius:5px;box-shadow:3px 3px 2px 0 rgb(1 0 2 / 50%); color: #fff; }
+.btnTable:hover{ color: #000 }
+.btnDesactivar{ color: green; /*border: 1px solid darkgrey*/ } .btnDesactivar:hover{ color: red; /*border: 1px solid darkgreen*/ }
+.btnActivar{ color: red; /*border: 1px solid darkgrey*/ } .btnActivar:hover{ color: green; /*border: 1px solid darkred*/ }
 </style>
