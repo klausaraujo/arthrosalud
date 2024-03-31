@@ -56,7 +56,7 @@ $(document).ready(function (){
 						let var_perfil = '';
 						switch(data){
 							case '1': var_perfil = 'ADMINISTRADOR'; break;
-							case '2': var_perfil = 'EST&Aacute;NDAR'; break;
+							case '2': var_perfil = 'LOG&Iacute;STICO'; break;
 						}
 						return var_perfil;
 					}

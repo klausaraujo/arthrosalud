@@ -59,7 +59,8 @@ $route['logout'] = 'login/logout';
 
 /* Programacion en general */
 $route['usuarios'] = 'main/usuarios';
-$route['locadores'] = 'main/locadores';
+$route['parametros'] = 'main/parametros';
+$route['logistica'] = 'main/logistica';
 $route['main/curl'] = 'main/curl';
 $route['main/ruccurl'] = 'main/ruccurl';
 $route['main/upload'] = 'main/upload';
