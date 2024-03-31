@@ -2158,6 +2158,7 @@ CREATE TABLE empresa (
 	idempresa smallint(4) NOT NULL AUTO_INCREMENT,
 	ruc varchar(11) NOT NULL,
 	razon_social varchar(100) NOT NULL,
+	nombre_comercial varchar(100) NOT NULL,
 	domicilio varchar(100) NOT NULL,
 	ubigeo varchar(6),
 	latitud varchar(25),
