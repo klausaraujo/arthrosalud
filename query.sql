@@ -2023,13 +2023,14 @@ CREATE TABLE menu  (
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(2,1,'Nuevo Registro','0','nuevousuario','fa fa-pencil-square-o');
 	
 	/*Menus del Módulo de Parámetros*/
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(3,2,'Registro Empresas','0','','fa fa-pencil-square-o');
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(4,2,'Centros de Costos','0','','fa fa-pencil-square-o');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(3,2,'Registro Empresas','0','#','fa fa-file-text-o');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(4,2,'Centros de Costos','0','#','fa fa-money');
 
 	/*Menus del Módulo Logistica*/
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(5,3,'Registro Proveedores','0','','fa fa-pencil-square-o');
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(6,3,'Catálogo Bienes','0','','fa fa-pencil-square-o');
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(7,3,'Catálogo Servicios','0','','fa fa-pencil-square-o');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(5,3,'Registro Proveedores','0','#','fa fa-file-powerpoint-o');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(6,3,'Catálogo Bienes','0','#','fa fa-window-maximize');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(7,3,'Catálogo Servicios','0','#','fa fa-exchange');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(8,3,'Registro Almacenes','0','#','fa fa-bandcamp');
 
 CREATE TABLE permisos_menu  (
 	idpermisosmenu smallint(4) NOT NULL AUTO_INCREMENT,
