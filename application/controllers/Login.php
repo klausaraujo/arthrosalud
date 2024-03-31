@@ -33,7 +33,7 @@ class Login extends CI_Controller
                 header('location:' .base_url(). 'login');
             }else{
 				$usuario->modulos = $this->Usuario_model->listaModulo(['idperfil' => $usuario->idperfil]);
-				/*$usuario->menus = $this->Menu_model->listaMenuPermisos(['idusuario' => $usuario->idusuario]);
+				$usuario->menus = $this->Menu_model->listaMenuPermisos(['idusuario' => $usuario->idusuario]);
 				$usuario->submenus = $this->Menu_model->listaSubMenuPermisos(['idusuario' => $usuario->idusuario]);
 				$usuario->menugeneral = $this->Menu_model->listaMenu();
 				$usuario->submenugeneral = $this->Menu_model->listaSubMenu();
