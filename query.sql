@@ -18,7 +18,6 @@ DROP TABLE IF EXISTS tipo_cuenta;
 DROP TABLE IF EXISTS tipo_moneda;
 DROP TABLE IF EXISTS banco;
 DROP TABLE IF EXISTS almacen;
-DROP TABLE IF EXISTS sucursal;
 DROP TABLE IF EXISTS empresa;
 
 
@@ -2167,7 +2166,18 @@ CREATE TABLE empresa (
 	activo char(1) DEFAULT '1',
 	PRIMARY KEY (idempresa))ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
 
-
+CREATE TABLE almacen (
+	idalmacen smallint(4) NOT NULL AUTO_INCREMENT,
+	idempresa smallint(4) NOT NULL,
+	numero varchar(2) NOT NULL,
+	nombre_almacen varchar(100) NOT NULL,
+	domicilio varchar(100) NOT NULL,
+	ubigeo varchar(6),
+	latitud varchar(25),
+	longitud varchar(25),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idalmacen),
+	FOREIGN KEY (idempresa) REFERENCES empresa (idempresa) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
 
 
 
