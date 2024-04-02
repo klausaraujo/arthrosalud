@@ -8,7 +8,8 @@
 							<div class="iq-alert-text"><?=$this->session->flashdata('flashMessage')?></div>
 							</div><?}?>
 						</div>
-						<form method="post" id="form_empresa" action="<?=base_url()?>parametros/regempresa" class="needs-validation form-horizontal" novalidate="">
+						<form method="post" id="form_empresa" action="<?=base_url()?>parametros/regempresa" enctype="multipart/form-data"
+								class="needs-validation form-horizontal" novalidate="">
 							<input type="hidden" name="tiporegistro" value="registrar" />
 							<div class="form-row">
 								<div class="col-12 my-1">
@@ -17,7 +18,7 @@
 										<div class="col-md-4 col-lg-2">
 											<div class="row">
 												<input type="text" class="form-control form-control-sm ruc borra num" name="ruc" id="ruc" placeholder="RUC" 
-													value="" minlength="11" maxlength="11"/>
+													value="" minlength="11" maxlength="11" required="" />
 												<div class="invalid-feedback" id="error-doc">Documento opcional</div>
 											</div>
 										</div>
@@ -103,9 +104,8 @@
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="logotipo">Logotipo Empresa:</label>
 										<div class="col-md-6 col-lg-4">
 											<div class="row">
-												<input type="text" class="form-control form-control-sm borra logotipo mayusc" name="logotipo" 
-													placeholder="Logotipo" value="" required="" />
-												<label class="invalid-feedback">Campo requerido</label>
+												<input type="file" name="file-2" id="file-2" class="inputfile inputfile-2" data-multiple-caption="{count} files selected" multiple />
+												<label for="file-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg> <span>Elegir Archivo&hellip;</span></label>
 											</div>
 										</div>
 									</div>
