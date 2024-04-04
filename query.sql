@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS usuarios;
 DROP TABLE IF EXISTS perfil;
 DROP TABLE IF EXISTS ubigeo;
 DROP TABLE IF EXISTS proveedor;
+DROP TABLE IF EXISTS articulos;
 DROP TABLE IF EXISTS tipo_documento;
 DROP TABLE IF EXISTS presentacion;
 DROP TABLE IF EXISTS tipo_articulo;
@@ -2733,23 +2734,38 @@ CREATE TABLE presentacion (
 
 CREATE TABLE proveedor (
 	idproveedor smallint(4) NOT NULL AUTO_INCREMENT,
-	idtipodocumento smallint(4) NOT NULL,
-	numero_documento varchar(15) NOT NULL,
+	numero_ruc varchar(15) NOT NULL,
 	razon_social varchar(100) NOT NULL,
 	nombre_comercial varchar(100) NOT NULL,
 	domicilio varchar(100) NOT NULL,
 	ubigeo varchar(6),
 	latitud varchar(25),
 	longitud varchar(25),
-	logotipo varchar(30),
 	celular varchar(9),
+	contacto varchar(100),
+	correo varchar(100),
 	idtipocuenta smallint(4) NOT NULL,
 	idbanco smallint(4) NOT NULL,
 	numero_cuenta varchar(20),
 	cci_cuenta varchar(20),
+	idtipomoneda smallint(4) NOT NULL,
+	observaciones varchar(1000),
 	activo char(1) DEFAULT '1',
 	PRIMARY KEY (idproveedor),
-	FOREIGN KEY (idtipodocumento) REFERENCES tipo_documento (idtipodocumento) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (idtipocuenta) REFERENCES tipo_cuenta (idtipocuenta) ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (idbanco) REFERENCES banco (idbanco) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+	FOREIGN KEY (idbanco) REFERENCES banco (idbanco) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idtipomoneda) REFERENCES tipo_moneda (idtipomoneda) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
 
+CREATE TABLE articulos (
+	idarticulo smallint(4) NOT NULL AUTO_INCREMENT,
+	idtipoarticulo smallint(4) NOT NULL,
+	idlaboratorio smallint(4) NOT NULL,
+	idunidadmedida smallint(4) NOT NULL,
+	idpresentacion smallint(4) NOT NULL,
+	descripcion varchar(100) NOT NULL,
+	fotografia varchar(30),
+	disponible_compra char(1) DEFAULT '0',
+	disponible_venta char(1) DEFAULT '0',
+	porcentaje_utilidad decimal(9,2),
+	observaciones varchar(1000),
+	activo char(1) DEFAULT '1',
