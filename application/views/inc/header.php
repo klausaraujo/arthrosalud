@@ -65,7 +65,8 @@ a.disabled{ pointer-events: none; color: grey }
 .inputfile-2 + label:hover { color: #2128cf;border: 2px solid #2128cf; }
 </style>
 
-<?if($this->uri->segment(1) === 'parametros' && $this->uri->segment(2) === 'empresas'){?>
+<?if($this->uri->segment(1) === 'parametros' && $this->uri->segment(2) === 'empresas' || $this->uri->segment(1) === 'logistica' && 
+	$this->uri->segment(2) === 'proveedores'){?>
 <script>
 	function initMap(){}
 </script>

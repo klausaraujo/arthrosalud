@@ -113,6 +113,30 @@
 				}
 			</script>
 			<?}?>
+		<?}elseif($this->uri->segment(1) === 'logistica'){ ?>
+		<script>
+			let botonesLoc = JSON.parse('<?=$this->session->userdata('perLogistica')?>');
+			<?if($this->uri->segment(2) == ''){?>
+			let btnEdit = false, btnCan = false, btnEval = false, btnPub = false;
+			
+			$.each(botonesLoc,function(i,e){
+				if(e.idboton === '5') btnEdit = true;
+				else if(e.idboton === '6') btnCan = true;
+				else if(e.idboton === '7') btnEval = true;
+				else if(e.idboton === '8') btnPub = true;
+			});
+			<?}?>
+		</script>
+			<?	if($this->uri->segment(2) === 'proveedores'){?>
+			<script src="<?=base_url()?>public/js/mapa/map.js"></script>
+			<script>
+				let map = null;
+				window.onload = function(){
+					var opt = {lat: parseFloat(<?=$lat?>), lng: parseFloat(<?=$lng?>),zoom: 16};
+					map = mapa(opt);
+				}
+			</script>
+			<?}?>
 		<?}
 		if(($this->uri->segment(1) === 'usuarios' || $this->uri->segment(1) === 'locadores') && ($this->uri->segment(2) == '' || $this->uri->segment(2) === 'usuarios')){ ?>
 		<script>

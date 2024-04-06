@@ -87,6 +87,11 @@ $route['usuarios/permisos/asignar'] = 'usuarios/main/asignarPermisos';
 $route['parametros/empresas'] = 'parametros/empresas';
 $route['parametros/regempresa'] = 'parametros/regempresa';
 
+
+/* Logistica */
+$route['logistica/proveedores'] = 'logistica/proveedores';
+$route['logistica/regproveedor'] = 'logistica/regproveedor';
+
 /**/
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

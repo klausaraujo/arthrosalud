@@ -34,6 +34,7 @@
 						elseif($this->uri->segment(1) === 'usuarios' && $this->uri->segment(2) === 'editar') $this->load->view('usuarios/form-editar');
 						elseif($this->uri->segment(2) === 'perfil') $this->load->view('usuario/perfil');
 						elseif($this->uri->segment(1) === 'parametros' && $this->uri->segment(2) === 'empresas') $this->load->view('parametros/form-new');
+						elseif($this->uri->segment(1) === 'logistica' && $this->uri->segment(2) === 'proveedores') $this->load->view('logistica/form-new');
 					?>
 					</div>
 				</div>
