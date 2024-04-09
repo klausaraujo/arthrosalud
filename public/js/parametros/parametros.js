@@ -16,7 +16,7 @@ $(document).ready(function (){
 						$(td).addClass('p-1');
 					},
 					render: function(data){
-						return '<img src="'+base_url+'public/images/perfil/'+data+'" style="display:block;margin:auto;width:40px" class="img img-fluid" >';
+						return '<img src="'+base_url+'public/images/logos/'+data+'" style="display:block;margin:auto;width:40px" class="img img-fluid" >';
 					}
 				},
 				{
