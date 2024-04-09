@@ -50,7 +50,7 @@ $(document).ready(function (){
 			],
 			columnDefs:[
 				{title:'Acciones',targets: 0},{title:'RUC',targets: 1},{title:'Nombre Comercial',targets: 2},{title:'Domicilio',targets: 3},{title:'Ubigeo',targets: 4},
-				{title:'Contacto',targets: 5},{title:'Status',targets: 6},
+				{title:'Contacto',targets: 5},{title:'Correo',targets: 6},{title:'Status',targets: 7},
 			], order: [],
 		});
 	}
