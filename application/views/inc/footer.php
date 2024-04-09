@@ -105,6 +105,7 @@
 		</script>
 			<?	if($this->uri->segment(2) === 'empresas'){?>
 			<script src="<?=base_url()?>public/js/mapa/map.js"></script>
+			<script src="<?=base_url()?>public/js/parametros/parametros.js"></script>
 			<script>
 				let map = null;
 				window.onload = function(){

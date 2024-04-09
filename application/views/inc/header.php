@@ -63,6 +63,8 @@ a.disabled{ pointer-events: none; color: grey }
 .inputfile + label { max-width: 80%;text-overflow: ellipsis;cursor: pointer;display: inline-block;overflow: hidden;padding: 0.2rem 1.25rem; }
 .inputfile + label svg { width: 1em;height: 1em;vertical-align: middle;fill: currentColor;margin-top: -0.25em;margin-right: 0.25em; }
 .inputfile-2 + label:hover { color: #2128cf;border: 2px solid #2128cf; }
+
+.dataTable, thead, tr, th{ font-size: 0.75rem }
 </style>
 
 <?if($this->uri->segment(1) === 'parametros' && $this->uri->segment(2) === 'empresas' || $this->uri->segment(1) === 'logistica' && 

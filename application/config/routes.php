@@ -86,6 +86,8 @@ $route['usuarios/permisos/asignar'] = 'usuarios/main/asignarPermisos';
 /* Parametros */
 $route['parametros/empresas'] = 'parametros/empresas';
 $route['parametros/regempresa'] = 'parametros/regempresa';
+$route['parametros/empresas/lista'] = 'parametros/listaempresas';
+$route['parametros/empresas/nuevo'] = 'parametros/nuevo';
 
 
 /* Logistica */

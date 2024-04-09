@@ -15,7 +15,19 @@ class Parametros extends CI_Controller
 
     public function index(){}
 	
+	public function listaempresas()
+	{
+		$this->load->model('Parametros_model');
+		$empresas = $this->Parametros_model->querysqlwhere('*','empresa',['activo' => 1]);
+		//$data = json_decode(json_encode($empresas, JSON_FORCE_OBJECT));
+		echo json_encode(['data' => $empresas]);
+	}
+	
 	public function empresas()
+	{
+		return $this->load->view('main');
+	}
+	public function nuevo()
 	{
 		$this->load->model('Parametros_model');
 		$this->load->model('General_model');
