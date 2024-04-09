@@ -22,7 +22,6 @@ class Parametros extends CI_Controller
 		//$data = json_decode(json_encode($empresas, JSON_FORCE_OBJECT));
 		echo json_encode(['data' => $empresas]);
 	}
-	
 	public function empresas()
 	{
 		return $this->load->view('main');

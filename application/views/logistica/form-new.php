@@ -123,7 +123,7 @@
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="contacto">Contacto:</label>
 										<div class="col-md-6 col-lg-4">
 											<div class="row">
-												<input type="text" class="form-control form-control-sm borra contacto num" name="contacto"
+												<input type="text" class="form-control form-control-sm borra contacto" name="contacto"
 													placeholder="Contacto" value="" />
 												<label class="invalid-feedback">Campo requerido</label>
 											</div>

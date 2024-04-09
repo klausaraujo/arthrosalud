@@ -5,6 +5,11 @@ class Logistica_model extends CI_Model
 {    
 	public function __construct(){ parent::__construct(); }
     
+	public function querysqlwhere($q,$t,$where)
+	{
+		$query = $this->db->select($q)->from($t)->where($where)->get();
+		return $query->num_rows() > 0? $query->result() : array();
+	}
 	public function querysql($q,$t)
 	{
 		$query = $this->db->select($q)->from($t)->get();

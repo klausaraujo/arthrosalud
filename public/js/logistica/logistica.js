@@ -2,10 +2,10 @@ let grillappal = null;
 
 $(document).ready(function (){
 	if(segmento2 == ''){
-	}else if(segmento2 === 'empresas'){
-		grillappal = $('#tablaEmpresas').DataTable({
+	}else if(segmento2 === 'proveedores'){
+		grillappal = $('#tablaProveedores').DataTable({
 			ajax: {
-				url: base_url + 'parametros/empresas/lista',
+				url: base_url + 'logistica/proveedores/lista',
 			},
 			bAutoWidth:false, bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
 			columns:[
@@ -35,16 +35,7 @@ $(document).ready(function (){
 						return btnAccion;
 					}
 				},
-				{ data: 'ruc' },{ data: 'nombre_comercial' },{ data: 'domicilio' },{ data: 'ubigeo' },{ data: 'renipress' },
-				{ 
-					data: 'logotipo',
-					createdCell: function(td,cellData,rowData,row,col){
-						$(td).addClass('p-1');
-					},
-					render: function(data){
-						return '<img src="'+base_url+'public/images/logos/'+data+'" style="display:block;margin:auto;width:40px" class="img img-fluid" >';
-					}
-				},
+				{ data: 'numero_ruc' },{ data: 'nombre_comercial' },{ data: 'domicilio' },{ data: 'ubigeo' },{ data: 'contacto' },{ data: 'correo' },
 				{
 					data: 'activo',
 					render: function(data){
@@ -59,7 +50,7 @@ $(document).ready(function (){
 			],
 			columnDefs:[
 				{title:'Acciones',targets: 0},{title:'RUC',targets: 1},{title:'Nombre Comercial',targets: 2},{title:'Domicilio',targets: 3},{title:'Ubigeo',targets: 4},
-				{title:'Renipress',targets: 5},{title:'Logotipo',targets: 6},{title:'Status',targets: 7},
+				{title:'Contacto',targets: 5},{title:'Status',targets: 6},
 			], order: [],
 		});
 	}

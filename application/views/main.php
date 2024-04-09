@@ -36,7 +36,10 @@
 						elseif($this->uri->segment(1) === 'parametros' && $this->uri->segment(2) === 'empresas'){
 							if($this->uri->segment(3) == '') $this->load->view('parametros/empresas');
 							else $this->load->view('parametros/form-new');
-						}elseif($this->uri->segment(1) === 'logistica' && $this->uri->segment(2) === 'proveedores') $this->load->view('logistica/form-new');
+						}elseif($this->uri->segment(1) === 'logistica' && $this->uri->segment(2) === 'proveedores'){
+							if($this->uri->segment(3) == '') $this->load->view('logistica/proveedores');
+							else $this->load->view('logistica/form-new');
+						}
 					?>
 					</div>
 				</div>

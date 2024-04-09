@@ -85,13 +85,15 @@ $route['usuarios/permisos/asignar'] = 'usuarios/main/asignarPermisos';
 
 /* Parametros */
 $route['parametros/empresas'] = 'parametros/empresas';
-$route['parametros/regempresa'] = 'parametros/regempresa';
 $route['parametros/empresas/lista'] = 'parametros/listaempresas';
 $route['parametros/empresas/nuevo'] = 'parametros/nuevo';
+$route['parametros/regempresa'] = 'parametros/regempresa';
 
 
 /* Logistica */
 $route['logistica/proveedores'] = 'logistica/proveedores';
+$route['logistica/proveedores/lista'] = 'logistica/listaproveedores';
+$route['logistica/proveedores/nuevo'] = 'logistica/nuevo';
 $route['logistica/regproveedor'] = 'logistica/regproveedor';
 
 /**/

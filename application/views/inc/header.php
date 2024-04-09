@@ -67,8 +67,7 @@ a.disabled{ pointer-events: none; color: grey }
 .dataTable, thead, tr, th{ font-size: 0.75rem }
 </style>
 
-<?if($this->uri->segment(1) === 'parametros' && $this->uri->segment(2) === 'empresas' || $this->uri->segment(1) === 'logistica' && 
-	$this->uri->segment(2) === 'proveedores'){?>
+<?if($this->uri->segment(3) === 'nuevo' && ($this->uri->segment(2) === 'empresas' || $this->uri->segment(2) === 'proveedores')){?>
 <script>
 	function initMap(){}
 </script>

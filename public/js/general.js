@@ -75,7 +75,12 @@ $('.num').bind('input',function(e){
 $('.mayusc').bind('input',function(e){
 	jQuery(this).val(jQuery(this).val().toUpperCase());
 });
-btnCancelar.bind('click', function(){ $(location).attr('href',base_url+segmento); });
+btnCancelar.bind('click', function(){
+	let path = '';
+	if(segmento3) path = base_url+segmento+'/'+segmento2;
+	else if(segmento2) path = base_url+segmento;
+	$(location).attr('href',path);
+});
 
 $('#formPassword').validate({
 	errorClass: 'form_error',
