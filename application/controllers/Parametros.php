@@ -100,7 +100,7 @@ class Parametros extends CI_Controller
 						$this->session->set_flashdata('claseMsg', 'alert-primary');
 					}
 				}
-				header('location:'.base_url().'parametros');
+				header('location:'.base_url().'parametros/empresas');
 			}else{
 				$this->session->set_flashdata('flashMessage', 'La <b>Empresa</b> ya se encuentra registrada');
 				header('location:'.base_url().'parametros/empresas');

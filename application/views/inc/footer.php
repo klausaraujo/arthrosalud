@@ -90,28 +90,24 @@
 			<?}?>
 		</script>
 		<?}elseif($this->uri->segment(1) === 'parametros'){ ?>
-		<script>
-			let botonesLoc = JSON.parse('<?=$this->session->userdata('perParametros')?>');
-			<?if($this->uri->segment(2) == ''){?>
-			let btnEdit = false, btnCan = false, btnEval = false, btnPub = false;
-			
-			$.each(botonesLoc,function(i,e){
-				if(e.idboton === '5') btnEdit = true;
-				else if(e.idboton === '6') btnCan = true;
-				else if(e.idboton === '7') btnEval = true;
-				else if(e.idboton === '8') btnPub = true;
-			});
-			<?}?>
-		</script>
+		<script src="<?=base_url()?>public/js/parametros/parametros.js"></script>
 			<?	if($this->uri->segment(2) === 'empresas'){?>
 			<script src="<?=base_url()?>public/js/mapa/map.js"></script>
-			<script src="<?=base_url()?>public/js/parametros/parametros.js"></script>
 			<script>
-				let map = null;
+				let map = null; let botonesPar = JSON.parse('<?=$this->session->userdata('perParametros')?>');
+				let btnEdit = false, btnCan = false, btnEval = false, btnPub = false;
+				
 				window.onload = function(){
 					var opt = {lat: parseFloat(<?=$lat?>), lng: parseFloat(<?=$lng?>),zoom: 16};
 					map = mapa(opt);
 				}
+			
+				$.each(botonesPar,function(i,e){
+					if(e.idboton === '5') btnEdit = true;
+					else if(e.idboton === '6') btnCan = true;
+					else if(e.idboton === '7') btnEval = true;
+					else if(e.idboton === '8') btnPub = true;
+				});
 			</script>
 			<?}?>
 		<?}elseif($this->uri->segment(1) === 'logistica'){ ?>
