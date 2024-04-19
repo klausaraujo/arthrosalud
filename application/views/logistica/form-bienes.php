@@ -71,7 +71,7 @@
 										<div class="col-lg-6">
 											<div class="row ml-md-3">
 												<div class="profile-img-edit">
-													<img class="profile-pic" src="" alt="profile-pic" style="border:1px solid #CDCDCD;border-radius:10%">
+													<img class="profile-pic" src="" alt="Fotografía" style="border:1px solid #CDCDCD;border-radius:10%;height:150px">
 													<div class="p-image bg-sabogal">
 														<i class="ri-pencil-line upload-button"></i>
 														<input name="img" class="file-upload" type="file" accept="image/*">
