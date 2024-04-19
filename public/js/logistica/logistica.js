@@ -103,7 +103,7 @@ $(document).ready(function (){
 				},
 			],
 			columnDefs:[
-				{title:'Acciones',targets: 0},{title:'Art&iacute;culo',targets: 1},{title:'Laboratorio',targets: 2},{title:'U.M',targets: 3},
+				{title:'Acciones',targets: 0},{title:'Tipo',targets: 1},{title:'Laboratorio',targets: 2},{title:'U.M',targets: 3},
 				{title:'Presentaci&oacute;n',targets: 4},{title:'Fotograf&iacute;a',targets: 5},{title:'Disp. Compra',targets: 6},{title:'Disp. Vta',targets: 7},
 				{title:'%',targets: 8},{title:'Status',targets: 9},
 			], order: [],
