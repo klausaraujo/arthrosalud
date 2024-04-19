@@ -95,6 +95,10 @@ $route['logistica/proveedores'] = 'logistica/proveedores';
 $route['logistica/proveedores/lista'] = 'logistica/listaproveedores';
 $route['logistica/proveedores/nuevo'] = 'logistica/nuevo';
 $route['logistica/regproveedor'] = 'logistica/regproveedor';
+$route['logistica/bienes'] = 'logistica/bienes';
+$route['logistica/bienes/lista'] = 'logistica/listabienes';
+$route['logistica/bienes/nuevo'] = 'logistica/nuevobienes';
+$route['logistica/regbienes'] = 'logistica/regbienes';
 
 /**/
 $route['404_override'] = '';

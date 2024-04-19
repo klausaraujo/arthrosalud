@@ -22,7 +22,18 @@ class Logistica extends CI_Controller
 		//$data = json_decode(json_encode($empresas, JSON_FORCE_OBJECT));
 		echo json_encode(['data' => $proveedores]);
 	}
+	public function listabienes()
+	{
+		$this->load->model('Logistica_model');
+		$bienes = $this->Logistica_model->listabienes(['a.activo' => 1]);
+		//$data = json_decode(json_encode($empresas, JSON_FORCE_OBJECT));
+		echo json_encode(['data' => $bienes]);
+	}
 	public function proveedores()
+	{
+		return $this->load->view('main');
+	}
+	public function bienes()
 	{
 		return $this->load->view('main');
 	}
@@ -49,10 +60,26 @@ class Logistica extends CI_Controller
 		
 		return $this->load->view('main',$data);
 	}
+	public function nuevobienes()
+	{
+		$this->load->model('Logistica_model');
+		$tart = $this->Logistica_model->querysqlwhere('*','tipo_articulo',['activo' => 1]);
+		$lab = $this->Logistica_model->querysqlwhere('*','laboratorio',['activo' => 1]);
+		$um = $this->Logistica_model->querysqlwhere('*','unidad_medida',['activo' => 1]);
+		$pres = $this->Logistica_model->querysqlwhere('*','presentacion',['activo' => 1]);
+		
+		$data = array(
+			'tipoart' => $tart,
+			'laboratorio' => $lab,
+			'um' => $um,
+			'presentacion' => $pres
+		);
+		return $this->load->view('main', $data);
+	}
 	public function regproveedor()
 	{
 		$this->session->set_flashdata('claseMsg', 'alert-danger');
-		$nombre = date('dmY').''.str_replace('.','',(microtime(true) - intval(microtime(true))));
+		//$nombre = date('dmY').''.str_replace('.','',(microtime(true) - intval(microtime(true))));
 		$this->load->model('Logistica_model');
 
 		$ubigeo = $this->input->post('dep').$this->input->post('pro').$this->input->post('dis');
@@ -112,5 +139,84 @@ class Logistica extends CI_Controller
 			$this->session->set_flashdata('flashMessage', 'El <b>Proveedor</b> ya se encuentra registrado');
 			header('location:'.base_url().'logistica/proveedores');
 		}
+	}
+	public function regbienes()
+	{
+		$this->session->set_flashdata('claseMsg', 'alert-danger');
+		$nombre = date('dmY').''.str_replace('.','',(microtime(true) - intval(microtime(true)))); $file = null; $ext = '';
+		$this->load->model('Logistica_model');
+		
+		if($_FILES['img']['name'] !== ''){
+			if($file = $this->fileupload($_FILES['img'], $nombre)){
+				imagedestroy($file);
+				$ext = pathinfo($_FILES['img']['name'],PATHINFO_EXTENSION);
+				$nombre .= '.'.$ext;
+			}
+		}
+		
+		if($this->input->post('tiporegistro') === 'registrar'){
+			$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>Art&iacute;culo</b>');
+			$data = array(
+				'idtipoarticulo' => $this->input->post('tipoart'),
+				'idlaboratorio' => $this->input->post('laboratorio'),
+				'idunidadmedida' => $this->input->post('um'),
+				'idpresentacion' => $this->input->post('presentacion'),
+				'descripcion' => $this->input->post('descripcion'),
+				'fotografia' => ($ext? $nombre : ''),
+				'disponible_compra' => ($this->input->post('compra')? 1 : 0),
+				'disponible_venta' => ($this->input->post('venta')? 1 : 0),
+				'porcentaje_utilidad' => $this->input->post('porcentaje'),
+				'observaciones' => $this->input->post('obs'),
+			);
+			if($this->Logistica_model->registrar('articulos', $data)){
+				$this->session->set_flashdata('flashMessage', '<b>Art&iacute;culo</b> Registrado Exitosamente');
+				$this->session->set_flashdata('claseMsg', 'alert-primary');
+			}
+		}elseif($this->input->post('tiporegistro') === 'editar'){}
+		header('location:'.base_url().'logistica/bienes');
+	}
+	public function fileupload($file, $nmb)
+	{
+		$ext = pathinfo($file['name'],PATHINFO_EXTENSION);
+		$f = null;
+		//$extension = substr(strtolower(strrchr($tipo, '/')),1);
+		//$f1= fopen($file,'rb'); $img = fread($f1, $size); fclose($f1);
+		if($ext === 'jpeg' || $ext === 'jpg'){
+			$f = imagecreatefromjpeg($file['tmp_name']);
+		}elseif($ext === 'x-png' || $ext === 'png'){
+			$f = imagecreatefrompng($file['tmp_name']);
+		}elseif($ext === 'gif'){
+			$f = imagecreatefromgif($file['tmp_name']);
+		}
+		
+		if($f){
+			$x = imagesx($f);
+			$y = imagesy($f);
+			
+			if ($x >= $y) {
+				$nuevax = 150;
+				$nuevay = $nuevax * $y / $x;
+			} else {
+				$nuevay = 150;
+				$nuevax = $x / $y * $nuevay;
+			}
+			$filenew = imagecreatetruecolor($nuevax, $nuevay);
+			//imagecopyresized($filenew, $file, 0, 0, 0, 0, floor($nuevax), floor($nuevay), $x, $y);
+			imagecopyresampled($filenew,$f,0,0,0,0,floor($nuevax),floor($nuevay),$x,$y);
+			
+			if($ext === 'jpeg' || $ext === 'jpg'){
+				imagejpeg($filenew,'./public/images/articulos/'.$nmb.'.'.$ext,100);
+			}elseif($ext === 'x-png' || $ext === 'png'){
+				imagepng($filenew,'./public/images/articulos/'.$nmb.'.'.$ext,9);
+			}elseif($ext === 'gif'){
+				imagegif($filenew,'./public/images/articulos/'.$nmb.'.'.$ext,100);
+			}
+			imagedestroy($filenew);
+		}
+		
+		//file_put_contents('./public/images/logos/'.$nmb, $img);
+		//echo '<div class="row"><div class="col-md-7"><img class="img-fluid" src="data:' . $ext . ';base64,' . base64_encode($img).'" /></div></div>';
+		
+		return $f;
 	}
 }

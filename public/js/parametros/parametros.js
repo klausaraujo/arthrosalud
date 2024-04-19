@@ -39,7 +39,7 @@ $(document).ready(function (){
 				{ 
 					data: 'logotipo',
 					createdCell: function(td,cellData,rowData,row,col){
-						$(td).addClass('p-1');
+						$(td).addClass('p-0');
 					},
 					render: function(data){
 						return '<img src="'+base_url+'public/images/logos/'+data+'" style="display:block;margin:auto;width:40px" class="img img-fluid" >';

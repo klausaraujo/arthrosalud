@@ -1,4 +1,4 @@
-let btnCancelar = $('.btn-cancelar'), imgperfil = $('.profile-pic'), perfiltop = $('.top-avatar'), inputs = document.querySelectorAll( '.inputfile' );
+let btnCancelar = $('.btn-cancelar'), inputs = document.querySelectorAll( '.inputfile' );
 
 $(document).ready(function (){
 	$('html, body').animate({ scrollTop: 0 }, 'fast');

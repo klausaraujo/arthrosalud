@@ -2769,3 +2769,8 @@ CREATE TABLE articulos (
 	porcentaje_utilidad decimal(9,2),
 	observaciones varchar(1000),
 	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idarticulo),
+	FOREIGN KEY (idtipoarticulo) REFERENCES tipo_articulo (idtipoarticulo) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idlaboratorio) REFERENCES laboratorio (idlaboratorio) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idunidadmedida) REFERENCES unidad_medida (idunidadmedida) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idpresentacion) REFERENCES presentacion (idpresentacion) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;

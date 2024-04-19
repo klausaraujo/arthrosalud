@@ -39,6 +39,9 @@
 						}elseif($this->uri->segment(1) === 'logistica' && $this->uri->segment(2) === 'proveedores'){
 							if($this->uri->segment(3) == '') $this->load->view('logistica/proveedores');
 							else $this->load->view('logistica/form-new');
+						}elseif($this->uri->segment(1) === 'logistica' && $this->uri->segment(2) === 'bienes'){
+							if($this->uri->segment(3) == '') $this->load->view('logistica/bienes');
+							else $this->load->view('logistica/form-bienes');
 						}
 					?>
 					</div>
