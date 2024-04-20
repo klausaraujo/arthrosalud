@@ -65,7 +65,7 @@ class Logistica extends CI_Controller
 		$this->load->model('Logistica_model');
 		$tart = $this->Logistica_model->querysqlwhere('*','tipo_articulo',['activo' => 1]);
 		$lab = $this->Logistica_model->querysqlwhere('*','laboratorio',['activo' => 1]);
-		$um = $this->Logistica_model->querysqlwhere('*','unidad_medida',['activo' => 1]);
+		$um = $this->Logistica_model->querysqlwhere('*','unidad_medida',['uso_bienes' => 1,'activo' => 1]);
 		$pres = $this->Logistica_model->querysqlwhere('*','presentacion',['activo' => 1]);
 		
 		$data = array(
