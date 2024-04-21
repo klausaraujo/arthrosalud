@@ -13,25 +13,17 @@ $(document).ready(function (){
 					data: null,
 					orderable: false,
 					render: function(data){
-						let style = 'style="padding:1px 4px"';
-						let hrefEdit = 'href="'+base_url+'usuarios/editar?id='+data.idusuario+'"';
-						let hrefCan = 'href="'+base_url+'usuarios/permisos?id='+data.idusuario+'"';
-						let hrefEval = 'href="'+base_url+'usuarios/reset?id='+data.idusuario+'&doc='+data.numero_documento+'&stat='+data.activo+'"';
-						let hrefPub = 'href="'+base_url+'usuarios/habilitar?id='+data.idusuario+'&stat='+data.activo+'"';
+						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
+						let hrefEdit = 'href="'+base_url+'parametros/empresas/editar?id='+data.idempresa+'"';
+						let hrefAnular = 'href="'+base_url+'parametros/empresas/anular?id='+data.idempresa+'"';
 						let btnAccion =
-						/* Boton de edicion */
 						'<div class="btn-group">' +
-						'<a title="Editar" '+(data.activo === '1' && btnEdit? hrefEdit:'')+' class="bg-warning btnTable '+
-							((data.activo === '0' || !btnEdit)?'disabled':'')+' editar" '+style+'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>'+
-						/* Boton de permisos */
-						'<a title="Cancelar" '+(data.activo === '1' && btnCan? hrefCan:'')+' class="bg-warning btnTable '+
-							((data.activo === '0' || !btnCan)?'disabled':'')+' cancelar" '+style+'><i class="fa fa-cogs" aria-hidden="true"></i></a>'+
-						/* Boton de Reset Clave */
-						'<a title="Evaluar" '+((data.activo === '1' && btnEval)? hrefEval:'')+' class="bg-info btnTable '+
-							((data.activo === '0' || !btnEval)?'disabled':'')+' evaluar" '+style+'><i class="fa fa-key" aria-hidden="true"></i></a>'+
-						/* Boton de activacion */
-						'<a title="Evaluar" '+((data.activo === '1' && btnPub)? hrefPub:'')+' class="bg-info btnTable '+
-							((data.activo === '0' || !btnPub)?'disabled':'')+' publicar" '+style+'><i class="fa fa-lock" aria-hidden="true"></i></a></div>';
+						/* Boton de edicion */
+						'<a title="Editar Empresa" '+(data.activo === '1' && btnEdit? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEdit)?
+							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
+						/* Boton anular Empresa */
+						'<a title="Anular Empresa" '+(data.activo === '1' && btnAnular? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnular)
+							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
 						return btnAccion;
 					}
 				},

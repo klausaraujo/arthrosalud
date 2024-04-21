@@ -5,7 +5,7 @@ class Logistica_model extends CI_Model
 {    
 	public function __construct(){ parent::__construct(); }
     
-	public function listabienes($where)
+	public function listabienes()
 	{
 		$this->db->select('a.*,tp.tipo_articulo,l.laboratorio,u.unidad_medida,p.presentacion');
 		$this->db->from('articulos a');
@@ -13,12 +13,22 @@ class Logistica_model extends CI_Model
 		$this->db->join('laboratorio l','a.idlaboratorio=l.idlaboratorio');
 		$this->db->join('unidad_medida u','a.idunidadmedida=u.idunidadmedida');
 		$this->db->join('presentacion p','a.idpresentacion=p.idpresentacion');
-		$this->db->where($where);
+		$this->db->where(['objeto' => 1,'a.activo' => 1]);
 		$this->db->order_by('idarticulo','ASC');
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
-	public function querysqlwhere($q,$t,$where)
+	public function listaservicios()
+	{
+		$this->db->select('a.*,u.unidad_medida');
+		$this->db->from('articulos a');
+		$this->db->join('unidad_medida u','a.idunidadmedida=u.idunidadmedida');
+		$this->db->where(['objeto' => 2,'a.activo' => 1]);
+		$this->db->order_by('idarticulo','ASC');
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function querysqlwhere($q, $t ,$where)
 	{
 		$query = $this->db->select($q)->from($t)->where($where)->get();
 		return $query->num_rows() > 0? $query->result() : array();
@@ -30,11 +40,17 @@ class Logistica_model extends CI_Model
 	}
 	public function registrar($t, $data)
 	{
-		if ($this->db->insert($t, $data)){
-			return $this->db->insert_id();
-		}else return 0;
+		if ($this->db->insert($t, $data)) return $this->db->insert_id();
+		else return 0;
 	}
-	public function validar($q,$t,$where)
+	public function actualizar($t, $data, $where)
+	{
+		$this->db->db_debug = FALSE;
+		$this->db->where($where);
+		if($this->db->update($t, $data)) return true;
+        else return false;
+	}
+	public function validar($q, $t ,$where)
 	{
 		$query = $this->db->select($q)->from($t)->where($where)->get();
 		return $query->num_rows() > 0? $query->result() : array();

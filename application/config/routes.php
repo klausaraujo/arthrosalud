@@ -89,16 +89,22 @@ $route['parametros/empresas/lista'] = 'parametros/listaempresas';
 $route['parametros/empresas/nuevo'] = 'parametros/nuevo';
 $route['parametros/regempresa'] = 'parametros/regempresa';
 
-
 /* Logistica */
 $route['logistica/proveedores'] = 'logistica/proveedores';
 $route['logistica/proveedores/lista'] = 'logistica/listaproveedores';
 $route['logistica/proveedores/nuevo'] = 'logistica/nuevo';
 $route['logistica/regproveedor'] = 'logistica/regproveedor';
+$route['logistica/proveedores/editar'] = 'logistica/editproveedor';
 $route['logistica/bienes'] = 'logistica/bienes';
 $route['logistica/bienes/lista'] = 'logistica/listabienes';
 $route['logistica/bienes/nuevo'] = 'logistica/nuevobienes';
 $route['logistica/regbienes'] = 'logistica/regbienes';
+$route['logistica/bienes/editar'] = 'logistica/editbienes';
+$route['logistica/servicios'] = 'logistica/servicios';
+$route['logistica/servicios/lista'] = 'logistica/listaservicios';
+$route['logistica/servicios/nuevo'] = 'logistica/nuevoservicios';
+$route['logistica/regservicios'] = 'logistica/regservicios';
+$route['logistica/servicios/editar'] = 'logistica/editservicios';
 
 /**/
 $route['404_override'] = '';

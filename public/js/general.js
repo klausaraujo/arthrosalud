@@ -129,7 +129,7 @@ $('#formPassword').validate({
 /* Seleccionar texto al posicionarse sobre el campo */
 $('.blur').focus(function(){ this.select(); });
 
-$('table').on('click','tr',function(event){
+$('table').on('click','tr,a',function(event){
 	let tabla = $(this).closest('table');
 	if(tabla.hasClass('t-sel')){
 		let bot = $(this).find('.btnTable');
@@ -145,6 +145,9 @@ $('table').on('click','tr',function(event){
 			if($(e).hasClass('btnActivar')){ $(e).css('color','red'); }
 			if($(e).hasClass('btnDesactivar')){ $(e).css('color','green'); }
 		});
+	}
+	if($(this).hasClass('anular')){
+		event.preventDefault();
 	}
 });
 $('.dep').bind('change', function(){

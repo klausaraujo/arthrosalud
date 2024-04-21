@@ -33,21 +33,32 @@
 						elseif($this->uri->segment(1) === 'usuarios' && $this->uri->segment(2) === 'nuevo') $this->load->view('usuarios/form-new');
 						elseif($this->uri->segment(1) === 'usuarios' && $this->uri->segment(2) === 'editar') $this->load->view('usuarios/form-editar');
 						elseif($this->uri->segment(2) === 'perfil') $this->load->view('usuario/perfil');
-						elseif($this->uri->segment(1) === 'parametros' && $this->uri->segment(2) === 'empresas'){
-							if($this->uri->segment(3) == '') $this->load->view('parametros/empresas');
-							else $this->load->view('parametros/form-new');
-						}elseif($this->uri->segment(1) === 'logistica' && $this->uri->segment(2) === 'proveedores'){
-							if($this->uri->segment(3) == '') $this->load->view('logistica/proveedores');
-							else $this->load->view('logistica/form-new');
-						}elseif($this->uri->segment(1) === 'logistica' && $this->uri->segment(2) === 'bienes'){
-							if($this->uri->segment(3) == '') $this->load->view('logistica/bienes');
-							else $this->load->view('logistica/form-bienes');
+						elseif($this->uri->segment(1) === 'parametros'){
+							if($this->uri->segment(2) === 'empresas'){
+								if($this->uri->segment(3) == '') $this->load->view('parametros/empresas');
+								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('logistica/form-new');
+							}
+						}elseif($this->uri->segment(1) === 'logistica'){
+							if($this->uri->segment(2) === 'proveedores'){
+								if($this->uri->segment(3) == '') $this->load->view('logistica/proveedores');
+								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('logistica/form-new');
+								elseif($this->uri->segment(3) === 'editar') $this->load->view('logistica/form-edit');
+							}elseif($this->uri->segment(2) === 'bienes'){
+								if($this->uri->segment(3) == '') $this->load->view('logistica/bienes');
+								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('logistica/form-bienes');
+								elseif($this->uri->segment(3) === 'editar') $this->load->view('logistica/bienes-edit');
+							}elseif($this->uri->segment(2) === 'servicios'){
+								if($this->uri->segment(3) == '') $this->load->view('logistica/servicios');
+								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('logistica/form-servicios');
+								elseif($this->uri->segment(3) === 'editar') $this->load->view('logistica/servicios-edit');
+							}
 						}
 					?>
 					</div>
+					<!-- Footer -->
+					<?php $this->load->view('inc/footer-template'); ?>
 				</div>
-				<!-- Footer -->
-				<?php $this->load->view('inc/footer-template'); ?>
+				
 				<!-- Footer END -->
 			</div>
 			<!-- Page Content END -->
