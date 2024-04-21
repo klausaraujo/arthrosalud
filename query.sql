@@ -2097,6 +2097,25 @@ CREATE TABLE botones  (
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(3,'Resetar Clave','1',3,1);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(4,'Activar/Desactivar','1',4,1);
 	
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(5,'Editar Empresa','1',1,2);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(6,'Anular Empresa','1',2,2);
+	
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(7,'Editar Centro','1',1,2);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(8,'Anular Centro','1',2,2);
+	
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(9,'Editar Proveedor','1',1,3);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(10,'Anular Proveedor','1',2,3);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(11,'Editar Articulo','1',1,1);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(12,'Codigos Articulo','1',2,1);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(13,'Anular Articulo','1',2,1);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(14,'Editar Servicio','1',1,3);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(15,'Codigos Servicios','1',2,3);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(16,'Anular Servicios','1',2,3);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(17,'Editar Almacén','1',1,3);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(18,'Anular Almacén','1',2,3);
+	
+	
+	
 CREATE TABLE permisos_botones  (
 	idpermisosbotones smallint(4) NOT NULL AUTO_INCREMENT,
 	idboton smallint(4) NOT NULL,
@@ -2691,16 +2710,16 @@ CREATE TABLE tipo_articulo (
 	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(3,'APOSITOS');
 	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(4,'BIGUTERIA');
 	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(5,'COSMETICOS');
-	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(6,'DESCARTABLES A ');
+	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(6,'DESCARTABLES');
 	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(7,'FARMACOS');
 	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(8,'GALENICOS');
 	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(9,'INSECTICIDAS');
 	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(10,'INSUMOS');
-	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(11,'INSUMOS QUIMICOS ');
+	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(11,'INSUMOS QUIMICOS');
 	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(12,'MATERIAL QUIRURGICO');
 	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(13,'MATERIALES');
-	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(14,'MEDICAMENTOS GENERIC');
-	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(15,'MEDICAMENTOS HOMEOPA');
+	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(14,'MEDICAMENTOS GENERICOS');
+	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(15,'MEDICAMENTOS HOMEOPATICOS');
 	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(16,'OFICINA');
 	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(17,'OPTICA');
 	INSERT INTO tipo_articulo(idtipoarticulo,tipo_articulo) values(18,'ORTESICO');
@@ -2758,6 +2777,7 @@ CREATE TABLE proveedor (
 
 CREATE TABLE articulos (
 	idarticulo smallint(4) NOT NULL AUTO_INCREMENT,
+	objeto char(1) DEFAULT '1',
 	idtipoarticulo smallint(4) NOT NULL,
 	idlaboratorio smallint(4) NOT NULL,
 	idunidadmedida smallint(4) NOT NULL,
@@ -2774,3 +2794,4 @@ CREATE TABLE articulos (
 	FOREIGN KEY (idlaboratorio) REFERENCES laboratorio (idlaboratorio) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (idunidadmedida) REFERENCES unidad_medida (idunidadmedida) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (idpresentacion) REFERENCES presentacion (idpresentacion) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+
