@@ -2091,26 +2091,26 @@ CREATE TABLE botones  (
 	activo char(1) DEFAULT '1',
 	PRIMARY KEY (idboton),
 	FOREIGN KEY (idmodulo) REFERENCES modulos (idmodulo) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
-
+	/*Modulo Usuarios*/
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(1,'Editar Usuario','1',1,1);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(2,'Asignar Permisos','1',2,1);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(3,'Resetar Clave','1',3,1);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(4,'Activar/Desactivar','1',4,1);
-	
+	/*Modulo Parametros*/
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(5,'Editar Empresa','1',1,2);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(6,'Anular Empresa','1',2,2);
 	
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(7,'Editar Centro','1',1,2);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(8,'Anular Centro','1',2,2);
-	
+	/*Modulo Logistica*/
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(9,'Editar Proveedor','1',1,3);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(10,'Anular Proveedor','1',2,3);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(11,'Editar Articulo','1',1,1);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(12,'Codigos Articulo','1',2,1);
-	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(13,'Anular Articulo','1',2,1);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(13,'Anular Articulo','1',3,1);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(14,'Editar Servicio','1',1,3);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(15,'Codigos Servicios','1',2,3);
-	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(16,'Anular Servicios','1',2,3);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(16,'Anular Servicios','1',3,3);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(17,'Editar Almacén','1',1,3);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(18,'Anular Almacén','1',2,3);
 	
@@ -2129,6 +2129,22 @@ CREATE TABLE permisos_botones  (
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(2,2,1);
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(3,3,1);
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(4,4,1);
+	
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(5,5,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(6,6,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(7,7,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(8,8,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(9,9,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(10,10,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(11,11,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(12,12,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(13,13,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(14,14,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(15,15,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(16,16,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(17,17,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(18,18,1);
+
 	
 CREATE TABLE tipo_cuenta (
 	idtipocuenta smallint(4) NOT NULL AUTO_INCREMENT,
