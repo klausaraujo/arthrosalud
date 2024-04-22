@@ -276,6 +276,20 @@ class Logistica extends CI_Controller
 		);
 		return $this->load->view('main', $data);
 	}
+	public function anular()
+	{
+		$this->load->model('Parametros_model');
+		$msg = 'No se pudo anular el registro';
+		$segmento = $this->uri->segment(2);
+		
+		if($segmento === 'proveedores'){
+			if($this->Parametros_model->actualizar('proveedor',['activo' => 0],['idproveedor'=> $this->input->get('id')])) $msg = 'Registro anulado';
+		}elseif($segmento === 'bienes' || $segmento === 'servicios'){
+			if($this->Parametros_model->actualizar('articulos',['activo' => 0],['idarticulo'=> $this->input->get('id')])) $msg = 'Registro anulado';
+		}
+		
+		echo json_encode(['msg' => $msg]);
+	}
 	public function fileupload($file, $nmb)
 	{
 		$ext = pathinfo($file['name'],PATHINFO_EXTENSION);

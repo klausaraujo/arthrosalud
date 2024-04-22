@@ -88,6 +88,9 @@ $route['parametros/empresas'] = 'parametros/empresas';
 $route['parametros/empresas/lista'] = 'parametros/listaempresas';
 $route['parametros/empresas/nuevo'] = 'parametros/nuevo';
 $route['parametros/regempresa'] = 'parametros/regempresa';
+$route['parametros/empresas/editar'] = 'parametros/editempresa';
+$route['parametros/empresas/anular'] = 'parametros/anular';
+$route['parametros/empresas'] = 'parametros/centros';
 
 /* Logistica */
 $route['logistica/proveedores'] = 'logistica/proveedores';
@@ -95,16 +98,19 @@ $route['logistica/proveedores/lista'] = 'logistica/listaproveedores';
 $route['logistica/proveedores/nuevo'] = 'logistica/nuevo';
 $route['logistica/regproveedor'] = 'logistica/regproveedor';
 $route['logistica/proveedores/editar'] = 'logistica/editproveedor';
+$route['logistica/proveedores/anular'] = 'logistica/anular';
 $route['logistica/bienes'] = 'logistica/bienes';
 $route['logistica/bienes/lista'] = 'logistica/listabienes';
 $route['logistica/bienes/nuevo'] = 'logistica/nuevobienes';
 $route['logistica/regbienes'] = 'logistica/regbienes';
 $route['logistica/bienes/editar'] = 'logistica/editbienes';
+$route['logistica/bienes/anular'] = 'logistica/anular';
 $route['logistica/servicios'] = 'logistica/servicios';
 $route['logistica/servicios/lista'] = 'logistica/listaservicios';
 $route['logistica/servicios/nuevo'] = 'logistica/nuevoservicios';
 $route['logistica/regservicios'] = 'logistica/regservicios';
 $route['logistica/servicios/editar'] = 'logistica/editservicios';
+$route['logistica/servicios/anular'] = 'logistica/anular';
 
 /**/
 $route['404_override'] = '';

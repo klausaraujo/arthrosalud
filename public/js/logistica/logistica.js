@@ -115,7 +115,7 @@ $(document).ready(function (){
 						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
 						let hrefEdit = 'href="'+base_url+'logistica/servicios/editar?id='+data.idarticulo+'"';
 						let hrefServ = 'href="'+base_url+'logistica/servicios/codigos?id='+data.idarticulo+'"';
-						let hrefAnular = 'href="'+base_url+'logistica/servicios/servicios?id='+data.idarticulo+'"';
+						let hrefAnular = 'href="'+base_url+'logistica/servicios/anular?id='+data.idarticulo+'"';
 						let btnAccion =
 						'<div class="btn-group">' +
 						/* Boton de edicion */

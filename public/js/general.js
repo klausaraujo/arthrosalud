@@ -2,7 +2,7 @@ let btnCancelar = $('.btn-cancelar'), inputs = document.querySelectorAll( '.inpu
 
 $(document).ready(function (){
 	$('html, body').animate({ scrollTop: 0 }, 'fast');
-	setTimeout(function () { $('.msg').hide('slow'); }, 3000);/**/
+	//setTimeout(function(){ $('.msg').hide('slow'); }, 3000);
 });
 
 Array.prototype.forEach.call( inputs, function( input )
@@ -148,6 +148,26 @@ $('table').on('click','tr,a',function(event){
 	}
 	if($(this).hasClass('anular')){
 		event.preventDefault();
+		let c = confirm('Desea anular el registro?');
+		
+		if(c){
+			$.ajax({
+				data: {},
+				url: $(this).attr('href'),
+				method: 'GET',
+				dataType: 'JSON',
+				beforeSend: function(){},
+				success: function(data){
+					if(segmento2 === 'empresas') $('#tablaEmpresas').DataTable().ajax.reload();
+					else if(segmento2 === 'proveedores') $('#tablaProveedores').DataTable().ajax.reload();
+					else if(segmento2 === 'bienes') $('#tablaBienes').DataTable().ajax.reload();
+					else if(segmento2 === 'servicios') $('#tablaServicios').DataTable().ajax.reload();
+					
+					$('.msg').html(data.msg);
+					setTimeout(function(){ $('.msg').hide('slow'); }, 3000);
+				}
+			});
+		}
 	}
 });
 $('.dep').bind('change', function(){

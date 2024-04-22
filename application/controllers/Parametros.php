@@ -26,6 +26,10 @@ class Parametros extends CI_Controller
 	{
 		return $this->load->view('main');
 	}
+	public function centros()
+	{
+		return $this->load->view('main');
+	}
 	public function nuevo()
 	{
 		$this->load->model('Parametros_model');
@@ -46,68 +50,81 @@ class Parametros extends CI_Controller
 	public function regempresa()
 	{
 		$this->session->set_flashdata('claseMsg', 'alert-danger');
-		$nombre = date('dmY').''.str_replace('.','',(microtime(true) - intval(microtime(true))));
-		if($file = $this->fileupload($_FILES['file-2'], $nombre)){
-			$this->load->model('Parametros_model');
-			
-			imagedestroy($file);
-			$ext = pathinfo($_FILES['file-2']['name'],PATHINFO_EXTENSION);
-			$nombre .= '.'.$ext;
-			
-			$ubigeo = $this->input->post('dep').$this->input->post('pro').$this->input->post('dis');
-			$lat = $this->input->post('lat'); $lng = $this->input->post('lng');
-			
-			if(!$this->Parametros_model->validar('*','empresa',['ruc' => $this->input->post('ruc')])){
-				if($this->input->post('tiporegistro') === 'registrar'){
-					//if($this->input->post('tipodoc') != '' && $this->input->post('doc') != '' && $this->input->post('nombres') != '' && $this->input->post('direccion') != ''){
-					$this->session->set_flashdata('flashMessage', 'No se pudo registrar la <b>Empresa</b>');
-					$data = array(
-						'ruc' => $this->input->post('ruc'),
-						'razon_social' => $this->input->post('nombres'),
-						'nombre_comercial' => $this->input->post('nombres'),
-						'domicilio' => $this->input->post('direccion'),
-						'ubigeo' => $ubigeo,
-						'latitud' => $lat,
-						'longitud' => $lng,
-						'logotipo' => $nombre,
-						'renipress' => $this->input->post('renipress'),
-					);
-					if($this->Parametros_model->registrar('empresa', $data)){
-						$this->session->set_flashdata('flashMessage', '<b>Empresa</b> Registrada Exitosamente');
-						$this->session->set_flashdata('claseMsg', 'alert-primary');
-					}
-					
-				}elseif($this->input->post('tiporegistro') === 'editar'){
-					$id = $this->input->post('idproveedor');
-					$this->session->set_flashdata('flashMessage', 'No se pudo actualizar la <b>Empresa</b>');
-					
-					$data = array(
-						'RUC' => $this->input->post('ruc'),
-						'domicilio' => $this->input->post('direccion'),
-						'celular' => $this->input->post('celular'),
-						'correo' => $this->input->post('email'),
-						'ubigeo' => $ubigeo,
-						'latitud' => $lat,
-						'longitud' => $lng,
-						'zona' => $this->input->post('zona'),
-						'finca' => $this->input->post('finca'),
-						'altitud' => $this->input->post('altitud'),
-					);
-					
-					if($this->Proveedores_model->editar( $data, ['idproveedor'=>$id] )){
-						$this->session->set_flashdata('flashMessage', '<b>Empresa</b> Actualizada');
-						$this->session->set_flashdata('claseMsg', 'alert-primary');
-					}
+		$nombre = date('dmY').''.str_replace('.','',(microtime(true) - intval(microtime(true)))); $file = null; $ext = ''; $data = null;
+		$this->load->model('Parametros_model');
+		$path = './public/images/logos/';
+		
+		if($_FILES['file-2']['name'] !== ''){
+			if($file = $this->fileupload($_FILES['file-2'], $nombre)){
+				imagedestroy($file);
+				$ext = pathinfo($_FILES['file-2']['name'],PATHINFO_EXTENSION);
+				$nombre .= '.'.$ext;
+				if($this->input->post('foto') && $this->input->post('foto') !== 'img_default.png'){
+					if(is_writable($path.$this->input->post('foto'))) unlink($path.$this->input->post('foto'));
 				}
-				header('location:'.base_url().'parametros/empresas');
-			}else{
-				$this->session->set_flashdata('flashMessage', 'La <b>Empresa</b> ya se encuentra registrada');
-				header('location:'.base_url().'parametros/empresas');
 			}
-		}else{
-			$this->session->set_flashdata('flashMessage', 'El formato del <b>Logotipo</b> no es correcto');
-			header('location:'.base_url().'parametros/empresas');
 		}
+		$ubigeo = $this->input->post('dep').$this->input->post('pro').$this->input->post('dis');
+		$data = array(
+			'ruc' => $this->input->post('ruc'),
+			'razon_social' => $this->input->post('nombres'),
+			'nombre_comercial' => $this->input->post('nombres'),
+			'domicilio' => $this->input->post('direccion'),
+			'ubigeo' => $ubigeo,
+			'latitud' => $this->input->post('lat'),
+			'longitud' => $this->input->post('lng'),
+			'renipress' => $this->input->post('renipress'),
+		);
+		
+		if($this->input->post('tiporegistro') === 'registrar'){
+			if(!$this->Parametros_model->validar('*','empresa',['ruc' => $this->input->post('ruc')])){
+				$this->session->set_flashdata('flashMessage', 'No se pudo registrar la <b>Empresa</b>');
+				$data['logotipo'] = $ext? $nombre : 'img_default.jpg';
+				if($this->Parametros_model->registrar('empresa', $data)){
+					$this->session->set_flashdata('flashMessage', '<b>Empresa</b> Registrada Exitosamente');
+					$this->session->set_flashdata('claseMsg', 'alert-primary');
+				}
+			}else $this->session->set_flashdata('flashMessage', 'La ;<b>Empresa</b> ya se encuentra registrada');
+		}elseif($this->input->post('tiporegistro') === 'editar'){
+			if($ext) $data['logotipo'] = $nombre;
+			$this->session->set_flashdata('flashMessage', 'No se pudo actualizar la <b>Empresa</b>');
+			if($this->Parametros_model->actualizar('empresa',$data,['idempresa'=> $this->input->post('idempresa')])){
+				$this->session->set_flashdata('flashMessage', '<b>Empresa</b> Actualizada');
+				$this->session->set_flashdata('claseMsg', 'alert-primary');
+			}
+		}
+		header('location:'.base_url().'parametros/empresas');
+	}
+	public function editempresa()
+	{
+		$this->load->model('Parametros_model');
+		$this->load->model('General_model');
+		$data = []; $id = $this->input->get('id');
+		
+		$dep = $this->General_model->departamentos();
+		
+		$empresa = $this->Parametros_model->querysqlwhere('*', 'empresa', ['idempresa' => $id]);
+		$pro = $this->General_model->provincias(['cod_dep'=>substr($empresa[0]->ubigeo,0,2)]);
+		$dis = $this->General_model->distritos(['cod_dep'=>substr($empresa[0]->ubigeo,0,2),'cod_pro'=>substr($empresa[0]->ubigeo,2,2)]);
+		$data['empresa'] = $empresa[0];
+		$data['pro'] = $pro;
+		$data['dis'] = $dis;
+		$data['lat'] = floatval($data['empresa']->latitud);
+		$data['lng'] = floatval($data['empresa']->longitud);
+		$data['dep'] = $dep;
+		
+		return $this->load->view('main',$data);
+	}
+	public function anular()
+	{
+		$this->load->model('Parametros_model');
+		$msg = 'No se pudo anular el registro';
+		$segmento = $this->uri->segment(2);
+		
+		if($segmento === 'empresas')
+			if($this->Parametros_model->actualizar('empresa',['activo' => 0],['idempresa'=> $this->input->get('id')])) $msg = 'Registro anulado';
+		
+		echo json_encode(['msg' => $msg]);
 	}
 	public function fileupload($file, $nmb)
 	{

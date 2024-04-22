@@ -45,7 +45,7 @@ class Logistica_model extends CI_Model
 	}
 	public function actualizar($t, $data, $where)
 	{
-		$this->db->db_debug = FALSE;
+		$this->db->db_debug = TRUE;
 		$this->db->where($where);
 		if($this->db->update($t, $data)) return true;
         else return false;

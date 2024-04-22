@@ -15,9 +15,9 @@ class Parametros_model extends CI_Model
 		$query = $this->db->select($q)->from($t)->get();
 		return $query->num_rows() > 0? $query->result() : array();
 	}
-	public function registrar($t, $data)
+	public function registrar($t,$data)
 	{
-		if ($this->db->insert($t, $data)){
+		if ($this->db->insert($t,$data)){
 			return $this->db->insert_id();
 		}else return 0;
 	}
@@ -25,5 +25,12 @@ class Parametros_model extends CI_Model
 	{
 		$query = $this->db->select($q)->from($t)->where($where)->get();
 		return $query->num_rows() > 0? $query->result() : array();
+	}
+	public function actualizar($t,$data,$where)
+	{
+		$this->db->db_debug = TRUE;
+		$this->db->where($where);
+		if($this->db->update($t, $data)) return $this->db->affected_rows();
+        else return false;
 	}
 }
