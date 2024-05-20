@@ -1,8 +1,8 @@
 DROP VIEW IF EXISTS lista_ubigeo;
+DROP TABLE IF EXISTS citas;
 DROP TABLE IF EXISTS paciente;
 DROP TABLE IF EXISTS cie10;
 DROP TABLE IF EXISTS anio;
-DROP TABLE IF EXISTS mes;
 DROP TABLE IF EXISTS permisos_botones;
 DROP TABLE IF EXISTS botones;
 DROP TABLE IF EXISTS permisos_menu_detalle;
@@ -20,7 +20,6 @@ DROP TABLE IF EXISTS orden_servicio_detalle;
 DROP TABLE IF EXISTS articulos;
 DROP TABLE IF EXISTS servicios;
 DROP TABLE IF EXISTS tipo_servicio;
-DROP TABLE IF EXISTS tipo_documento;
 DROP TABLE IF EXISTS presentacion;
 DROP TABLE IF EXISTS tipo_articulo;
 DROP TABLE IF EXISTS laboratorio;
@@ -33,15 +32,20 @@ DROP TABLE IF EXISTS tipo_moneda;
 DROP TABLE IF EXISTS proveedor;
 DROP TABLE IF EXISTS almacen;
 DROP TABLE IF EXISTS centro_costos;
-DROP TABLE IF EXISTS consultorio;
-DROP TABLE IF EXISTS empresa;
 DROP TABLE IF EXISTS aseguradora;
-DROP TABLE IF EXISTS estado_civil;
 DROP TABLE IF EXISTS tipo_pago;
 DROP TABLE IF EXISTS medio_pago;
-DROP TABLE IF EXISTS especialidad;
+DROP TABLE IF EXISTS turnos_detalle;
+DROP TABLE IF EXISTS turnos;
 DROP TABLE IF EXISTS departamento;
+DROP TABLE IF EXISTS mes;
+DROP TABLE IF EXISTS profesional;
+DROP TABLE IF EXISTS especialidad;
 DROP TABLE IF EXISTS tipo_profesional;
+DROP TABLE IF EXISTS tipo_documento;
+DROP TABLE IF EXISTS consultorio;
+DROP TABLE IF EXISTS empresa;
+DROP TABLE IF EXISTS estado_civil;
 
 CREATE TABLE ubigeo(
 	idubigeo smallint(4) NOT NULL AUTO_INCREMENT,
@@ -15972,4 +15976,79 @@ CREATE TABLE tipo_profesional (
 	INSERT INTO tipo_profesional(idtipoprofesional,tipo_profesional,observaciones) VALUES (4,'QUIMICO FARMACEUTICO','[N/A]');
 	INSERT INTO tipo_profesional(idtipoprofesional,tipo_profesional,observaciones) VALUES (5,'TERAPISTA','[N/A]');
 
+create table profesional(
+	idprofesional smallint(4) NOT NULL AUTO_INCREMENT,
+	idtipodocumento smallint(4) NOT NULL,
+	numero_documento varchar(12) NOT NULL,
+	avatar varchar(30),
+	apellidos varchar(50) NOT NULL,
+	nombres varchar(50) NOT NULL,
+	fecnac datetime NOT NULL,
+	sexo char(1) NOT NULL,
+	idestadocivil smallint(4) NOT NULL,
+	ubigeo_nacimiento varchar(6),
+	domicilio varchar(100),
+	ubigeo_domicilio varchar(6),
+	idtipoprofesional smallint(4) NOT NULL,
+	colegiatura varchar(6),
+	idespecialidad smallint(4) NOT NULL,
+	rne varchar(6),
+	idusuario_registro smallint(4),
+	fecha_registro datetime,
+	celular varchar(9),
+	celuar_mensaje char(1),
+	correo varchar(50),
+	observaciones varchar(1000),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idprofesional),
+	FOREIGN KEY (idtipodocumento) REFERENCES tipo_documento (idtipodocumento) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idestadocivil) REFERENCES estado_civil (idestadocivil) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idtipoprofesional) REFERENCES tipo_profesional (idtipoprofesional) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idespecialidad) REFERENCES especialidad (idespecialidad) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+	
+create table turnos(
+	idturno smallint(4) NOT NULL AUTO_INCREMENT,
+	idconsultorio smallint(4) NOT NULL,
+	iddepartamento smallint(4) NOT NULL,
+	idprofesional smallint(4) NOT NULL,
+	anio smallint(4),
+	idmes smallint(4) NOT NULL,
+	duracion_consulta smallint(4),
+	observaciones varchar(1000),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idturno),
+	FOREIGN KEY (idconsultorio) REFERENCES consultorio (idconsultorio) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idprofesional) REFERENCES profesional (idprofesional) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (iddepartamento) REFERENCES departamento (iddepartamento) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idmes) REFERENCES mes (idmes) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
 
+create table turnos_detalle(
+	idturnodetalle smallint(4) NOT NULL AUTO_INCREMENT,
+	idturno smallint(4) NOT NULL,
+	fecha datetime,
+	entrada time,
+	salida time,
+	PRIMARY KEY (idturnodetalle),
+	FOREIGN KEY (idturno) REFERENCES turnos (idturno) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;	
+
+CREATE TABLE citas(
+	idcita smallint(4) NOT NULL AUTO_INCREMENT,
+	idconsultorio smallint(4) NOT NULL,
+	iddepartamento smallint(4) NOT NULL,
+	idprofesional smallint(4) NOT NULL,
+	idpaciente  smallint(4) NOT NULL,
+	entrada time,
+	salida time,
+	observaciones varchar(1000),
+	atendido char(1) DEFAULT '0',
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idcita),
+	FOREIGN KEY (idconsultorio) REFERENCES consultorio (idconsultorio) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (iddepartamento) REFERENCES departamento (iddepartamento) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idprofesional) REFERENCES profesional (idprofesional) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idpaciente) REFERENCES paciente (idpaciente) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;	
+	
+	
+	
+	
+	
