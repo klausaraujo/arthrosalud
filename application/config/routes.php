@@ -114,6 +114,9 @@ $route['logistica/servicios/editar'] = 'logistica/editservicios';
 $route['logistica/servicios/anular'] = 'logistica/anular';
 
 /* Modulo de citas */
+$route['citas/pacientes'] = 'citas/formpaciente';
+$route['citas/consultorios'] = 'citas/formconsultorio';
+$route['citas/medicos'] = 'citas/formmedico';
 
 /**/
 $route['404_override'] = '';

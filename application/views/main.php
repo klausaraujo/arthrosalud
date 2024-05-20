@@ -59,7 +59,9 @@
 							}
 						}
 						elseif($this->uri->segment(1) === 'citas'){
-							
+							if($this->uri->segment(2) === 'pacientes') $this->load->view('citas/form-paciente');
+							elseif($this->uri->segment(2) === 'consultorios') $this->load->view('citas/form-consultorio');
+							elseif($this->uri->segment(2) === 'medicos') $this->load->view('citas/form-medico');
 						}
 					?>
 					</div>
