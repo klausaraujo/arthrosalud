@@ -33,12 +33,15 @@ DROP TABLE IF EXISTS tipo_moneda;
 DROP TABLE IF EXISTS proveedor;
 DROP TABLE IF EXISTS almacen;
 DROP TABLE IF EXISTS centro_costos;
+DROP TABLE IF EXISTS consultorio;
 DROP TABLE IF EXISTS empresa;
 DROP TABLE IF EXISTS aseguradora;
 DROP TABLE IF EXISTS estado_civil;
 DROP TABLE IF EXISTS tipo_pago;
 DROP TABLE IF EXISTS medio_pago;
-
+DROP TABLE IF EXISTS especialidad;
+DROP TABLE IF EXISTS departamento;
+DROP TABLE IF EXISTS tipo_profesional;
 
 CREATE TABLE ubigeo(
 	idubigeo smallint(4) NOT NULL AUTO_INCREMENT,
@@ -3045,7 +3048,6 @@ CREATE TABLE paciente(
 	PRIMARY KEY (idpaciente),
 	FOREIGN KEY (idtipodocumento) REFERENCES tipo_documento (idtipodocumento) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (idestadocivil) REFERENCES estado_civil (idestadocivil) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
-	
 	
 CREATE TABLE cie10 (
 	idcie10 smallint(4) NOT NULL AUTO_INCREMENT,
@@ -15913,8 +15915,61 @@ INSERT INTO cie10(idcie10,cie10,descripcion_cie10,hombre,mujer) VALUES(12854,'Z9
 INSERT INTO cie10(idcie10,cie10,descripcion_cie10,hombre,mujer) VALUES(12855,'Z99.8','DEPENDENCIA DE OTRAS MÁQUINAS Y DISPOSITIVOS CAPACITANTES','1','1');
 INSERT INTO cie10(idcie10,cie10,descripcion_cie10,hombre,mujer) VALUES(12856,'Z99.9','DEPENDENCIA DE MÁQUINA Y DISPOSITIVO CAPACITANTE, NO ESPECIFICADA','1','1');
 
-  
-  
-  
-  
-  
+CREATE TABLE especialidad(
+	idespecialidad smallint(4) NOT NULL AUTO_INCREMENT,
+	especialidad varchar(100) NOT NULL,
+	observaciones varchar(1000),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idespecialidad))ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+	
+	INSERT INTO especialidad(idespecialidad,especialidad,observaciones) VALUES(1,'[N/A]','[N/A]');
+	INSERT INTO especialidad(idespecialidad,especialidad,observaciones) VALUES(2,'TRAUMATOLOGIA','[N/A]');
+	INSERT INTO especialidad(idespecialidad,especialidad,observaciones) VALUES(3,'CIRUGIA GENERAL','[N/A]');
+	INSERT INTO especialidad(idespecialidad,especialidad,observaciones) VALUES(4,'CIRUGIA PLASTICA','[N/A]');
+	INSERT INTO especialidad(idespecialidad,especialidad,observaciones) VALUES(5,'CARDIOLOGIA','[N/A]');
+	INSERT INTO especialidad(idespecialidad,especialidad,observaciones) VALUES(6,'TERAPIA FISICA','[N/A]');
+	INSERT INTO especialidad(idespecialidad,especialidad,observaciones) VALUES(7,'NEUROCIRUGIA','[N/A]');
+	INSERT INTO especialidad(idespecialidad,especialidad,observaciones) VALUES(8,'ORTOPEDIA Y TRAUMATOLOGIA','[N/A]');
+	INSERT INTO especialidad(idespecialidad,especialidad,observaciones) VALUES(9,'OTORRINOLARINGOLOGIA','[N/A]');
+	INSERT INTO especialidad(idespecialidad,especialidad,observaciones) VALUES(10,'GASTROENTEROLOGIA','[N/A]');
+	INSERT INTO especialidad(idespecialidad,especialidad,observaciones) VALUES(11,'ANESTESIOLOGIA','[N/A]');
+	INSERT INTO especialidad(idespecialidad,especialidad,observaciones) VALUES(12,'RADIOLOGIA','[N/A]');
+		
+CREATE TABLE consultorio(
+	idconsultorio smallint(4) NOT NULL AUTO_INCREMENT,
+	idempresa smallint(4) NOT NULL,
+	consultorio varchar(100) NOT NULL,
+	observaciones varchar(1000),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idconsultorio),
+	FOREIGN KEY (idempresa) REFERENCES empresa (idempresa) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+	
+	INSERT INTO consultorio(idconsultorio,idempresa,consultorio,observaciones) VALUES(1,1,'CONSULTORIO 01','[N/A]');
+	INSERT INTO consultorio(idconsultorio,idempresa,consultorio,observaciones) VALUES(2,1,'CONSULTORIO 02','[N/A]');
+	INSERT INTO consultorio(idconsultorio,idempresa,consultorio,observaciones) VALUES(3,2,'CONSULTORIO 01','[N/A]');
+	INSERT INTO consultorio(idconsultorio,idempresa,consultorio,observaciones) VALUES(4,2,'CONSULTORIO 02','[N/A]');
+
+CREATE TABLE departamento (
+	iddepartamento smallint(4) NOT NULL AUTO_INCREMENT,
+	departamento varchar(100) NOT NULL,
+	observaciones varchar(1000),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (iddepartamento))ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+
+	INSERT INTO departamento(iddepartamento,departamento,observaciones) VALUES(1,'ORTOPEDIA Y TRAUMATOLOGIA','[N/A]');
+	INSERT INTO departamento(iddepartamento,departamento,observaciones) VALUES(2,'TERAPIA FISICA','[N/A]');
+
+CREATE TABLE tipo_profesional (
+	idtipoprofesional smallint(4) NOT NULL AUTO_INCREMENT,
+	tipo_profesional varchar(100) NOT NULL,
+	observaciones varchar(1000),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idtipoprofesional))ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+ 
+	INSERT INTO tipo_profesional(idtipoprofesional,tipo_profesional,observaciones) VALUES (1,'MEDICO','[N/A]');
+	INSERT INTO tipo_profesional(idtipoprofesional,tipo_profesional,observaciones) VALUES (2,'ENFERMERO','[N/A]');
+	INSERT INTO tipo_profesional(idtipoprofesional,tipo_profesional,observaciones) VALUES (3,'AUXILIAR TECNICO','[N/A]');
+	INSERT INTO tipo_profesional(idtipoprofesional,tipo_profesional,observaciones) VALUES (4,'QUIMICO FARMACEUTICO','[N/A]');
+	INSERT INTO tipo_profesional(idtipoprofesional,tipo_profesional,observaciones) VALUES (5,'TERAPISTA','[N/A]');
+
+
