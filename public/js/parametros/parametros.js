@@ -1,8 +1,9 @@
 let grillappal = null;
 
 $(document).ready(function (){
-	if(segmento2 == ''){
-	}else if(segmento2 === 'empresas'){
+	setTimeout(function () { $('.resp').hide('slow'); }, 2500);
+	
+	if(segmento2 === 'empresas' || segmento2 == ''){
 		grillappal = $('#tablaEmpresas').DataTable({
 			ajax: {
 				url: base_url + 'parametros/empresas/lista',

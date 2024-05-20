@@ -61,6 +61,7 @@ $route['logout'] = 'login/logout';
 $route['usuarios'] = 'main/usuarios';
 $route['parametros'] = 'main/parametros';
 $route['logistica'] = 'main/logistica';
+$route['citas'] = 'main/citas';
 $route['main/curl'] = 'main/curl';
 $route['main/ruccurl'] = 'main/ruccurl';
 $route['main/upload'] = 'main/upload';
@@ -90,7 +91,7 @@ $route['parametros/empresas/nuevo'] = 'parametros/nuevo';
 $route['parametros/regempresa'] = 'parametros/regempresa';
 $route['parametros/empresas/editar'] = 'parametros/editempresa';
 $route['parametros/empresas/anular'] = 'parametros/anular';
-$route['parametros/empresas'] = 'parametros/centros';
+$route['parametros/centros'] = 'parametros/centros';
 
 /* Logistica */
 $route['logistica/proveedores'] = 'logistica/proveedores';
@@ -111,6 +112,8 @@ $route['logistica/servicios/nuevo'] = 'logistica/nuevoservicios';
 $route['logistica/regservicios'] = 'logistica/regservicios';
 $route['logistica/servicios/editar'] = 'logistica/editservicios';
 $route['logistica/servicios/anular'] = 'logistica/anular';
+
+/* Modulo de citas */
 
 /**/
 $route['404_override'] = '';

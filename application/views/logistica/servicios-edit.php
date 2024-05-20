@@ -9,12 +9,26 @@
 							</div><?}?>
 						</div>
 						<?	$servicio = $servicio[0]; ?>
-						<form method="post" id="form_bienes" action="<?=base_url()?>logistica/regservicios" class="needs-validation form-horizontal" novalidate="">
+						<form method="post" id="form_servicios" action="<?=base_url()?>logistica/regservicios" class="needs-validation form-horizontal" novalidate="">
 							<input type="hidden" name="tiporegistro" value="editar" />
-							<input type="hidden" name="id" value="<?=$servicio->idarticulo?>" />
+							<input type="hidden" name="id" value="<?=$servicio->idservicio?>" />
 							<div class="form-row">
 								<div class="col-12 my-1">
 									<div class="row">
+										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="tiposerv">Tipo Servicio:</label>
+										<div class="col-md-6 col-lg-3">
+											<div class="row">
+												<select class="form-control form-control-sm" name="tiposerv" id="tiposerv" required="" >
+												<?
+													foreach($tserv as $row):	?>
+														<option value="<?=$row->idtiposervicio;?>" <?=$row->idtiposervicio===$servicio->idtiposervicio? 'selected':'';?>>
+														<?=$row->descripcion;?></option>
+												<?	endforeach;	?>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="row mt-3">
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="um">U.M:</label>
 										<div class="col-md-6 col-lg-3">
 											<div class="row">

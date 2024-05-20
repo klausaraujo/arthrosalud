@@ -151,7 +151,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="row mt-3">
+									<!--<div class="row mt-3">
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="idtipocuenta">Tipo de Cuenta:</label>
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
@@ -215,7 +215,7 @@
 												</select>
 											</div>
 										</div>
-									</div>
+									</div>-->
 									<div class="row mt-3">
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="obs">Observaciones:</label>
 										<div class="col-md-6 col-lg-4">

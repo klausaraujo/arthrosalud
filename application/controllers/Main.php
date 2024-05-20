@@ -62,7 +62,6 @@ class Main extends CI_Controller
 	}
 	public function parametros()
 	{
-		$this->load->model('Parametros_model');
 		$this->load->model('Usuarios_model');
 		foreach($this->usuario->modulos as $valor):
 			if($valor->url === $this->uri->segment(1)){
@@ -76,7 +75,6 @@ class Main extends CI_Controller
 	}
 	public function logistica()
 	{
-		$this->load->model('Logistica_model');
 		$this->load->model('Usuarios_model');
 		foreach($this->usuario->modulos as $valor):
 			if($valor->url === $this->uri->segment(1)){
@@ -85,6 +83,19 @@ class Main extends CI_Controller
 		endforeach;
 		$bot = $this->Usuarios_model->buscaPerByModByUser(['idusuario' => $this->usuario->idusuario,'idmodulo' => $idmodulo,'b.activo' => 1]);
 		$this->session->set_userdata('perLogistica', json_encode($bot));
+		
+		$this->load->view('main');
+	}
+	public function citas()
+	{
+		$this->load->model('Usuarios_model');
+		foreach($this->usuario->modulos as $valor):
+			if($valor->url === $this->uri->segment(1)){
+				$idmodulo = $valor->idmodulo; break;
+			}
+		endforeach;
+		$bot = $this->Usuarios_model->buscaPerByModByUser(['idusuario' => $this->usuario->idusuario,'idmodulo' => $idmodulo,'b.activo' => 1]);
+		$this->session->set_userdata('perCitas', json_encode($bot));
 		
 		$this->load->view('main');
 	}

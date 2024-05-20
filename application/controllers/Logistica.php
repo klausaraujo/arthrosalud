@@ -90,9 +90,11 @@ class Logistica extends CI_Controller
 	public function nuevoservicios()
 	{
 		$this->load->model('Logistica_model');
+		$tserv = $this->Logistica_model->querysqlwhere('*','tipo_servicio',['activo' => 1]);
 		$um = $this->Logistica_model->querysqlwhere('*','unidad_medida',['uso_servicios' => 1,'activo' => 1]);
 		
 		$data = array(
+			'servicios' => $tserv,
 			'um' => $um,
 		);
 		return $this->load->view('main', $data);
@@ -115,11 +117,11 @@ class Logistica extends CI_Controller
 			'celular' => $this->input->post('celular'),
 			'contacto' => $this->input->post('contacto'),
 			'correo' => $this->input->post('correo'),
-			'idtipocuenta' => $this->input->post('idtipocuenta'),
+			/*'idtipocuenta' => $this->input->post('idtipocuenta'),
 			'idbanco' => $this->input->post('idbanco'),
 			'numero_cuenta' => $this->input->post('nrocuenta'),
 			'cci_cuenta' => $this->input->post('cci'),
-			'idtipomoneda' => $this->input->post('tipomoneda'),
+			'idtipomoneda' => $this->input->post('tipomoneda'),*/
 			'observaciones' => $this->input->post('obs'),
 		);
 		
@@ -174,7 +176,7 @@ class Logistica extends CI_Controller
 		
 		if($this->input->post('tiporegistro') === 'registrar'){
 			$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>Art&iacute;culo</b>');
-			$data['fotografia'] = ($ext? $nombre : 'img_default.jpg');
+			$data['fotografia'] = ($ext? $nombre : 'img_default.png');
 			if($this->Logistica_model->registrar('articulos', $data)){
 				$this->session->set_flashdata('flashMessage', '<b>Art&iacute;culo</b> Registrado Exitosamente');
 				$this->session->set_flashdata('claseMsg', 'alert-primary');
@@ -195,13 +197,12 @@ class Logistica extends CI_Controller
 		$this->load->model('Logistica_model');
 		
 		$data = array(
-			'objeto' => 2,
-			'idtipoarticulo' => 1,
-			'idlaboratorio' => 1,
+			//'idtiposervicio' => 1,
+			'idtiposervicio' => $this->input->post('tiposerv'),
 			'idunidadmedida' => $this->input->post('um'),
-			'idpresentacion' => 1,
+			//'idpresentacion' => 1,
 			'descripcion' => $this->input->post('descripcion'),
-			'fotografia' => 'NO APLICA',
+			//'fotografia' => 'NO APLICA',
 			'disponible_compra' => ($this->input->post('compra')? 1 : 0),
 			'disponible_venta' => ($this->input->post('venta')? 1 : 0),
 			'porcentaje_utilidad' => $this->input->post('porcentaje'),
@@ -209,13 +210,13 @@ class Logistica extends CI_Controller
 		);
 		if($this->input->post('tiporegistro') === 'registrar'){
 			$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>Servicio</b>');
-			if($this->Logistica_model->registrar('articulos', $data)){
+			if($this->Logistica_model->registrar('servicios', $data)){
 				$this->session->set_flashdata('flashMessage', '<b>Servicio</b> Registrado Exitosamente');
 				$this->session->set_flashdata('claseMsg', 'alert-primary');
 			}
 		}elseif($this->input->post('tiporegistro') === 'editar'){
 			$this->session->set_flashdata('flashMessage', 'No se pudo actualizar el <b>Servicio</b>');
-			if($this->Logistica_model->actualizar('articulos', $data, ['idarticulo' => $this->input->post('id')])){
+			if($this->Logistica_model->actualizar('servicios', $data, ['idarticulo' => $this->input->post('id')])){
 				$this->session->set_flashdata('flashMessage', '<b>Servicio</b> Actualizado');
 				$this->session->set_flashdata('claseMsg', 'alert-primary');
 			}
@@ -254,8 +255,9 @@ class Logistica extends CI_Controller
 	{
 		$this->load->model('Logistica_model');
 		$um = $this->Logistica_model->querysqlwhere('*','unidad_medida',['uso_servicios' => 1,'activo' => 1]);
-		$servicio = $this->Logistica_model->querysqlwhere('*', 'articulos' , ['idarticulo' => $this->input->get('id')]);
-		$data = ['um' => $um, 'servicio' => $servicio];
+		$servicio = $this->Logistica_model->querysqlwhere('*', 'servicios' , ['idservicio' => $this->input->get('id')]);
+		$tserv = $this->Logistica_model->querysqlwhere('*','tipo_servicio',['activo' => 1]);
+		$data = ['um' => $um, 'servicio' => $servicio, 'tserv' => $tserv];
 		return $this->load->view('main', $data);
 	}
 	public function editbienes()

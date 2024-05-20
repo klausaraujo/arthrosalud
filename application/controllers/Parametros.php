@@ -28,7 +28,23 @@ class Parametros extends CI_Controller
 	}
 	public function centros()
 	{
-		return $this->load->view('main');
+		$this->load->model('Parametros_model');
+		$empresas = $this->Parametros_model->querysqlwhere('idempresa,razon_social','empresa',['activo' => 1]);
+		//return $this->load->view('main', ['empresas' => $empresas]);
+		if($_SERVER['REQUEST_METHOD'] === 'POST'){
+			$this->session->set_flashdata('claseMsg', 'alert-danger');
+			$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>Centro de Costo</b>');
+			
+			$data = array(
+				'idempresa' => $this->input->post('idempresa'),
+				'centro_costos' => $this->input->post('ccostos'),
+			);
+			if($this->Parametros_model->registrar('centro_costos', $data)){
+				$this->session->set_flashdata('flashMessage', '<b>Centro de Costo</b> Registrado');
+				$this->session->set_flashdata('claseMsg', 'alert-primary');
+			}
+		}else unset($_SESSION['claseMsg']);
+		return $this->load->view('main', ['empresas' => $empresas]);
 	}
 	public function nuevo()
 	{

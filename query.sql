@@ -3052,7 +3052,7 @@ CREATE TABLE paciente(
 CREATE TABLE cie10 (
 	idcie10 smallint(4) NOT NULL AUTO_INCREMENT,
 	cie10 varchar(5),
-	descripcion_cie10 varchar(100),
+	descripcion_cie10 varchar(1000),
 	hombre char(1),
 	mujer char(1),
 	activo char(1) DEFAULT '0',

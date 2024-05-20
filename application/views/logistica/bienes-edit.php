@@ -25,7 +25,7 @@
 														<select class="form-control form-control-sm" name="tipoart" id="tipoart" required="" >
 														<?
 																foreach($tipoart as $row):	?>
-																	<option value="<?=$row->idtipoarticulo;?>" <?=$row->idtipoarticulo===$bien->idarticulo? 'selected':'';?>>
+																	<option value="<?=$row->idtipoarticulo;?>" <?=$row->idtipoarticulo===$bien->idtipoarticulo? 'selected':'';?>>
 																		<?=$row->tipo_articulo;?></option>
 														<?		endforeach;	?>
 														</select>

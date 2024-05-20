@@ -1,8 +1,9 @@
 let grillappal = null;
 
 $(document).ready(function (){
-	if(segmento2 == ''){
-	}else if(segmento2 === 'proveedores'){
+	setTimeout(function () { $('.resp').hide('slow'); }, 2500);
+	
+	if(segmento2 === 'proveedores' || segmento2 == ''){
 		grillappal = $('#tablaProveedores').DataTable({
 			ajax: {
 				url: base_url + 'logistica/proveedores/lista',
@@ -113,9 +114,9 @@ $(document).ready(function (){
 					orderable: false,
 					render: function(data){
 						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
-						let hrefEdit = 'href="'+base_url+'logistica/servicios/editar?id='+data.idarticulo+'"';
-						let hrefServ = 'href="'+base_url+'logistica/servicios/codigos?id='+data.idarticulo+'"';
-						let hrefAnular = 'href="'+base_url+'logistica/servicios/anular?id='+data.idarticulo+'"';
+						let hrefEdit = 'href="'+base_url+'logistica/servicios/editar?id='+data.idservicio+'"';
+						let hrefServ = 'href="'+base_url+'logistica/servicios/codigos?id='+data.idservicio+'"';
+						let hrefAnular = 'href="'+base_url+'logistica/servicios/anular?id='+data.idservicio+'"';
 						let btnAccion =
 						'<div class="btn-group">' +
 						/* Boton de edicion */
