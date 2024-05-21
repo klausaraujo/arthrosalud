@@ -1,5 +1,11 @@
 DROP VIEW IF EXISTS lista_ubigeo;
 DROP TABLE IF EXISTS citas;
+DROP TABLE IF EXISTS historia_clinica_atenciones_procedimientos;
+DROP TABLE IF EXISTS procedimiento_articulos;
+DROP TABLE IF EXISTS procedimiento;
+DROP TABLE IF EXISTS historia_clinica_atenciones_diagnostico;
+DROP TABLE IF EXISTS historia_clinica_atenciones;
+DROP TABLE IF EXISTS historia_clinica;
 DROP TABLE IF EXISTS paciente;
 DROP TABLE IF EXISTS cie10;
 DROP TABLE IF EXISTS anio;
@@ -2084,8 +2090,14 @@ CREATE TABLE menu  (
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(9,4,'Registro Pacientes','0','pacientes','fa fa-child');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(10,4,'Registro Medicos','0','medicos','fa fa-heartbeat');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(11,4,'Registro Consultorios','0','consultorios','fa fa-life-ring');
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(12,4,'Registro de Citas','0','citas','fa fa-window-maximize');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(12,4,'Registro de Turnos','0','turnos','fa fa-bars');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(13,4,'Registro de Citas','0','citas','fa fa-window-maximize');
 	
+	
+	
+	
+	
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(14,4,'Historia Clinica','0','historia','fa fa-id-card-o');
 	
 	
 
@@ -2929,7 +2941,7 @@ CREATE TABLE orden_compra(
 	idorden smallint(4) NOT NULL AUTO_INCREMENT,
 	anio smallint(4),
 	numero smallint(4),
-	fecha datetime,
+	fecha date,
 	idempresa smallint(4) NOT NULL,
 	idcentro smallint(4) NOT NULL,
 	idproveedor smallint(4) NOT NULL,
@@ -2965,7 +2977,7 @@ CREATE TABLE orden_servicio(
 	idorden smallint(4) NOT NULL AUTO_INCREMENT,
 	anio smallint(4),
 	numero smallint(4),
-	fecha datetime,
+	fecha date,
 	idempresa smallint(4) NOT NULL,
 	idcentro smallint(4) NOT NULL,
 	idproveedor smallint(4) NOT NULL,
@@ -3043,7 +3055,7 @@ CREATE TABLE paciente(
 	domicilio varchar(100),
 	ubigeo_domicilio varchar(6),
 	idusuario_registro smallint(4),
-	fecha_registro datetime,
+	fecha_registro date,
 	celular varchar(9),
 	celuar_mensaje char(1),
 	correo varchar(50),
@@ -15994,7 +16006,7 @@ create table profesional(
 	idespecialidad smallint(4) NOT NULL,
 	rne varchar(6),
 	idusuario_registro smallint(4),
-	fecha_registro datetime,
+	fecha_registro date,
 	celular varchar(9),
 	celuar_mensaje char(1),
 	correo varchar(50),
@@ -16025,7 +16037,7 @@ create table turnos(
 create table turnos_detalle(
 	idturnodetalle smallint(4) NOT NULL AUTO_INCREMENT,
 	idturno smallint(4) NOT NULL,
-	fecha datetime,
+	fecha date,
 	entrada time,
 	salida time,
 	PRIMARY KEY (idturnodetalle),
@@ -16047,8 +16059,91 @@ CREATE TABLE citas(
 	FOREIGN KEY (iddepartamento) REFERENCES departamento (iddepartamento) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (idprofesional) REFERENCES profesional (idprofesional) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (idpaciente) REFERENCES paciente (idpaciente) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;	
+
+CREATE TABLE historia_clinica(
+	idhistoria smallint(4) NOT NULL AUTO_INCREMENT,
+	numero smallint(4) NOT NULL,
+	fecha_registro date,
+	idpaciente smallint(4) NOT NULL,
+	avatar varchar(30),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idhistoria),
+	FOREIGN KEY (idpaciente) REFERENCES paciente (idpaciente) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+	
+CREATE TABLE historia_clinica_atenciones(
+	idatencion smallint(4) NOT NULL AUTO_INCREMENT,
+	idhistoria smallint(4) NOT NULL,
+	fecha_atencion date,
+	hora_atencion time,
+	tipo_atencion char(1) DEFAULT '1',
+	prioridad char(1) DEFAULT '1', 
+	gestante char(1) default '0',
+	tiempo_gestacion smallint(4),
+	presion01 smallint(4) DEFAULT 0,
+	presion02 smallint(4) DEFAULT 0,
+	presion_venosa smallint(4) DEFAULT 0,
+	temperatura decimal(19,1) DEFAULT 0,
+	saturacion smallint(4) DEFAULT 0,
+	frecuencia_cardiaca smallint(4) DEFAULT 0,
+	frecuencia_respiratoria smallint(4) DEFAULT 0,
+	peso decimal(19,2) DEFAULT 0,
+	talla decimal(19,2) DEFAULT 0,
+	imc decimal(19,2) DEFAULT 0,
+	AO varchar(100),
+	RV varchar(100),
+	RM varchar(100),
+	glasgow smallint(4) DEFAULT 0,
+	observaciones varchar(1000),
+	idprioridad smallint(4) NOT NULL,
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idatencion),
+	FOREIGN KEY (idhistoria) REFERENCES Historia_Clinica (idhistoria) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;	
+
+CREATE TABLE historia_clinica_atenciones_diagnostico(
+	iddiagnostico smallint(4) NOT NULL AUTO_INCREMENT,
+	idatencion smallint(4) NOT NULL,
+	idcie10 smallint(4) NOT NULL,
+	tipo char(1),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (iddiagnostico),
+	FOREIGN KEY (idatencion) REFERENCES Historia_Clinica_atenciones (idatencion) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idcie10) REFERENCES cie10 (idcie10) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;	
+
+CREATE TABLE procedimiento(
+	idprocedimiento smallint(4) NOT NULL AUTO_INCREMENT,
+	correlativo varchar(8) NOT NULL,
+	procedimiento varchar(200) NOT NULL,
+	tarifa_base decimal(20,2),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idprocedimiento))ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;	 
+	
+	INSERT INTO procedimiento (idprocedimiento,correlativo,procedimiento,tarifa_base) VALUES(1,'00000001','CONSULTA AMBULATORIA',160);
+
+CREATE TABLE procedimiento_articulos(
+	idprocedimientoarticulo smallint(4) NOT NULL AUTO_INCREMENT,
+	idprocedimiento smallint(4) NOT NULL,
+	idarticulo smallint(4) NOT NULL,
+	cantidad decimal(20,2),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idprocedimientoarticulo),
+	FOREIGN KEY (idprocedimiento) REFERENCES procedimiento (idprocedimiento) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idarticulo) REFERENCES articulos (idarticulo) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+	
+CREATE TABLE historia_clinica_atenciones_procedimientos(
+	idprocedimientos smallint(4) NOT NULL AUTO_INCREMENT,
+	idatencion smallint(4) NOT NULL,
+	idprocedimiento smallint(4) NOT NULL,
+	tipo char(1),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idprocedimientos),
+	FOREIGN KEY (idatencion) REFERENCES Historia_Clinica_atenciones (idatencion) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idprocedimiento) REFERENCES procedimiento (idprocedimiento) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
 	
 	
+
+
+
+
 	
 	
 	
