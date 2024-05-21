@@ -1,8 +1,6 @@
 let grillappal = null;
 
-$(document).ready(function (){
-	setTimeout(function () { $('.resp').hide('slow'); }, 2500);
-	
+$(document).ready(function (){	
 	if(segmento2 === 'empresas' || segmento2 == ''){
 		grillappal = $('#tablaEmpresas').DataTable({
 			ajax: {

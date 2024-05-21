@@ -27,4 +27,8 @@ class Citas extends CI_Controller
 	{
 		return $this->load->view('main');
 	}
+	public function calendario()
+	{
+		return $this->load->view('main');
+	}
 }

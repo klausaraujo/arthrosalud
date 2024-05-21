@@ -1,8 +1,6 @@
 let grillappal = null;
 
 $(document).ready(function (){
-	setTimeout(function () { $('.resp').hide('slow'); }, 2500);
-	
 	if(segmento2 === 'proveedores' || segmento2 == ''){
 		grillappal = $('#tablaProveedores').DataTable({
 			ajax: {

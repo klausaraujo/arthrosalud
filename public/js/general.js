@@ -1,6 +1,7 @@
 let btnCancelar = $('.btn-cancelar'), inputs = document.querySelectorAll( '.inputfile' );
 
 $(document).ready(function (){
+	setTimeout(function () { $('.alert').hide('slow'); }, 2500);
 	$('html, body').animate({ scrollTop: 0 }, 'fast');
 	//setTimeout(function(){ $('.msg').hide('slow'); }, 3000);
 });

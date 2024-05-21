@@ -66,8 +66,11 @@ a.disabled{ pointer-events: none; color: grey }
 
 .dataTable, thead, tr, th{ font-size: 0.75rem }
 </style>
-
-<?if(($this->uri->segment(3) === 'nuevo' || $this->uri->segment(3) === 'editar') && ($this->uri->segment(2) === 'empresas' || $this->uri->segment(2) === 'proveedores')){?>
+<? if($this->uri->segment(2) === 'citas'){ ?>
+	<link rel="stylesheet" href="<?=base_url()?>/public/js/calendario/style.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+	<script src="<?=base_url()?>public/js/calendario/script.js" defer></script>
+<? }elseif(($this->uri->segment(3) === 'nuevo' || $this->uri->segment(3) === 'editar') && ($this->uri->segment(2) === 'empresas' || $this->uri->segment(2) === 'proveedores')){?>
 <script>
 	function initMap(){}
 </script>

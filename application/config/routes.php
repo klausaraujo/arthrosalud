@@ -117,6 +117,7 @@ $route['logistica/servicios/anular'] = 'logistica/anular';
 $route['citas/pacientes'] = 'citas/formpaciente';
 $route['citas/consultorios'] = 'citas/formconsultorio';
 $route['citas/medicos'] = 'citas/formmedico';
+$route['citas/citas'] = 'citas/calendario';
 
 /**/
 $route['404_override'] = '';
