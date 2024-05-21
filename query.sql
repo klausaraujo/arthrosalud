@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS citas;
 DROP TABLE IF EXISTS historia_clinica_atenciones_procedimientos;
 DROP TABLE IF EXISTS procedimiento_articulos;
 DROP TABLE IF EXISTS procedimiento;
+DROP TABLE IF EXISTS tipo_procedimiento;
 DROP TABLE IF EXISTS historia_clinica_atenciones_diagnostico;
 DROP TABLE IF EXISTS historia_clinica_atenciones;
 DROP TABLE IF EXISTS historia_clinica;
@@ -2092,12 +2093,8 @@ CREATE TABLE menu  (
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(11,4,'Registro Consultorios','0','consultorios','fa fa-life-ring');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(12,4,'Registro de Turnos','0','turnos','fa fa-bars');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(13,4,'Registro de Citas','0','citas','fa fa-window-maximize');
-	
-	
-	
-	
-	
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(14,4,'Historia Clinica','0','historia','fa fa-id-card-o');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(14,4,'Registro Procedimientos','0','citas','fa fa-window-maximize');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(15,4,'Historia Clinica','0','historia','fa fa-id-card-o');
 	
 	
 
@@ -16109,15 +16106,36 @@ CREATE TABLE historia_clinica_atenciones_diagnostico(
 	FOREIGN KEY (idatencion) REFERENCES Historia_Clinica_atenciones (idatencion) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (idcie10) REFERENCES cie10 (idcie10) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;	
 
+CREATE TABLE tipo_procedimiento(
+	idtipoprocedimiento smallint(4) NOT NULL AUTO_INCREMENT,
+	codigo_tipo_procedimiento varchar(2) NOT NULL,
+	tipo_procedimiento varchar(100) NOT NULL,
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idtipoprocedimiento))ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+	
+	INSERT INTO tipo_procedimiento (idtipoprocedimiento,tipo_procedimiento,codigo_tipo_procedimiento) VALUES (1,'CONSULTA EXTERNA','CA');
+	INSERT INTO tipo_procedimiento (idtipoprocedimiento,tipo_procedimiento,codigo_tipo_procedimiento) VALUES (2,'EXAMENES AUXILIARES','EA');
+	INSERT INTO tipo_procedimiento (idtipoprocedimiento,tipo_procedimiento,codigo_tipo_procedimiento) VALUES (3,'FARMACIA','FA');
+	INSERT INTO tipo_procedimiento (idtipoprocedimiento,tipo_procedimiento,codigo_tipo_procedimiento) VALUES (4,'HOSPITALIZACION','HO');
+	INSERT INTO tipo_procedimiento (idtipoprocedimiento,tipo_procedimiento,codigo_tipo_procedimiento) VALUES (5,'INTERVENCIONES','IN');
+	INSERT INTO tipo_procedimiento (idtipoprocedimiento,tipo_procedimiento,codigo_tipo_procedimiento) VALUES (6,'SERVICIO CLINICO','SC');
+	INSERT INTO tipo_procedimiento (idtipoprocedimiento,tipo_procedimiento,codigo_tipo_procedimiento) VALUES (7,'PROCEDIMIENTOS','PR');
+	INSERT INTO tipo_procedimiento (idtipoprocedimiento,tipo_procedimiento,codigo_tipo_procedimiento) VALUES (8,'PAQUETES A LA MEDIDA','PM');
+	INSERT INTO tipo_procedimiento (idtipoprocedimiento,tipo_procedimiento,codigo_tipo_procedimiento) VALUES (9,'SERVICIO MEDICO','SM');
+	INSERT INTO tipo_procedimiento (idtipoprocedimiento,tipo_procedimiento,codigo_tipo_procedimiento) VALUES (10,'TERAPIA FISICA','TF');
+	INSERT INTO tipo_procedimiento (idtipoprocedimiento,tipo_procedimiento,codigo_tipo_procedimiento) VALUES (11,'OTROS SERVICIOS','OS');
+	
 CREATE TABLE procedimiento(
 	idprocedimiento smallint(4) NOT NULL AUTO_INCREMENT,
+	idtipoprocedimiento smallint(4) NOT NULL,
 	correlativo varchar(8) NOT NULL,
 	procedimiento varchar(200) NOT NULL,
 	tarifa_base decimal(20,2),
 	activo char(1) DEFAULT '1',
-	PRIMARY KEY (idprocedimiento))ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;	 
+	PRIMARY KEY (idprocedimiento),
+	FOREIGN KEY (idtipoprocedimiento) REFERENCES tipo_procedimiento (idtipoprocedimiento) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;	 
 	
-	INSERT INTO procedimiento (idprocedimiento,correlativo,procedimiento,tarifa_base) VALUES(1,'00000001','CONSULTA AMBULATORIA',160);
+	INSERT INTO procedimiento (idprocedimiento,idtipoprocedimiento,correlativo,procedimiento,tarifa_base) VALUES(1,1,'00000001','CONSULTA AMBULATORIA',160);
 
 CREATE TABLE procedimiento_articulos(
 	idprocedimientoarticulo smallint(4) NOT NULL AUTO_INCREMENT,
