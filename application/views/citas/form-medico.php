@@ -8,7 +8,7 @@
 							<div class="iq-alert-text"><?=$this->session->flashdata('flashMessage')?></div>
 							</div><?}?>
 						</div>
-						<form method="post" id="form_medico" action="<?=base_url()?>citas/regmedico" enctype="multipart/form-data"
+						<form method="post" id="form_medico" action="<?=base_url()?>citas/medicos/regmedico" enctype="multipart/form-data"
 								class="needs-validation form-horizontal" novalidate="">
 							<input type="hidden" name="tiporegistro" value="registrar" />
 							<div class="form-row">
@@ -21,6 +21,10 @@
 													<div class="row">
 														<select class="form-control form-control-sm" name="tipo" id="tipo" required="" >
 															<option value="">-- Seleccione --</option>
+													<?
+														foreach($tipo as $row):	?>
+															<option value="<?=$row->idtipodocumento;?>"><?=$row->tipo_documento;?></option>
+													<?	endforeach;	?>
 														</select>
 														<div class="invalid-feedback">Campo Requerido</div>
 													</div>
@@ -30,7 +34,7 @@
 												<label class="control-label col-md-6 col-lg-6 align-self-center mb-0" for="doc">N&uacute;mero Documento:</label>
 												<div class="col-md-4 col-lg-4">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm ruc borra num" name="doc" id="doc" placeholder="Número Documento" 
+														<input type="text" class="form-control form-control-sm ruc num" name="doc" id="doc" placeholder="Número Documento" 
 															value="" minlength="8" maxlength="9" required="" />
 														<div class="invalid-feedback" id="error-doc">Campo Requerido</div>
 													</div>
@@ -40,7 +44,7 @@
 												<label class="control-label col-md-6 col-lg-6 align-self-center mb-0" for="apellidos">Apellidos:</label>
 												<div class="col-md-4 col-lg-4">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm borra mayusc" name="apellidos" id="apellidos" 
+														<input type="text" class="form-control form-control-sm mayusc" name="apellidos" id="apellidos" 
 															placeholder="Apellidos" value="" required="" />
 														<div class="invalid-feedback" id="error-razon">Campo Requerido</div>
 													</div>
@@ -50,7 +54,7 @@
 												<label class="control-label col-md-6 col-lg-6 align-self-center mb-0" for="nombres">Nombres:</label>
 												<div class="col-md-4 col-lg-4">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm borra mayusc" name="nombres" id="nombres" 
+														<input type="text" class="form-control form-control-sm mayusc" name="nombres" id="nombres" 
 															placeholder="Nombres" value="" required="" />
 														<div class="invalid-feedback" id="error-razon">Campo Requerido</div>
 													</div>
@@ -86,6 +90,8 @@
 											<div class="row">
 												<select class="form-control form-control-sm" name="sexo" id="sexo" required="" >
 													<option value="">-- Seleccione --</option>
+													<option value="f">Femenino</option>
+													<option value="m">Masculino</option>
 												</select>
 												<div class="invalid-feedback">Campo Requerido</div>
 											</div>
@@ -97,6 +103,10 @@
 											<div class="row">
 												<select class="form-control form-control-sm" name="edo" id="edo" required="" >
 													<option value="">-- Seleccione --</option>
+											<?
+												foreach($edo as $row):	?>
+													<option value="<?=$row->idestadocivil;?>"><?=$row->estado_civil;?></option>
+											<?	endforeach;	?>
 												</select>
 												<div class="invalid-feedback">Campo Requerido</div>
 											</div>
@@ -144,10 +154,10 @@
 									<div class="container-fluid row"><hr class="col-sm-12"></div>
 									<div class="row my-1"><h6 style="font-weight:bold">Domicilio Actual</h6></div>
 									<div class="row mt-3">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="dep">Departamento:</label>
+										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="dep1">Departamento:</label>
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
-												<select class="form-control form-control-sm dep" name="dep" id="dep" required="" >
+												<select class="form-control form-control-sm dep1" name="dep1" id="dep1" required="" >
 													<option value="">-- Seleccione --</option>
 												<?
 														foreach($dep as $row):	?>
@@ -159,10 +169,10 @@
 										</div>
 									</div>
 									<div class="row mt-3">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="pro">Provincia:</label>
+										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="pro1">Provincia:</label>
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
-												<select class="form-control form-control-sm pro" name="pro" id="pro" required="" >
+												<select class="form-control form-control-sm pro1" name="pro1" id="pro1" required="" >
 													<option value="">-- Seleccione --</option>
 												</select>
 												<div class="invalid-feedback">Debe elegir una Provincia</div>
@@ -170,10 +180,10 @@
 										</div>
 									</div>
 									<div class="row mt-3">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="dis">Distrito:</label>
+										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="dis1">Distrito:</label>
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
-												<select class="form-control form-control-sm dis" name="dis" id="dis" required="">
+												<select class="form-control form-control-sm dis1" name="dis1" id="dis1" required="">
 													<option value="">-- Seleccione --</option>
 												</select>
 												<div class="invalid-feedback">Debe elegir un Distrito</div>
@@ -221,6 +231,10 @@
 											<div class="row">
 												<select class="form-control form-control-sm" name="tipoprof" id="tipoprof" required="" >
 													<option value="">-- Seleccione --</option>
+												<?
+														foreach($tipop as $row):	?>
+															<option value="<?=$row->idtipoprofesional;?>"><?=$row->tipo_profesional;?></option>
+												<?		endforeach;	?>
 												</select>
 												<div class="invalid-feedback">Campo Requerido</div>
 											</div>
@@ -242,6 +256,10 @@
 											<div class="row">
 												<select class="form-control form-control-sm" name="especialidad" id="especialidad" required="" >
 													<option value="">-- Seleccione --</option>
+												<?
+														foreach($esp as $row):	?>
+															<option value="<?=$row->idespecialidad;?>"><?=$row->especialidad;?></option>
+												<?		endforeach;	?>
 												</select>
 												<div class="invalid-feedback">Campo Requerido</div>
 											</div>
@@ -257,21 +275,21 @@
 											</div>
 										</div>
 									</div>
-									<div class="row mt-3">
+									<!--<div class="row mt-3">
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="contacto">Contacto:</label>
 										<div class="col-md-6 col-lg-4">
 											<div class="row">
-												<input type="text" class="form-control form-control-sm borra contacto" name="contacto"
+												<input type="text" class="form-control form-control-sm num" name="contacto"
 													placeholder="Contacto" value="" />
 												<label class="invalid-feedback">Campo requerido</label>
 											</div>
 										</div>
-									</div>
+									</div>-->
 									<div class="row mt-3">
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="celular">Celular:</label>
 										<div class="col-md-6 col-lg-4">
 											<div class="row">
-												<input type="text" class="form-control form-control-sm borra celular num" name="celular"
+												<input type="text" class="form-control form-control-sm num" name="celular"
 													placeholder="Celular" value="" />
 												<label class="invalid-feedback">Campo requerido</label>
 											</div>
@@ -281,7 +299,7 @@
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="correo">Correo:</label>
 										<div class="col-md-6 col-lg-4">
 											<div class="row">
-												<input type="text" class="form-control form-control-sm borra correo mayusc" name="correo"
+												<input type="text" class="form-control form-control-sm" name="correo"
 													placeholder="Correo" value="" />
 												<label class="invalid-feedback">Campo requerido</label>
 											</div>
@@ -291,7 +309,7 @@
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="obs">Observaciones:</label>
 										<div class="col-md-6 col-lg-4">
 											<div class="row">
-												<input type="text" class="form-control form-control-sm borra obs mayusc" name="obs"
+												<input type="text" class="form-control form-control-sm mayusc" name="obs"
 													placeholder="Observaciones" value="" />
 												<label class="invalid-feedback">Campo requerido</label>
 											</div>
@@ -301,7 +319,7 @@
 							</div>
 							<div class="container-fluid row"><hr class="col-sm-12"></div>
 							<div class="col-12 mx-auto pb-2">
-								<button type="submit" class="btn btn-sabogal ml-1 mr-4" id="btnEnviar">Guardar Registro</button>
+								<button type="submit" class="btn btn-sabogal ml-1 mr-4" id="btnEnviar">Guardar</button>
 								<button type="reset" class="btn btn-light btn-cancelar">Cancelar</button>
 							</div>
 						</form>

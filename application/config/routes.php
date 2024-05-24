@@ -114,10 +114,26 @@ $route['logistica/servicios/editar'] = 'logistica/editservicios';
 $route['logistica/servicios/anular'] = 'logistica/anular';
 
 /* Modulo de citas */
-$route['citas/pacientes'] = 'citas/formpaciente';
-$route['citas/consultorios'] = 'citas/formconsultorio';
-$route['citas/medicos'] = 'citas/formmedico';
-$route['citas/citas'] = 'citas/calendario';
+$route['citas/pacientes'] = 'citas/pacientes';
+$route['citas/pacientes/nuevo'] = 'citas/formpaciente';
+$route['citas/pacientes/lista'] = 'citas/listapacientes';
+$route['citas/pacientes/regpaciente'] = 'citas/regpaciente';
+$route['citas/consultorios'] = 'citas/consultorios';
+$route['citas/consultorios/nuevo'] = 'citas/formconsultorio';
+$route['citas/consultorios/lista'] = 'citas/listaconsultorios';
+$route['citas/consultorios/regconsultorio'] = 'citas/regconsultorio';
+$route['citas/medicos'] = 'citas/medicos';
+$route['citas/medicos/nuevo'] = 'citas/formmedico';
+$route['citas/medicos/lista'] = 'citas/listamedicos';
+$route['citas/medicos/regmedico'] = 'citas/regmedico';
+$route['citas/turnos'] = 'citas/turnos';
+$route['citas/turnos/nuevo'] = 'citas/formturnos';
+$route['citas/turnos/lista'] = 'citas/listaturnos';
+$route['citas/turnos/consultorios'] = 'citas/findconsultorios';
+$route['citas/turnos/regturno'] = 'citas/regturno';
+$route['citas/citas'] = 'citas/citas';
+$route['citas/citas/nuevo'] = 'citas/calendario';
+$route['citas/citas/lista'] = 'citas/listacitas';
 
 /**/
 $route['404_override'] = '';

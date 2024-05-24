@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="es">
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 		<!-- Loader Header -->
 		<?php	require_once('inc/header.php'); date_default_timezone_set('America/Lima');?>
@@ -59,10 +59,23 @@
 							}
 						}
 						elseif($this->uri->segment(1) === 'citas'){
-							if($this->uri->segment(2) === 'pacientes') $this->load->view('citas/form-paciente');
-							elseif($this->uri->segment(2) === 'consultorios') $this->load->view('citas/form-consultorio');
-							elseif($this->uri->segment(2) === 'medicos') $this->load->view('citas/form-medico');
-							elseif($this->uri->segment(2) === 'citas') $this->load->view('citas/calendario');
+							if(!strlen($this->uri->segment(2))) $this->load->view('citas/citas');
+							elseif($this->uri->segment(2) === 'pacientes'){
+								if(!strlen($this->uri->segment(3))) $this->load->view('citas/pacientes');
+								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-paciente');
+							}elseif($this->uri->segment(2) === 'consultorios'){
+								if(!strlen($this->uri->segment(3))) $this->load->view('citas/consultorios');
+								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-consultorio');
+							}elseif($this->uri->segment(2) === 'citas'){
+								if(!strlen($this->uri->segment(3))) $this->load->view('citas/citas');
+								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/calendario');
+							}elseif($this->uri->segment(2) === 'medicos'){
+								if(!strlen($this->uri->segment(3))) $this->load->view('citas/medicos');
+								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-medico');
+							}elseif($this->uri->segment(2) === 'turnos'){
+								if(!strlen($this->uri->segment(3))) $this->load->view('citas/turnos');
+								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-turnos');
+							}
 						}
 					?>
 					</div>
