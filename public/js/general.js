@@ -216,8 +216,8 @@ $('.dis').change(function(){
 			beforeSend: function(){},
 			success: function (data) {
 				var opt = {lat: parseFloat(data[0].latitud), lng: parseFloat(data[0].longitud), zoom: 16};
-				map.setCenter(opt);
-				$('.ajaxMap').removeClass('d-none');
+				/*map.setCenter(opt);
+				$('.ajaxMap').removeClass('d-none');*/
 			}
 		});
 	}
@@ -245,6 +245,57 @@ $('#busca_ruc').on('click',function(){
 				}else{
 					$('#btnEnviar').addClass('disabled');
 				}
+			}
+		});
+	}
+});
+$('.dep1').bind('change', function(){
+	let cod = this.value, html = '<option value="">-- Seleccione --</option>';
+	$.ajax({
+		data: { cod_dep: cod },
+		url: base_url + 'main/provincias',
+		method: 'POST',
+		dataType: 'JSON',
+		beforeSend: function () {
+			$('.dis1').html('<option>-- Seleccione --</option>'); $('.pro1').html('<option> Cargando...</option>');
+		},
+		success: function (data) {
+			$.each(data, function (i, e){ html += '<option value="' + e.cod_pro + '">' + e.provincia + '</option>'; });
+			$('.pro1').html(html);
+			//console.log(data);
+		}
+	});
+});
+$('.pro1').bind('change', function(){
+	let cod = this.value, html = '<option value="">-- Seleccione --</option>';
+	$.ajax({
+		data: { cod_dep: $('.dep1').val(),cod_pro: cod },
+		url: base_url + 'main/distritos',
+		method: 'POST',
+		dataType: 'JSON',
+		beforeSend: function () {
+			$('.dis1').html('<option> Cargando...</option>');
+		},
+		success: function (data) {
+			$.each(data, function (i, e){ html += '<option value="' + e.cod_dis + '">' + e.distrito + '</option>'; });
+			$('.dis1').html(html);
+			//console.log(data);
+		}
+	});
+});
+$('.dis1').change(function(){
+	let id = this.value, dpto = $('.dep1').val(), prov = $('.pro1').val();
+    if (id.length > 0) {
+		$.ajax({
+			data: { cod_dep: dpto, cod_pro: prov, cod_dis: id },
+			url: base_url + 'main/cargarLatLng',
+			method: 'POST',
+			dataType: 'JSON',
+			beforeSend: function(){},
+			success: function (data) {
+				var opt = {lat: parseFloat(data[0].latitud), lng: parseFloat(data[0].longitud), zoom: 16};
+				/*map.setCenter(opt);
+				$('.ajaxMap').removeClass('d-none');*/
 			}
 		});
 	}

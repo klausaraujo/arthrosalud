@@ -8,7 +8,7 @@
 							<div class="iq-alert-text"><?=$this->session->flashdata('flashMessage')?></div>
 							</div><?}?>
 						</div>
-						<form method="post" id="form_consultorio" action="<?=base_url()?>citas/regconsultorio"
+						<form method="post" id="form_consultorio" action="<?=base_url()?>citas/consultorios/regconsultorio"
 								class="needs-validation form-horizontal" novalidate="">
 							<input type="hidden" name="tiporegistro" value="registrar" />
 							<div class="form-row">
@@ -19,6 +19,10 @@
 											<div class="row">
 												<select class="form-control form-control-sm" name="idempresa" id="idempresa" required="" >
 													<option value="">-- Seleccione --</option>
+											<?
+												foreach($cons as $row):	?>
+													<option value="<?=$row->idempresa;?>"><?=$row->nombre_comercial;?></option>
+											<?	endforeach;	?>
 												</select>
 												<div class="invalid-feedback">Campo Requerido</div>
 											</div>

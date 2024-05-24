@@ -142,6 +142,23 @@
 			<?}?>
 			</script>
 			<?}?>
+		<?}elseif($this->uri->segment(1) === 'citas'){ ?>
+		<script src="<?=base_url()?>public/js/citas/citas.js"></script>
+		<script>
+			let botonesLog = JSON.parse('<?=$this->session->userdata('perCitas')?>');
+			let btnEdit = false, btnAnular = false, btnAgregar = false, btnArt = false, btnAnularArt = false, btnEditServ = false, btnServ = false, btnAnularServ = false;
+			
+			$.each(botonesLog,function(i,e){
+				if(e.idboton === '9') btnEdit = true;
+				else if(e.idboton === '10') btnAnular = true;
+				else if(e.idboton === '11') btnAgregar = true;
+				else if(e.idboton === '12') btnArt = true;
+				else if(e.idboton === '13') btnAnularArt = true;
+				else if(e.idboton === '14') btnEditServ = true;
+				else if(e.idboton === '15') btnServ = true;
+				else if(e.idboton === '16') btnAnularServ = true;
+			});
+		</script>
 		<?}
 		if($this->uri->segment(1) === 'usuarios' && ($this->uri->segment(2) == '' || $this->uri->segment(2) === 'usuarios')){ ?>
 		<script>
