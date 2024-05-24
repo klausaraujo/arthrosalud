@@ -2096,8 +2096,6 @@ CREATE TABLE menu  (
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(14,4,'Registro Procedimientos','0','citas','fa fa-window-maximize');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(15,4,'Historia Clinica','0','historia','fa fa-id-card-o');
 	
-	
-
 CREATE TABLE permisos_menu  (
 	idpermisosmenu smallint(4) NOT NULL AUTO_INCREMENT,
 	idmenu smallint(4) NOT NULL,
@@ -16046,6 +16044,7 @@ CREATE TABLE citas(
 	iddepartamento smallint(4) NOT NULL,
 	idprofesional smallint(4) NOT NULL,
 	idpaciente  smallint(4) NOT NULL,
+	tipo char(1) DEFAULT '0',
 	entrada time,
 	salida time,
 	observaciones varchar(1000),
