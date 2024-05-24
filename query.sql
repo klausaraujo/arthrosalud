@@ -2086,15 +2086,19 @@ CREATE TABLE menu  (
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(6,3,'Catálogo Bienes','0','bienes','fa fa-window-maximize');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(7,3,'Catálogo Servicios','0','servicios','fa fa-exchange');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(8,3,'Registro Almacenes','0','almacenes','fa fa-bandcamp');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(9,3,'Ordenes de Compra','0','ocompra','fa fa-bandcamp');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(10,3,'Ordenes de Servicio','0','oservicio','fa fa-bandcamp');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(11,3,'Guia de Ingreso','0','gentrada','fa fa-bandcamp');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(12,3,'Guia de Salida','0','gsalida','fa fa-bandcamp');
 	
 	/*Menus del Módulo Citas*/
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(9,4,'Registro Pacientes','0','pacientes','fa fa-child');
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(10,4,'Registro Medicos','0','medicos','fa fa-heartbeat');
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(11,4,'Registro Consultorios','0','consultorios','fa fa-life-ring');
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(12,4,'Registro de Turnos','0','turnos','fa fa-bars');
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(13,4,'Registro de Citas','0','citas','fa fa-window-maximize');
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(14,4,'Registro Procedimientos','0','citas','fa fa-window-maximize');
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(15,4,'Historia Clinica','0','historia','fa fa-id-card-o');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(13,4,'Registro Pacientes','0','pacientes','fa fa-child');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(14,4,'Registro Procesionales','0','medicos','fa fa-heartbeat');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(15,4,'Registro Consultorios','0','consultorios','fa fa-life-ring');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(16,4,'Registro de Turnos','0','turnos','fa fa-bars');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(17,4,'Registro de Citas','0','citas','fa fa-window-maximize');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(18,4,'Registro Procedimientos','0','citas','fa fa-window-maximize');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(19,4,'Historia Clinica','0','historia','fa fa-id-card-o');
 	
 CREATE TABLE permisos_menu  (
 	idpermisosmenu smallint(4) NOT NULL AUTO_INCREMENT,
@@ -2112,6 +2116,19 @@ CREATE TABLE permisos_menu  (
 	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(5,5,1);
 	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(6,6,1);
 	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(7,7,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(8,8,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(9,9,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(10,10,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(11,11,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(12,12,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(13,13,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(14,14,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(15,15,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(16,16,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(17,17,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(18,18,1);
+	INSERT INTO permisos_menu(idpermisosmenu,idmenu,idusuario) VALUES(19,19,1);
+	
 	
 CREATE TABLE menu_detalle  (
 	idmenudetalle smallint(4) NOT NULL AUTO_INCREMENT,
@@ -2143,27 +2160,84 @@ CREATE TABLE botones  (
 	PRIMARY KEY (idboton),
 	FOREIGN KEY (idmodulo) REFERENCES modulos (idmodulo) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
 	/*Modulo Usuarios*/
+	/*~~~~~~~~~~~~~~~*/
+	
+	/*Registro de Usuarios*/
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(1,'Editar Usuario','1',1,1);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(2,'Asignar Permisos','1',2,1);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(3,'Resetar Clave','1',3,1);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(4,'Activar/Desactivar','1',4,1);
+	
+	
 	/*Modulo Parametros*/
+	/*~~~~~~~~~~~~~~~~*/
+	
+	/*Registro de Usuarios*/
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(5,'Editar Empresa','1',1,2);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(6,'Anular Empresa','1',2,2);
 	
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(7,'Editar Centro','1',1,2);
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(8,'Anular Centro','1',2,2);
+	
+	
 	/*Modulo Logistica*/
+	/*~~~~~~~~~~~~~~~~*/
+	
+	/*Registro de Usuarios*/
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(9,'Editar Proveedor','1',1,3);
-	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(10,'Anular Proveedor','1',2,3);
-	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(11,'Editar Articulo','1',3,3);
-	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(12,'Codigos Articulo','1',4,3);
-	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(13,'Anular Articulo','1',5,3);
-	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(14,'Editar Servicio','1',6,3);
-	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(15,'Codigos Servicios','1',7,3);
-	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(16,'Anular Servicios','1',8,3);
-	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(17,'Editar Almacén','1',9,3);
-	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(18,'Anular Almacén','1',10,3);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(10,'Asignar Cuentas','1',1,3);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(11,'Anular Proveedor','1',2,3);
+	
+	/*Registro de Catalogo de Articulos*/
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(12,'Editar Articulo','1',3,3);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(13,'Codigos Articulo','1',4,3);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(14,'Anular Articulo','1',5,3);
+	
+	/*Registro de Catalogo de Servicios*/
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(15,'Editar Servicio','1',6,3);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(16,'Codigos Servicios','1',7,3);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(17,'Anular Servicios','1',8,3);
+	
+	/*Registro de Almacenes*/
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(18,'Editar Almacén','1',9,3);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(19,'Anular Almacén','1',10,3);
+	
+	
+	/*Modulo Filiacion*/*/
+	/*~~~~~~~~~~~~~~~~*/
+	
+	/*Registro de Pacientes*/
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(20,'Editar Paciente','1',9,4);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(21,'Asignar Seguro','1',9,4);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(22,'Anular Paciente','1',9,4);
+
+	/*Registro de Profesionales*/
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(23,'Editar Profesional','1',9,4);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(24,'Anular Profesional','1',9,4);
+
+	/*Registro de Consultorios*/
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(25,'Editar Consultorio','1',9,4);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(26,'Anular COnsultorio','1',9,4);
+	
+	/*Registro de Consultorios*/
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(27,'Editar Turno','1',9,4);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(28,'Asignar Horario','1',9,4);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(29,'Anular Turno','1',9,4);
+	
+	/*Registro de Citas*/
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(30,'Editar Cita','1',9,4);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(31,'Confirmar Atencion','1',9,4);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(32,'Anular Cita','1',9,4);
+	
+	/*Registro de Procedimientos*/
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(33,'Editar Procedimiento','1',9,4);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(34,'Generar Formula','1',9,4);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(35,'Anular Procedimiento','1',9,4);
+	
+	/*Registro de Historia Clinica*/
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(36,'Registrar Atencion','1',9,4);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(37,'Ver Historia','1',9,4);
+	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(38,'Anular Historia','1',9,4);
 	
 	
 	
@@ -2180,7 +2254,6 @@ CREATE TABLE permisos_botones  (
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(2,2,1);
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(3,3,1);
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(4,4,1);
-	
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(5,5,1);
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(6,6,1);
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(7,7,1);
@@ -2195,8 +2268,27 @@ CREATE TABLE permisos_botones  (
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(16,16,1);
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(17,17,1);
 	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(18,18,1);
-
-	
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(19,19,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(20,20,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(21,21,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(22,22,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(23,23,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(24,24,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(25,25,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(26,26,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(27,27,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(28,28,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(29,29,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(30,30,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(31,31,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(32,32,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(33,33,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(34,34,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(35,35,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(36,36,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(37,37,1);
+	INSERT INTO permisos_botones(idpermisosbotones,idboton,idusuario) VALUES(38,38,1);
+			
 CREATE TABLE tipo_cuenta (
 	idtipocuenta smallint(4) NOT NULL AUTO_INCREMENT,
 	tipo_cuenta varchar(20) NOT NULL,
