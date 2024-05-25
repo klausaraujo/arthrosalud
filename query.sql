@@ -16127,8 +16127,12 @@ create table turnos_detalle(
 	idturnodetalle smallint(4) NOT NULL AUTO_INCREMENT,
 	idturno smallint(4) NOT NULL,
 	fecha date,
-	entrada time,
-	salida time,
+	entrada1 time,
+	salida1 time,
+	entrada2 time,
+	salida2 time,
+	entrada3 time,
+	salida3 time,
 	PRIMARY KEY (idturnodetalle),
 	FOREIGN KEY (idturno) REFERENCES turnos (idturno) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;	
 
