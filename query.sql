@@ -2203,7 +2203,7 @@ CREATE TABLE botones  (
 	INSERT INTO botones(idboton,descripcion,tipo,orden,idmodulo) VALUES(19,'Anular Almacén','1',10,3);
 	
 	
-	/*Modulo Filiacion*/*/
+	/*Modulo Filiacion*/
 	/*~~~~~~~~~~~~~~~~*/
 	
 	/*Registro de Pacientes*/
@@ -3151,6 +3151,8 @@ CREATE TABLE paciente(
 	PRIMARY KEY (idpaciente),
 	FOREIGN KEY (idtipodocumento) REFERENCES tipo_documento (idtipodocumento) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (idestadocivil) REFERENCES estado_civil (idestadocivil) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
+	
+	INSERT INTO paciente(idpaciente,idtipodocumento,numero_documento,apellidos,nombres,fecnac,sexo,idestadocivil,ubigeo_domicilio,ubigeo_nacimiento) VALUES(1,1,' ',' ',' ','01/01/2000','1',1,'150101','150101');
 	
 CREATE TABLE cie10 (
 	idcie10 smallint(4) NOT NULL AUTO_INCREMENT,
