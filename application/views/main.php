@@ -75,6 +75,7 @@
 							}elseif($this->uri->segment(2) === 'turnos'){
 								if(!strlen($this->uri->segment(3))) $this->load->view('citas/turnos');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-turnos');
+								elseif($this->uri->segment(3) === 'detalle') $this->load->view('citas/detalle_turno');
 							}
 						}
 					?>

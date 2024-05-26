@@ -134,6 +134,8 @@ $route['citas/turnos/regturno'] = 'citas/regturno';
 $route['citas/citas'] = 'citas/citas';
 $route['citas/citas/nuevo'] = 'citas/calendario';
 $route['citas/citas/lista'] = 'citas/listacitas';
+$route['citas/turnos/detalle'] = 'citas/detalle_turno';
+$route['citas/turnos/regdetalle'] = 'citas/regdetalle';
 
 /**/
 $route['404_override'] = '';

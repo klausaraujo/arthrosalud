@@ -17,15 +17,16 @@ $(document).ready(function (){
 						let hrefAnular = 'href="'+base_url+'citas/turnos/anular?id='+data.idturno+'"';
 						let hrefAgregar = 'href="'+base_url+'citas/turnos/detalle?id='+data.idturno+'"';
 						let btnAccion =
-						'<div class="btn-group">' +
+						'<div class="btn-group">'+
 						/* Boton de edicion */
-						'<a title="Editar Turno" '+(data.activo === '1' && btnEdit? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEdit)?
+						'<a title="Editar Turno" '+(data.activo === '1' && btnEditTurno? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditTurno)?
 							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
 						/* Boton de Agregar detalle */
-						'<a title="Agregar detalle del Turno" '+(data.activo === '1' && btnAgregar? hrefAgregar:'')+' class="bg-light btnTable '+((data.activo === '0' 
-							|| !btnAgregar)? 'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/agregar.png" width="20"></a>'+
+						'<a title="Agregar detalle del Turno" '+(data.activo === '1' && btnAsignaTurno? hrefAgregar:'')+' class="bg-light btnTable '+ 
+							((data.activo === '0' || !btnAsignaTurno)? 'disabled':'')+' agregar" '+style+'>'+
+							'<img src="'+base_url+'public/images/iconos/agregar.png" width="20"></a>'+
 						/* Boton anular proveedor */
-						'<a title="Anular Turno" '+(data.activo === '1' && btnAnular? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnular)
+						'<a title="Anular Turno" '+(data.activo === '1' && btnAnulaTurno? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnulaTurno)
 							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
 						return btnAccion;
 					}
@@ -198,9 +199,6 @@ $(document).ready(function (){
 						/* Boton de edicion */
 						'<a title="Editar Cita" '+(data.activo === '1' && btnEdit? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEdit)?
 							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
-						/* Boton de Agregar detalle */
-						'<a title="Agregar detalle del Turno" '+(data.activo === '1' && btnAgregar? hrefAgregar:'')+' class="bg-light btnTable '+((data.activo === '0' 
-							|| !btnAgregar)? 'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/agregar.png" width="20"></a>'+
 						/* Boton anular cita */
 						'<a title="Anular Cita" '+(data.activo === '1' && btnAnular? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnular)
 							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
@@ -242,4 +240,51 @@ $('.iddep').bind('change', function(){
 			//console.log(data);
 		}
 	});
+});
+$('#guardar-horarios').bind('click', function(event){
+	event.preventDefault();
+	let tr = document.querySelectorAll('.f-horas'), idturno = $('#idturno').val(), json = {}, valida = false, data = [];
+	
+	$.each($(tr),function(i,e){
+		let f = $(e).find('.fecha'), e0 = $(e).find('.e'), e1 = $(e).find('.e1'), e2 = $(e).find('.e2');
+		let s = $(e).find('.s'), s1 = $(e).find('.s1'), s2 = $(e).find('.s2');
+		let sep0 = e0.val().split(':'), sep1 = s.val().split(':');
+		let en = '', en2 = '', en3 = '', sa = '', sa2 = '', sa3 = '';
+		if(parseInt(sep1[0]) > parseInt(sep0[0]) && parseInt(sep1[1]) >= parseInt(sep0[1]) && parseInt(sep0[0]) > 0){
+			en = e0.val(), sa = s.val(), valida = true;
+		}
+		sep0 = e1.val().split(':'), sep1 = s1.val().split(':');
+		if(parseInt(sep1[0]) > parseInt(sep0[0]) && parseInt(sep1[1]) >= parseInt(sep0[1]) && parseInt(sep0[0]) > 0){
+			en2 = e0.val(), sa2 = s.val(), valida = true;
+		}
+		sep0 = e2.val().split(':'), sep1 = s2.val().split(':');
+		if(parseInt(sep1[0]) > parseInt(sep0[0]) && parseInt(sep1[1]) >= parseInt(sep0[1]) && parseInt(sep0[0]) > 0){
+			en3 = e0.val(), sa3 = s.val(), valida = true;
+		}
+		if(valida)
+			data.push({idturno:idturno,fecha:f.val(),entrada1:en,salida1:sa,entrada2:en2,salida2:sa2,entrada3:en3,salida3:sa3});
+			
+		valida = false;
+	});
+	json.data = data;
+	json.detalle = { duracion: $('#duracion').val(), dep: $('#iddep').val(), cons: $('#idcons').val(), prof: $('#idprof').val() }
+	
+	if(json.data.length > 0){
+		$.ajax({
+			data: JSON.stringify(json),
+			url: base_url + 'citas/turnos/regdetalle',
+			method: 'POST',
+			dataType: 'JSON',
+			beforeSend: function(){
+				$('html, body').animate({ scrollTop: 0 }, 'fast');
+				$('.mensaje').removeClass('d-none');
+				$('.mensaje').html('<span class="spinner-border spinner-border-sm"></span>&nbsp;&nbsp;Cargando...');
+			},
+			success: function (data) {
+				console.log(data);
+				$('.mensaje').html(data.msg);
+				setTimeout(function(){ $('.mensaje').addClass('fade'); }, 2000);
+			}
+		});
+	}
 });

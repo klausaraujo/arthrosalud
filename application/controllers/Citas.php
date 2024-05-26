@@ -208,7 +208,7 @@ class Citas extends CI_Controller
 		$estab = $this->Citas_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
 		$dep = $this->Citas_model->querysqlwhere('iddepartamento,departamento','departamento',['activo' => 1]);
 		//$cons = $this->Citas_model->querysqlwhere('idconsultorio,consultorio','tipo_profesional',['activo' => 1]);
-		$prof = $this->Citas_model->querysqlwhere('idprofesional,nombres','profesional',['activo' => 1]);
+		$prof = $this->Citas_model->querysqlwhere('idprofesional,nombres,apellidos','profesional',['activo' => 1]);
 		$mes = $this->Citas_model->querysqlwhere('idmes,mes','mes',['activo' => 1]);
 		$anio = $this->Citas_model->querysqlwhere('anio','anio',['activo' => 1]);
 		
@@ -257,6 +257,62 @@ class Citas extends CI_Controller
 			$this->session->set_flashdata('flashMessage', 'El <b>Turno</b> ya se encuentra registrado');
 		}
 		header('location:'.base_url().'citas/turnos');
+	}
+	public function detalle_turno()
+	{
+		$this->load->model('Citas_model');
+		$turno = $this->Citas_model->listaturno(['idturno' => $this->input->get('id'),'t.activo' => 1]);
+		return $this->load->view('main',['turno' => $turno]);
+	}
+	public function regdetalle()
+	{
+		$this->load->model('Citas_model');
+		$json = file_get_contents('php://input');
+		$data = json_decode($json);
+		$msg = 'No se pudo registrar los Horarios';
+		
+		$dura = intval($data->detalle->duracion);
+		$dep = $data->detalle->dep;
+		$cons = $data->detalle->cons;
+		$prof = $data->detalle->prof;
+		$detalle = $data->data;
+		
+		if($this->Citas_model->borrar('turnos_detalle', ['idturno' => $detalle[0]->idturno])){
+			$borracitas = false;
+			if($this->db->empty_table('citas')) $borracitas = true;
+			
+			foreach($detalle as $row):
+				if($this->Citas_model->registrar('turnos_detalle', $row)){
+					$msg = 'Horarios Registrados';
+					// Diferencia entre las horas
+					$h1 = new DateTime($row->entrada1);
+					$h2 = new DateTime($row->salida1);
+					$dif = $h1->diff($h2);
+					// Minutos totales entre la Ultima hora y la primera 
+					$minutos = (intval($dif->format('%H')) * 60) + intval($dif->format('%i'));
+					// Cantidad de citas disponibles
+					$nrocitas = intval($minutos / intval($dura));
+					$cita = [];
+					for($i = 1; $i <= $nrocitas; $i++){
+						$hi = $h1->format('H:i');
+						// Variable temporal para formatear la hora final
+						$ht = $h1->modify('+'.$dura.' minutes');
+						$hf = $ht->format('H:i');
+						// Array para insertar los registros en la tabla citas
+						$cita[$i-1] = array(
+							'idconsultorio' => $cons,
+							'iddepartamento' => $dep,
+							'idprofesional' => $prof,
+							'idpaciente' => 1,
+							'entrada' => $hi,
+							'salida' => $hf,
+						);
+					}
+					if($borracitas) $this->Citas_model->registrarbatch('citas', $cita);
+				}
+			endforeach;
+		}
+		echo json_encode(['msg' => $msg]);
 	}
 	public function citas()
 	{

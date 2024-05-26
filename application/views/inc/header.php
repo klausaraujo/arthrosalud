@@ -65,6 +65,9 @@ a.disabled{ pointer-events: none; color: grey }
 .inputfile-2 + label:hover { color: #2128cf;border: 2px solid #2128cf; }
 
 .dataTable, thead, tr, th{ font-size: 0.75rem }
+
+.cabecera >div, .fila { border: 1px solid #d5845b; border-radius: 7px; color:#5550d7  }
+.hora { border:1px solid #dcdcdc; border-radius:7px }
 </style>
 <? if($this->uri->segment(2) === 'citas' && $this->uri->segment(3) === 'nuevo'){ ?>
 	<link rel="stylesheet" href="<?=base_url()?>/public/js/calendario/style.css">

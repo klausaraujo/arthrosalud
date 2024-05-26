@@ -113,7 +113,7 @@
 										</div>
 									</div>
 									<div class="container-fluid row"><hr class="col-sm-12"></div>
-									<div class="row my-1"><h6 style="font-weight:bold">Domicilio Nacimiento</h6></div>
+									<div class="row my-1"><h6 style="font-weight:bold">Ubigeo de Nacimiento</h6></div>
 									<div class="row mt-3">
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="dep">Departamento:</label>
 										<div class="col-md-6 col-lg-3">
@@ -152,7 +152,7 @@
 										</div>
 									</div>
 									<div class="container-fluid row"><hr class="col-sm-12"></div>
-									<div class="row my-1"><h6 style="font-weight:bold">Domicilio Actual</h6></div>
+									<div class="row my-1"><h6 style="font-weight:bold">Ubigeo Actual</h6></div>
 									<div class="row mt-3">
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="dep1">Departamento:</label>
 										<div class="col-md-6 col-lg-3">
@@ -225,16 +225,6 @@
 											</div>
 										</div>
 									</div>-->
-									<div class="row mt-1">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="contacto">Contacto:</label>
-										<div class="col-md-6 col-lg-4">
-											<div class="row">
-												<input type="text" class="form-control form-control-sm" name="contacto"
-													placeholder="Contacto" value="" />
-												<label class="invalid-feedback">Campo requerido</label>
-											</div>
-										</div>
-									</div>
 									<div class="row mt-3">
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="celular">Celular:</label>
 										<div class="col-md-6 col-lg-4">

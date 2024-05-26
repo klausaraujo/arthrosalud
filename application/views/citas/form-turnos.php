@@ -61,7 +61,7 @@
 													<option value="">-- Seleccione --</option>
 											<?
 												foreach($prof as $row):	?>
-													<option value="<?=$row->idprofesional;?>"><?=$row->nombres;?></option>
+													<option value="<?=$row->idprofesional;?>"><?=$row->apellidos.' '.$row->nombres;?></option>
 											<?	endforeach;	?>
 												</select>
 												<div class="invalid-feedback">Campo Requerido</div>
@@ -73,7 +73,6 @@
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
 												<select class="form-control form-control-sm" name="anio" id="anio" required="" >
-													<option value="">-- Seleccione --</option>
 											<?
 												foreach($anio as $row):
 													if(intval($row->anio) >= date('Y')){
@@ -92,7 +91,6 @@
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
 												<select class="form-control form-control-sm" name="idmes" id="idmes" required="" >
-													<option value="">-- Seleccione --</option>
 											<?
 												foreach($mes as $row):
 													if(intval($row->idmes) >= date('m')){
