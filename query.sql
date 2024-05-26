@@ -2096,7 +2096,7 @@ CREATE TABLE menu  (
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(14,4,'Registro Procesionales','0','medicos','fa fa-heartbeat');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(15,4,'Registro Consultorios','0','consultorios','fa fa-life-ring');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(16,4,'Registro de Turnos','0','turnos','fa fa-bars');
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(17,4,'Registro de Citas','0','citas','fa fa-window-maximize');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(17,4,'Registro de Citas','0','citas','fa fa-window-maximize');        
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(18,4,'Registro Procedimientos','0','citas','fa fa-window-maximize');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(19,4,'Historia Clinica','0','historia','fa fa-id-card-o');
 	
@@ -16142,7 +16142,9 @@ CREATE TABLE citas(
 	iddepartamento smallint(4) NOT NULL,
 	idprofesional smallint(4) NOT NULL,
 	idpaciente  smallint(4) NOT NULL,
+	idturno smallint(4),
 	tipo char(1) DEFAULT '0',
+	fecha date,
 	entrada time,
 	salida time,
 	observaciones varchar(1000),
