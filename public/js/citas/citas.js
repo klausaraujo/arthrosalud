@@ -18,36 +18,25 @@ $(document).ready(function (){
 						let hrefAgregar = 'href="'+base_url+'citas/turnos/detalle?id='+data.idturno+'"';
 						let btnAccion =
 						'<div class="btn-group">'+
-						/* Boton de edicion */
-						'<a title="Editar Turno" '+(data.activo === '1' && btnEditTurno? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditTurno)?
-							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
 						/* Boton de Agregar detalle */
 						'<a title="Agregar detalle del Turno" '+(data.activo === '1' && btnAsignaTurno? hrefAgregar:'')+' class="bg-light btnTable '+ 
 							((data.activo === '0' || !btnAsignaTurno)? 'disabled':'')+' agregar" '+style+'>'+
 							'<img src="'+base_url+'public/images/iconos/agregar.png" width="20"></a>'+
+						/* Boton de edicion */
+						'<a title="Editar Turno" '+(data.activo === '1' && btnEditTurno? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditTurno)?
+							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
 						/* Boton anular proveedor */
 						'<a title="Anular Turno" '+(data.activo === '1' && btnAnulaTurno? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnulaTurno)
 							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
 						return btnAccion;
 					}
 				},
-				{ data: 'consultorio' },{ data: 'departamento' },{ data: 'nombres' },{ data: 'apellidos' },{ data: 'anio' },{ data: 'mes' },
+				{ data: 'consultorio' },{ data: 'departamento' },{ data: 'nprof' },{ data: 'anio' },{ data: 'mes' },
 				{ data: 'duracion_consulta' },
-				/*{
-					data: 'activo',
-					render: function(data){
-						let var_status = '';
-						switch(data){
-							case '1': var_status = '<span class="text-success">Activo</span>'; break;
-							case '0': var_status = '<span class="text-danger">Inactivo</span>'; break;
-						}
-						return var_status;
-					}
-				},*/
 			],
 			columnDefs:[
-				{title:'Acciones',targets: 0},{title:'Consultorio',targets: 1},{title:'Area',targets: 2},{title:'Nombres',targets: 3},{title:'Apellidos',targets: 4},
-				{title:'A&ntilde;o',targets: 5},{title:'Mes',targets: 6},{title:'Duraci&oacute;n',targets: 7},//{title:'Status',targets: 8},
+				{title:'Acciones',targets: 0},{title:'Consultorio',targets: 1},{title:'Area',targets: 2},{title:'Profesional',targets: 3},
+				{title:'A&ntilde;o',targets: 4},{title:'Mes',targets: 5},{title:'Duraci&oacute;n',targets: 6},//{title:'Status',targets: 8},
 			], order: [],
 		});
 	}else if(segmento2 === 'medicos'){
@@ -133,7 +122,7 @@ $(document).ready(function (){
 				},*/
 			],
 			columnDefs:[
-				{title:'Acciones',targets: 0},{title:'Nombre Establecimiento',targets: 1},{title:'Consultorio',targets: 2},
+				{title:'Acciones',targets: 0},{title:'Establecimiento',targets: 1},{title:'Consultorio',targets: 2},
 			], order: [],
 		});
 	}else if(segmento2 === 'pacientes'){
@@ -193,33 +182,38 @@ $(document).ready(function (){
 					render: function(data){
 						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
 						let hrefEdit = 'href="'+base_url+'citas/citas/editar?id='+data.idcita+'"';
+						let hrefConfirmar = 'href="'+base_url+'citas/citas/confirmar?id='+data.idcita+'"';
 						let hrefAnular = 'href="'+base_url+'citas/citas/anular?id='+data.idcita+'"';
 						let btnAccion =
 						'<div class="btn-group">' +
 						/* Boton de edicion */
-						'<a title="Editar Cita" '+(data.activo === '1' && btnEdit? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEdit)?
+						'<a title="Asignar Paciente" '+(data.activo === '1' && btnAsignaCita? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAsignaCita)?
 							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
+						/* Boton de confirmacion */
+						'<a title="Confirmación de Cita" '+(data.activo === '1' && btnConfirmaCita? hrefConfirmar:'')+' class="bg-light btnTable '+((data.activo === '0' || 
+							!btnConfirmaCita)? 'disabled':'')+' confirma" '+style+'><img src="'+base_url+'public/images/iconos/evaluar_ico.png" '+
+							'width="18" style="max-height:20px"></a>'+
 						/* Boton anular cita */
-						'<a title="Anular Cita" '+(data.activo === '1' && btnAnular? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnular)
+						'<a title="Anular Cita" '+(data.activo === '1' && btnAnulaCita? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnulaCita)
 							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
 						return btnAccion;
 					}
 				},
-				{ data: 'consultorio' },{ data: 'departamento' },{ data: 'nombres' },{ data: 'apellidos' },{ data: 'entrada' },{ data: 'salida' },
+				{ data: 'consultorio' },{ data: 'departamento' },{ data: 'nprof' },{ data: 'npac' },{ data: 'entrada' },{ data: 'salida' },
 				{
-					data: 'atendido',
+					data: 'idpaciente',
 					render: function(data){
 						let var_status = '';
 						switch(data){
-							case '1': var_status = '<span class="text-success">Atendido</span>'; break;
-							case '0': var_status = '<span class="text-danger">Pendiente</span>'; break;
+							case '>1': var_status = '<span class="text-success">Asignado</span>'; break;
+							case '1': var_status = '<span class="text-danger">Por Asignar</span>'; break;
 						}
 						return var_status;
 					}
 				},
 			],
 			columnDefs:[
-				{title:'Acciones',targets: 0},{title:'Consultorio',targets: 1},{title:'Area',targets: 2},{title:'M&eacute;dico',targets: 3},{title:'Paciente',targets: 4},
+				{title:'Acciones',targets: 0},{title:'Consultorio',targets: 1},{title:'Area',targets: 2},{title:'Profesional',targets: 3},{title:'Paciente',targets: 4},
 				{title:'H.Entrada',targets: 5},{title:'H.Salida',targets: 6},{title:'Status',targets: 7},//{title:'Status',targets: 8},
 			], order: [],
 		});
@@ -277,13 +271,17 @@ $('#guardar-horarios').bind('click', function(event){
 			dataType: 'JSON',
 			beforeSend: function(){
 				$('html, body').animate({ scrollTop: 0 }, 'fast');
-				$('.mensaje').removeClass('d-none');
+				//$('.mensaje').removeClass('d-none');
 				$('.mensaje').html('<span class="spinner-border spinner-border-sm"></span>&nbsp;&nbsp;Cargando...');
 			},
 			success: function (data) {
-				console.log(data);
+				//console.log(data);
 				$('.mensaje').html(data.msg);
-				setTimeout(function(){ $('.mensaje').addClass('fade'); }, 2000);
+				setTimeout(function(){
+					$('.mensaje').addClass('fade');
+					window.location.href = base_url + 'citas/turnos/detalle?id=' + data.id;
+				}, 1000);
+				
 			}
 		});
 	}

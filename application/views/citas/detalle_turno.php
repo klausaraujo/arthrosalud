@@ -47,15 +47,39 @@
 														case 4: $dia = 'Jueves'; break; case 5: $dia = 'Viernes'; break; case 6: $dia = 'S&aacute;bado'; break;
 														case 7: $dia = 'Domingo'; break;
 													}
+													$f = date('Y-m-d',strtotime($turno->anio.'-'.$turno->idmes.'-'.$i));
+													
+													//Sacar los horarios que ya estan asignados
+													$e = '00:00'; $e1 = '00:00'; $e2 = '00:00'; $s = '00:00'; $s1 = '00:00'; $s2 = '00:00';
+													$ce = ''; $ce1 = ''; $ce2 = ''; $cs = ''; $cs1 = ''; $cs2 = '';
+													foreach($horas as $row):
+														if($row->fecha === $f){
+															$e = $row->entrada1; $e1 = $row->entrada2; $e2 = $row->entrada3;
+															$s = $row->salida1; $s1 = $row->salida2; $s2 = $row->salida3;
+															$sep = explode(':',$row->entrada1); $sep1 = explode(':',$row->entrada2);
+															$sep2 = explode(':',$row->entrada3);
+															$part = explode(':',$row->salida1); $part1 = explode(':',$row->salida2);
+															$part2 = explode(':',$row->salida3);
+															$ce = intval($sep[0]) || intval($sep[1])? 'bg-primary' : '';
+															$ce1 = intval($sep1[0]) || intval($sep1[1])? 'bg-primary' : '';
+															$ce2 = intval($sep2[0]) || intval($sep2[1])? 'bg-primary' : '';
+															$cs = intval($part[0]) || intval($part[1])? 'bg-primary' : '';
+															$cs1 = intval($part1[0]) || intval($part1[1])? 'bg-primary' : '';
+															$cs2 = intval($part2[0]) || intval($part2[1])? 'bg-primary' : '';
+														}
+													endforeach;
 											?>
 														<tr class="f-horas">
 															<td style="background-color: rgba(0, 0, 0, 0.06);">
-																<input type="hidden" name="fecha" class="fecha" value="<?=date('Y-m-d',
-																	strtotime($turno->anio.'-'.$turno->idmes.'-'.$i))?>" /><?=$dia;?></td>
+																<input type="hidden" name="fecha" class="fecha" value="<?=$f?>" /><?=$dia;?>
+															</td>
 															<td style="background-color: rgba(0, 0, 0, 0.06);"><?=$i;?></td>
-															<td><input type="time" class="hora e" value="00:00"/></td><td><input type="time" class="hora s" value="00:00"/></td>
-															<td><input type="time" class="hora e1" value="00:00"/></td><td><input type="time" class="hora s1" value="00:00"/></td>
-															<td><input type="time" class="hora e2" value="00:00"/></td><td><input type="time" class="hora s2" value="00:00"/></td>
+															<td><input type="time" class="hora e <?=$ce?>" value="<?=$e?>"/></td>
+															<td><input type="time" class="hora s <?=$cs?>" value="<?=$s?>"/></td>
+															<td><input type="time" class="hora e1 <?=$ce1?>" value="<?=$e1?>"/></td>
+															<td><input type="time" class="hora s1 <?=$cs1?>" value="<?=$s1?>"/></td>
+															<td><input type="time" class="hora e2 <?=$ce2?>" value="<?=$e2?>"/></td>
+															<td><input type="time" class="hora s2 <?=$cs2?>" value="<?=$s2?>"/></td>
 														</tr>
 											<?	}	?>
 													</tbody>

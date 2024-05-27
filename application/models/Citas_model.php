@@ -18,7 +18,7 @@ class Citas_model extends CI_Model
 	}
 	public function listaturnos()
 	{
-		$this->db->select('t.*,c.consultorio,d.departamento,p.nombres,p.apellidos,m.mes');
+		$this->db->select('t.*,c.consultorio,d.departamento,CONCAT(p.nombres," ",p.apellidos) as nprof,m.mes');
 		$this->db->from('turnos t');
 		$this->db->join('consultorio c','t.idconsultorio=c.idconsultorio');
 		$this->db->join('departamento d','t.iddepartamento=d.iddepartamento');
@@ -53,7 +53,8 @@ class Citas_model extends CI_Model
 	}
 	public function listacitas()
 	{
-		$this->db->select('t.*,c.consultorio,d.departamento,p.nombres,pa.apellidos');
+		$this->db->select('t.*,DATE_FORMAT(t.entrada,"%H:%m") as entrada,DATE_FORMAT(t.salida,"%H:%m") as salida,c.consultorio,
+			d.departamento,CONCAT(p.nombres," ",p.apellidos) as nprof,CONCAT(pa.nombres," ",pa.apellidos) as npac');
 		$this->db->from('citas t');
 		$this->db->join('consultorio c','t.idconsultorio=c.idconsultorio');
 		$this->db->join('departamento d','t.iddepartamento=d.iddepartamento');

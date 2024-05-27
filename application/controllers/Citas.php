@@ -262,7 +262,8 @@ class Citas extends CI_Controller
 	{
 		$this->load->model('Citas_model');
 		$turno = $this->Citas_model->listaturno(['idturno' => $this->input->get('id'),'t.activo' => 1]);
-		return $this->load->view('main',['turno' => $turno]);
+		$horas = $this->Citas_model->querysqlwhere('*','turnos_detalle',['idturno' => $this->input->get('id')]);
+		return $this->load->view('main',['turno' => $turno, 'horas' => $horas]);
 	}
 	public function regdetalle()
 	{
@@ -279,7 +280,7 @@ class Citas extends CI_Controller
 		
 		if($this->Citas_model->borrar('turnos_detalle', ['idturno' => $detalle[0]->idturno])){
 			$borracitas = false;
-			if($this->db->empty_table('citas')) $borracitas = true;
+			if($this->Citas_model->borrar('citas',['idturno' => $detalle[0]->idturno])) $borracitas = true;
 			
 			foreach($detalle as $row):
 				if($this->Citas_model->registrar('turnos_detalle', $row)){
@@ -304,6 +305,8 @@ class Citas extends CI_Controller
 							'iddepartamento' => $dep,
 							'idprofesional' => $prof,
 							'idpaciente' => 1,
+							'idturno' => $row->idturno,
+							'fecha' => $row->fecha,
 							'entrada' => $hi,
 							'salida' => $hf,
 						);
@@ -312,7 +315,8 @@ class Citas extends CI_Controller
 				}
 			endforeach;
 		}
-		echo json_encode(['msg' => $msg]);
+		
+		echo json_encode(['msg' => $msg,'id' => $detalle[0]->idturno]);
 	}
 	public function citas()
 	{
