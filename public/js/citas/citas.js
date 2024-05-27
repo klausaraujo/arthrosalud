@@ -173,6 +173,10 @@ $(document).ready(function (){
 		grillappal = $('#tablaCitas').DataTable({
 			ajax: {
 				url: base_url + 'citas/citas/lista',
+				type: 'POST',
+				data: function(d){
+
+				}
 			},
 			bAutoWidth:false, bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
 			columns:[

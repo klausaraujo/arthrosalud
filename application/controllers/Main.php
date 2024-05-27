@@ -96,8 +96,25 @@ class Main extends CI_Controller
 		endforeach;
 		$bot = $this->Usuarios_model->buscaPerByModByUser(['idusuario' => $this->usuario->idusuario,'idmodulo' => $idmodulo,'b.activo' => 1]);
 		$this->session->set_userdata('perCitas', json_encode($bot));
+
+		$this->load->model('Citas_model');
+		$estab = $this->Citas_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
+		$dep = $this->Citas_model->querysqlwhere('iddepartamento,departamento','departamento',['activo' => 1]);
+		$cons = $this->Citas_model->querysqlwhere('idconsultorio,consultorio','consultorio',['activo' => 1]);
+		$prof = $this->Citas_model->querysqlwhere('idprofesional,nombres,apellidos','profesional',['activo' => 1]);
+		$mes = $this->Citas_model->querysqlwhere('idmes,mes','mes',['activo' => 1]);
+		$anio = $this->Citas_model->querysqlwhere('anio','anio',['activo' => 1]);
+
+		$data = array(
+			'dep' => $dep,
+			'estab' => $estab,
+			'cons' => $cons,
+			'prof' => $prof,
+			'mes' => $mes,
+			'anio' => $anio,
+		);
 		
-		$this->load->view('main');
+		$this->load->view('main', $data);
 	}
 	public function perfil(){ $this->load->view('main'); }
 	public function password()
