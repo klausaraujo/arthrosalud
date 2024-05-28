@@ -136,6 +136,8 @@ $route['citas/citas/nuevo'] = 'citas/calendario';
 $route['citas/citas/lista'] = 'citas/listacitas';
 $route['citas/citas/buscarpacientes'] = 'citas/listaPacServer';
 $route['citas/citas/asignapaciente'] = 'citas/asignarpaciente';
+$route['citas/citas/desasignar'] = 'citas/despaciente';
+$route['citas/citas/cerrar'] = 'citas/cerrar';
 $route['citas/turnos/detalle'] = 'citas/detalle_turno';
 $route['citas/turnos/regdetalle'] = 'citas/regdetalle';
 

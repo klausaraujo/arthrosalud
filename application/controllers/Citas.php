@@ -347,8 +347,20 @@ class Citas extends CI_Controller
 		}
 		echo json_encode(['msg' => $msg]);
 	}
-	public function calendario()
+	public function despaciente()
 	{
-		return $this->load->view('main');
+		$this->load->model('Citas_model'); $msg = 'No se pudo eliminar la asignaci&oacute;n';
+		if($this->Citas_model->actualizar('citas', ['idpaciente' => 1,'observaciones' => ''], ['idcita' => $this->input->get('id')])){
+			$msg = 'Se elimin&oacute; la asignaci&oacute;n';
+		}
+		echo json_encode(['msg' => $msg]);
+	}
+	public function cerrar()
+	{
+		$this->load->model('Citas_model'); $msg = 'No se pudo Confirmar';
+		if($this->Citas_model->actualizar('citas', ['atendido' => 1], ['idcita' => $this->input->get('id')])){
+			$msg = 'Se confirm&oacute; la cita';
+		}
+		echo json_encode(['msg' => $msg]);
 	}
 }

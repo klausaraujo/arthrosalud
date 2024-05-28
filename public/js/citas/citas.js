@@ -192,21 +192,22 @@ $(document).ready(function (){
 					render: function(data){
 						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
 						let hrefEdit = 'href="'+base_url+'citas/citas/editar?id='+data.idcita+'"';
-						let hrefConfirmar = 'href="'+base_url+'citas/citas/confirmar?id='+data.idcita+'"';
+						let hrefConfirmar = 'href="'+base_url+'citas/citas/cerrar?id='+data.idcita+'"';
 						let hrefAnular = 'href="'+base_url+'citas/citas/desasignar?id='+data.idcita+'"';
 						let btnAccion =
 						'<div class="btn-group">' +
 						/* Boton de edicion */
-						'<a title="Asignar Paciente" '+(data.activo === '1' && btnAsignaCita? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAsignaCita)?
+						'<a title="Asignar Paciente" '+(data.atendido === '0' && data.idpaciente === '1' && btnAsignaCita? hrefEdit:'')+' class="bg-light btnTable '+
+							((data.idpaciente !== '1' || !btnAsignaCita || data.atendido === '1')?
 							'disabled':'')+' asigna" '+style+' data-target="#modalAsigna" data-toggle="modal"><img src="'+base_url+'public/images/iconos/edit_ico.png"'+
 							' width="20"></a>'+
 						/* Boton de confirmacion */
-						'<a title="Confirmación de Cita" '+(data.activo === '1' && btnConfirmaCita? hrefConfirmar:'')+' class="bg-light btnTable '+((data.activo === '0' || 
-							!btnConfirmaCita)? 'disabled':'')+' confirma" '+style+'><img src="'+base_url+'public/images/iconos/evaluar_ico.png" '+
-							'width="18" style="max-height:20px"></a>'+
+						'<a title="Confirmación de Cita" '+(data.atendido === '0' && data.idpaciente !== '1' && btnConfirmaCita? hrefConfirmar:'')+
+							' class="bg-light btnTable '+((data.idpaciente === '1' || !btnConfirmaCita || data.atendido === '1')? 'disabled':'')+
+							' cerrar" '+style+'><img src="'+base_url+'public/images/iconos/evaluar_ico.png" width="18" style="max-height:20px"></a>'+
 						/* Boton anular cita */
-						'<a title="Desasignar" '+(data.idpaciente !== '1' && btnAnulaCita? hrefAnular:'')+' class="bg-light btnTable '+
-							((data.idpaciente === '1' || !btnAnulaCita)
+						'<a title="Desasignar" '+(data.atendido === '0' || data.idpaciente !== '1' && btnAnulaCita? hrefAnular:'')+' class="bg-light btnTable '+
+							((data.idpaciente === '1' || !btnAnulaCita || data.atendido === '1')
 							?'disabled':'')+' desasignar" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
 						return btnAccion;
 					}
@@ -339,9 +340,47 @@ $('.wrapper-c').bind('click',function(e){
 	}
 });
 $('#tablaCitas').on('click', function(e){
-	let img = e.target, tr = img.closest('tr');
+	let img = e.target, tr = img.closest('tr'), a = img.closest('a');
 	let fila = grillappal.row($(tr)).data();
-	$('#idcita').val(fila.idcita);
+	
+	if($(a).hasClass('asigna')) $('#idcita').val(fila.idcita);
+	else if($(a).hasClass('desasignar')){
+		event.preventDefault();
+		let c = confirm('Desea eliminar la asignación?');
+		
+		if(c){
+			$.ajax({
+				data: {},
+				url: $(a).attr('href'),
+				method: 'GET',
+				dataType: 'JSON',
+				beforeSend: function(){},
+				success: function(data){
+					grillappal.ajax.reload();
+					$('.msg').html(data.msg);
+					setTimeout(function(){ $('.msg').hide('slow'); }, 3000);
+				}
+			});
+		}
+	}else if($(a).hasClass('cerrar')){
+		event.preventDefault();
+		let c = confirm('Desea confirmar la cita?');
+		
+		if(c){
+			$.ajax({
+				data: {},
+				url: $(a).attr('href'),
+				method: 'GET',
+				dataType: 'JSON',
+				beforeSend: function(){},
+				success: function(data){
+					grillappal.ajax.reload();
+					$('.msg').html(data.msg);
+					setTimeout(function(){ $('.msg').hide('slow'); }, 3000);
+				}
+			});
+		}
+	}
 });
 $('#tablaPacientes').on('dblclick','tr',function(){
 	let data = tablaPacientes.row( this ).data();
@@ -355,7 +394,6 @@ $('#modalAsigna').on('hidden.bs.modal',function(e){
 	$('#obs').val('');
 });
 $('#asigna').bind('click',function(){
-	
 	if($('#paciente').val() !== ''){
 		$.ajax({
 			data: { idpaciente: $('#idpaciente').val(), idcita: $('#idcita').val(), obs: $('#obs').val() },
