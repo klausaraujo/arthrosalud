@@ -1,9 +1,37 @@
 						<div class="col-12 card px-0 my-3">
 							<div class="card-body">
-								<div class="row"><h4 class="">Citas</h4></div>
-								<hr>
+								<div class="container-fluid px-0 mx-0">
+									<h4 class="float-left my-0">Citas</h4>
+									<a href="#" class="btn btn-sabogal float-right">Nueva Cita</a>
+								</div>
+								<hr class="row mt-5 mx-1">
 								<div class="row">
-									<div class="float-left col-md-7 col-lg-6">
+									<div class="float-left col-md-5 col-lg-4 mt-sm-2">
+										<div class="wrapper-c">
+											<header>
+												<input type="hidden" class="mes" />
+												<p class="current-date"></p>
+												<div class="icons" style="font-size:0.6em">
+													<span id="prev"><i class="fas fa-less-than"></i></span>
+													&nbsp;&nbsp;&nbsp;&nbsp;<span id="next"><i class="fas fa-greater-than"></i></span>
+												</div>
+											</header>
+											<hr class="c-hr">
+											<div class="calendar">
+												<ul class="weeks">
+													<li>Dom</li>
+													<li>Lun</li>
+													<li>Mar</li>
+													<li>Mie</li>
+													<li>Jue</li>
+													<li>Vie</li>
+													<li>Sab</li>
+												</ul>
+												<ul class="days"></ul>
+											</div>
+										</div>
+									</div>
+									<div class="float-right col-md-7 col-lg-6 mt-md-5">
 										<input type="hidden" class="m" value="<?=date('n')?>" />
 										<input type="hidden" class="d" value="<?=date('j')?>" />
 										<div class="row">
@@ -81,41 +109,10 @@
 											</div>
 										</div>
 									</div>
-									<div class="float-left col-md-5 col-lg-4 mt-sm-2">
-										<div class="wrapper-c">
-											<header>
-												<input type="hidden" class="mes" />
-												<p class="current-date"></p>
-												<div class="icons" style="font-size:0.6em">
-													<span id="prev"><i class="fas fa-less-than"></i></span>
-													&nbsp;&nbsp;&nbsp;&nbsp;<span id="next"><i class="fas fa-greater-than"></i></span>
-												</div>
-											</header>
-											<hr class="c-hr">
-											<div class="calendar">
-												<ul class="weeks">
-													<li>Dom</li>
-													<li>Lun</li>
-													<li>Mar</li>
-													<li>Mie</li>
-													<li>Jue</li>
-													<li>Vie</li>
-													<li>Sab</li>
-												</ul>
-												<ul class="days"></ul>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-4 col-lg-2">
-										<div class="float-right"><a href="<?=base_url()?>citas/citas/nuevo" class="btn btn-sabogal mt-2">Nueva Cita</a></div>
-									</div>
 								</div>
 							</div>
-							<div class="row justify-content-center py-2">
-								<?if($this->session->flashdata('claseMsg')){?><div class="alert <?=$this->session->flashdata('claseMsg')?> py-1 px-5 fade show" role="alert">
-									<div class="iq-alert-text"><?=$this->session->flashdata('flashMessage')?></div>
-								</div><?}?>
-								<div class="msg"></div>
+							<div class="row justify-content-center">
+								<div class="msg">&nbsp;</div>
 							</div>
 							<div class="container-fluid">
 								<div class="row"> <!--class="table-responsive" -->
@@ -124,6 +121,36 @@
 										<!--<table id="tablaProveedores" class="table table-striped dt-responsive table-bordered display nowrap table-hover mb-0 mx-auto"></table>-->
 										<!--<table id="tablaProveedores" class="table table-striped table-hover table-bordered mx-auto"></table>-->
 										<table id="tablaCitas" class="table table-striped table-hover table-bordered mb-0 mx-auto" style="width:100%"></table>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="modal fade" id="modalAsigna" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-lg" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="myModalLabel">Asignar Paciente</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									</div>
+									<div class="modal-body" style="overflow: hidden;">
+										<input type="hidden" id="idcita" />
+										<div class="container-fluid">
+											<div class="row">
+												<div class="col-12 mx-auto" style="overflow-x:auto">
+													<table id="tablaPacientes" class="table table-striped dt-responsive table-bordered display nowrap table-hover mb-0 mx-0" style="width:100%">
+														<thead><tr><th>Nombres</th><th>Apellidos</th><th>Nro. Doc</th><th>Correo</th><th>item</th></tr></thead>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="modal-footer">
+										<div class="row">
+											<div class="col-md-12">
+												<button class="btn btn-light mr-3" data-dismiss="modal">Cancelar</button>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>

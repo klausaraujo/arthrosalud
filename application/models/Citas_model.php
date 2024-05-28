@@ -101,4 +101,11 @@ class Citas_model extends CI_Model
 		if ($this->db->insert_batch($t, $data)) return 1;
 		else return 0;
 	}
+	public function actualizar($t, $data, $where)
+	{
+		$this->db->db_debug = TRUE;
+		$this->db->where($where);
+		if($this->db->update($t, $data)) return true;
+        else return false;
+	}
 }

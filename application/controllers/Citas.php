@@ -39,6 +39,16 @@ class Citas extends CI_Controller
 		$cons = $this->Citas_model->listaconsultorios();
 		echo json_encode(['data' => $cons]);
 	}
+	public function listaPacServer()
+	{
+		$this->load->library('datatables_server_side', array(
+			'table' => 'paciente',
+			'primary_key' => 'idpaciente',
+			'columns' => array('nombres','apellidos','numero_documento','correo','idpaciente'),
+			'where' => array('activo' => 1,'idpaciente >' => 1),
+		));
+		$this->datatables_server_side->process();
+	}
 	public function listacitas()
 	{
 		$data = array(
@@ -327,9 +337,14 @@ class Citas extends CI_Controller
 		
 		echo json_encode(['msg' => $msg,'id' => $detalle[0]->idturno]);
 	}
-	public function citas()
+	public function asignarpaciente()
 	{
-		return $this->load->view('main');
+		$this->load->model('Citas_model'); $msg = 'No se pudo asignar la cita';
+		
+		if($this->Citas_model->actualizar('citas', ['idpaciente' => $this->input->post('idpaciente')], ['idcita' => $this->input->post('idcita')])){
+			$msg = 'Se asign&oacute; el Paciente';
+		}
+		echo json_encode(['msg' => $msg]);
 	}
 	public function calendario()
 	{

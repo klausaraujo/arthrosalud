@@ -1,4 +1,4 @@
-let grillappal = null;
+let grillappal = null, tablaPacientes = null;
 
 $(document).ready(function (){
 	if(segmento2 === 'turnos'){
@@ -198,14 +198,15 @@ $(document).ready(function (){
 						'<div class="btn-group">' +
 						/* Boton de edicion */
 						'<a title="Asignar Paciente" '+(data.activo === '1' && btnAsignaCita? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAsignaCita)?
-							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
+							'disabled':'')+' asigna" '+style+' data-target="#modalAsigna" data-toggle="modal"><img src="'+base_url+'public/images/iconos/edit_ico.png"'+
+							' width="20"></a>'+
 						/* Boton de confirmacion */
 						'<a title="Confirmación de Cita" '+(data.activo === '1' && btnConfirmaCita? hrefConfirmar:'')+' class="bg-light btnTable '+((data.activo === '0' || 
 							!btnConfirmaCita)? 'disabled':'')+' confirma" '+style+'><img src="'+base_url+'public/images/iconos/evaluar_ico.png" '+
 							'width="18" style="max-height:20px"></a>'+
 						/* Boton anular cita */
-						'<a title="Anular Cita" '+(data.activo === '1' && btnAnulaCita? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnulaCita)
-							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
+						'<a title="Desasignar" '+(data.idpaciente !== '1' && btnAnulaCita? hrefAnular:'')+' class="bg-light btnTable '+((data.idpaciente === '1' || !btnAnulaCita)
+							?'disabled':'')+' desasignar" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
 						return btnAccion;
 					}
 				},
@@ -214,10 +215,9 @@ $(document).ready(function (){
 					data: 'idpaciente',
 					render: function(data){
 						let var_status = '';
-						switch(data){
-							case '>1': var_status = '<span class="text-success">Asignado</span>'; break;
-							case '1': var_status = '<span class="text-danger">Por Asignar</span>'; break;
-						}
+						if(data === '1') var_status = '<span class="text-danger">Por Asignar</span>';
+						else var_status = '<span class="text-success">Asignado</span>';
+						
 						return var_status;
 					}
 				},
@@ -226,6 +226,22 @@ $(document).ready(function (){
 				{title:'Acciones',targets: 0},{title:'Consultorio',targets: 1},{title:'Area',targets: 2},{title:'Profesional',targets: 3},{title:'Paciente',targets: 4},
 				{title:'H.Entrada',targets: 5},{title:'H.Salida',targets: 6},{title:'Status',targets: 7},//{title:'Status',targets: 8},
 			], order: [],
+		});
+		tablaPacientes = $('#tablaPacientes').DataTable({
+			processing: true,
+			serverSide: true,
+			ajax:{
+				url: base_url + 'citas/citas/buscarpacientes',
+				type: 'GET',
+				error: function(){
+					$("#post_list_processing").css('display','none');
+				}
+			},
+			columns:[
+				{ data: 0 },{ data: 1 },{ data: 2 },{ data: 3 },{ data: 4, visible: false },
+			],
+			dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
+			colReorder: { order: [ 4, 3, 2, 1, 0 ] }, language: lngDataTable,
 		});
 	}
 });
@@ -320,4 +336,30 @@ $('.wrapper-c').bind('click',function(e){
 		$('.m').val($('.mes').val());
 		grillappal.ajax.reload();
 	}
+});
+$('#tablaCitas').on('click', function(e){
+	let img = e.target, tr = img.closest('tr');
+	let fila = grillappal.row($(tr)).data();
+	$('#idcita').val(fila.idcita);
+});
+$('#tablaPacientes').on('dblclick','tr',function(){
+	let data = tablaPacientes.row( this ).data();
+	$.ajax({
+		data: { idpaciente: data[4], idcita: $('#idcita').val() },
+		url: base_url + 'citas/citas/asignapaciente',
+		method: 'POST',
+		dataType: 'JSON',
+		beforeSend: function(){
+			//$('html, body').animate({ scrollTop: 0 }, 'fast');
+			$('.msg').html('<span class="spinner-border spinner-border-sm"></span>');
+		},
+		success: function(data){
+			$('.msg').html(data.msg);
+			$('#modalAsigna').modal('hide');
+			setTimeout(function(){ $('.msg').addClass('fade'); }, 1500);
+		}
+	});
+});
+$('#modalAsigna').on('hidden.bs.modal',function(e){
+	tablaPacientes.ajax.reload();
 });
