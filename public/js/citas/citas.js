@@ -193,7 +193,7 @@ $(document).ready(function (){
 						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
 						let hrefEdit = 'href="'+base_url+'citas/citas/editar?id='+data.idcita+'"';
 						let hrefConfirmar = 'href="'+base_url+'citas/citas/confirmar?id='+data.idcita+'"';
-						let hrefAnular = 'href="'+base_url+'citas/citas/anular?id='+data.idcita+'"';
+						let hrefAnular = 'href="'+base_url+'citas/citas/desasignar?id='+data.idcita+'"';
 						let btnAccion =
 						'<div class="btn-group">' +
 						/* Boton de edicion */
@@ -350,10 +350,12 @@ $('#tablaPacientes').on('dblclick','tr',function(){
 });
 $('#modalAsigna').on('hidden.bs.modal',function(e){
 	tablaPacientes.ajax.reload();
+	grillappal.ajax.reload();
 	$('#paciente').val('');
 	$('#obs').val('');
 });
 $('#asigna').bind('click',function(){
+	
 	if($('#paciente').val() !== ''){
 		$.ajax({
 			data: { idpaciente: $('#idpaciente').val(), idcita: $('#idcita').val(), obs: $('#obs').val() },
@@ -362,9 +364,10 @@ $('#asigna').bind('click',function(){
 			dataType: 'JSON',
 			beforeSend: function(){
 				//$('html, body').animate({ scrollTop: 0 }, 'fast');
-				$('.msg').html('<span class="spinner-border spinner-border-sm"></span>');
+				$('#asigna').html('<span class="spinner-border spinner-border-sm"></span> Cargando...');
 			},
 			success: function(data){
+				$('#asigna').html('Asignar');
 				$('.msg').html(data.msg);
 				$('#modalAsigna').modal('hide');
 				setTimeout(function(){ $('.msg').addClass('fade'); }, 1500);
