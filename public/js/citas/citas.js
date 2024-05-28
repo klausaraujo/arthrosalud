@@ -179,6 +179,8 @@ $(document).ready(function (){
 					d.iddepartamento = $('.cdep').val();
 					d.idprofesional = $('.cprof').val();
 					d.anio = $('.canio').val();
+					d.mes = $('.m').val();
+					d.dia = $('.d').val();
 					d.activo = 1;
 				}
 			},
@@ -307,5 +309,15 @@ $('#guardar-horarios').bind('click', function(event){
 				
 			}
 		});
+	}
+});
+$('.wrapper-c').bind('click',function(e){
+	let evt = e.target;
+	if($(evt).prop('class') === 'regular' || $(evt).prop('class') === 'inactive' || $(evt).prop('class') === 'active'){
+		$(this).find('.active').removeClass('active');
+		$(evt).addClass('active');
+		$('.d').val($(evt).text());
+		$('.m').val($('.mes').val());
+		grillappal.ajax.reload();
 	}
 });

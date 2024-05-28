@@ -1,6 +1,7 @@
 const daysTag = document.querySelector('.days'),
 currentDate = document.querySelector('.current-date'),
-prevNextIcon = document.querySelectorAll('.icons span');
+prevNextIcon = document.querySelectorAll('.icons span'),
+mes = document.querySelector('.mes');
 
 // getting new date, current year and month
 let date = new Date(),
@@ -19,7 +20,7 @@ const renderCalendar = () => {
     let liTag = '';
 
     for (let i = firstDayofMonth; i > 0; i--) { // creating li of previous month last days
-        liTag += `<li class="inactive">${lastDateofLastMonth - i + 1}</li>`;
+        liTag += `<li class="deshabilitado">${lastDateofLastMonth - i + 1}</li>`;
 		//liTag += `<li class="inactive">&nbsp;</li>`;
     }
 
@@ -39,10 +40,11 @@ const renderCalendar = () => {
     }
 
     for (let i = lastDayofMonth; i < 6; i++) { // creating li of next month first days
-        liTag += `<li class="inactive">${i - lastDayofMonth + 1}</li>`
+        liTag += `<li class="deshabilitado">${i - lastDayofMonth + 1}</li>`
 		//liTag += `<li class="inactive">&nbsp;</li>`;
     }
     currentDate.innerText = `${months[currMonth]} ${currYear}`; // passing current mon and yr as currentDate text
+	mes.value = `${currMonth+1}`;
     daysTag.innerHTML = liTag;
 }
 renderCalendar();

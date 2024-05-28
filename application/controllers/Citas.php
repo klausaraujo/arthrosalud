@@ -46,6 +46,8 @@ class Citas extends CI_Controller
 			't.iddepartamento' => $this->input->post('iddepartamento'),
 			't.idprofesional' => $this->input->post('idprofesional'),
 			'DATE_FORMAT(t.fecha,"%Y")' => $this->input->post('anio'),
+			'DATE_FORMAT(t.fecha,"%c")' => $this->input->post('mes'),
+			'DATE_FORMAT(t.fecha,"%e")' => $this->input->post('dia'),
 			't.activo' => 1,
 		);
 		$this->load->model('Citas_model');

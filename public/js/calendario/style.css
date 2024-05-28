@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 .wrapper-c{
-  max-width: 240px;
+  min-width: 300px;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 15px 40px rgba(0,0,0,0.12);
@@ -59,7 +59,8 @@ header .current-date{ font-size: 1.2em; font-weight: 500; margin:0 }
 .calendar .weeks, .calendar .days{ margin: 0; padding: 0 }
 
 .calendar .days li{ z-index: 1; cursor: pointer; position: relative; margin-top: 15px; }
-.days li.inactive{ color: #dfdede; pointer-events: none; }/*#eeeded*/
+.days li.inactive{ color: #dfdede; /*pointer-events: none;*/ }/*#eeeded*/
+.days li.deshabilitado{ color: #dfdede; pointer-events: none; }/*#eeeded*/
 .days li.active{ color: #fff; }
 .days li::before{
   position: absolute;

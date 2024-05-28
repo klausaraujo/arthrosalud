@@ -69,7 +69,7 @@ a.disabled{ pointer-events: none; color: grey }
 .cabecera >div, .fila { border: 1px solid #d5845b; border-radius: 7px; color:#5550d7  }
 .hora { border:1px solid #dcdcdc; border-radius:7px }
 </style>
-<? if($this->uri->segment(2) === 'citas' && $this->uri->segment(3) === 'nuevo'){ ?>
+<? if(($this->uri->segment(1) === 'citas' && $this->uri->segment(2) == '') || $this->uri->segment(2) === 'citas'){ ?>
 	<link rel="stylesheet" href="<?=base_url()?>/public/js/calendario/style.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
 	<script src="<?=base_url()?>public/js/calendario/script.js" defer></script>
