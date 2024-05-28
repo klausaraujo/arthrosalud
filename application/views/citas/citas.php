@@ -135,7 +135,22 @@
 									</div>
 									<div class="modal-body" style="overflow: hidden;">
 										<input type="hidden" id="idcita" />
+										<input type="hidden" id="idpaciente" />
 										<div class="container-fluid">
+											<div class="row mb-4">
+												<label class="control-label col-lg-2 align-self-center mb-0" for="paciente">Paciente:</label>
+												<div class="col-lg-3">
+													<input type="text" id="paciente" class="form-control form-control-sm" readonly />
+												</div>
+												<label class="control-label col-lg-2 align-self-center mb-0" for="obs">Observaciones:</label>
+												<div class="col-lg-3">
+													<input type="text" id="obs" class="form-control form-control-sm mayusc" />
+												</div>
+												<div class="col-lg-2">
+													<button class="btn btn-sabogal mt-2 mt-lg-0" id="asigna">Asignar</button>
+												</div>
+											</div>
+											<hr>
 											<div class="row">
 												<div class="col-12 mx-auto" style="overflow-x:auto">
 													<table id="tablaPacientes" class="table table-striped dt-responsive table-bordered display nowrap table-hover mb-0 mx-0" style="width:100%">

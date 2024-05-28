@@ -205,7 +205,8 @@ $(document).ready(function (){
 							!btnConfirmaCita)? 'disabled':'')+' confirma" '+style+'><img src="'+base_url+'public/images/iconos/evaluar_ico.png" '+
 							'width="18" style="max-height:20px"></a>'+
 						/* Boton anular cita */
-						'<a title="Desasignar" '+(data.idpaciente !== '1' && btnAnulaCita? hrefAnular:'')+' class="bg-light btnTable '+((data.idpaciente === '1' || !btnAnulaCita)
+						'<a title="Desasignar" '+(data.idpaciente !== '1' && btnAnulaCita? hrefAnular:'')+' class="bg-light btnTable '+
+							((data.idpaciente === '1' || !btnAnulaCita)
 							?'disabled':'')+' desasignar" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
 						return btnAccion;
 					}
@@ -344,22 +345,30 @@ $('#tablaCitas').on('click', function(e){
 });
 $('#tablaPacientes').on('dblclick','tr',function(){
 	let data = tablaPacientes.row( this ).data();
-	$.ajax({
-		data: { idpaciente: data[4], idcita: $('#idcita').val() },
-		url: base_url + 'citas/citas/asignapaciente',
-		method: 'POST',
-		dataType: 'JSON',
-		beforeSend: function(){
-			//$('html, body').animate({ scrollTop: 0 }, 'fast');
-			$('.msg').html('<span class="spinner-border spinner-border-sm"></span>');
-		},
-		success: function(data){
-			$('.msg').html(data.msg);
-			$('#modalAsigna').modal('hide');
-			setTimeout(function(){ $('.msg').addClass('fade'); }, 1500);
-		}
-	});
+	$('#idpaciente').val(data[4]);
+	$('#paciente').val(data[0] + ' ' + data[1]);
 });
 $('#modalAsigna').on('hidden.bs.modal',function(e){
 	tablaPacientes.ajax.reload();
+	$('#paciente').val('');
+	$('#obs').val('');
+});
+$('#asigna').bind('click',function(){
+	if($('#paciente').val() !== ''){
+		$.ajax({
+			data: { idpaciente: $('#idpaciente').val(), idcita: $('#idcita').val(), obs: $('#obs').val() },
+			url: base_url + 'citas/citas/asignapaciente',
+			method: 'POST',
+			dataType: 'JSON',
+			beforeSend: function(){
+				//$('html, body').animate({ scrollTop: 0 }, 'fast');
+				$('.msg').html('<span class="spinner-border spinner-border-sm"></span>');
+			},
+			success: function(data){
+				$('.msg').html(data.msg);
+				$('#modalAsigna').modal('hide');
+				setTimeout(function(){ $('.msg').addClass('fade'); }, 1500);
+			}
+		});
+	}
 });

@@ -341,7 +341,8 @@ class Citas extends CI_Controller
 	{
 		$this->load->model('Citas_model'); $msg = 'No se pudo asignar la cita';
 		
-		if($this->Citas_model->actualizar('citas', ['idpaciente' => $this->input->post('idpaciente')], ['idcita' => $this->input->post('idcita')])){
+		if($this->Citas_model->actualizar('citas', ['idpaciente' => $this->input->post('idpaciente'),'observaciones' => $this->input->post('obs')],
+											['idcita' => $this->input->post('idcita')])){
 			$msg = 'Se asign&oacute; el Paciente';
 		}
 		echo json_encode(['msg' => $msg]);
