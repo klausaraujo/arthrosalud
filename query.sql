@@ -1,5 +1,6 @@
 DROP VIEW IF EXISTS lista_ubigeo;
 DROP TABLE IF EXISTS citas;
+DROP TABLE IF EXISTS historia_clinica_atenciones_indicaciones;
 DROP TABLE IF EXISTS historia_clinica_atenciones_procedimientos;
 DROP TABLE IF EXISTS procedimiento_articulos;
 DROP TABLE IF EXISTS procedimiento;
@@ -16168,6 +16169,9 @@ CREATE TABLE historia_clinica(
 	
 CREATE TABLE historia_clinica_atenciones(
 	idatencion smallint(4) NOT NULL AUTO_INCREMENT,
+	idconsultorio smallint(4) NOT NULL,
+	iddepartamento smallint(4) NOT NULL,
+	idprofesional smallint(4) NOT NULL,
 	idhistoria smallint(4) NOT NULL,
 	fecha_atencion date,
 	hora_atencion time,
@@ -16190,10 +16194,12 @@ CREATE TABLE historia_clinica_atenciones(
 	RM varchar(100),
 	glasgow smallint(4) DEFAULT 0,
 	observaciones varchar(1000),
-	idprioridad smallint(4) NOT NULL,
 	activo char(1) DEFAULT '1',
 	PRIMARY KEY (idatencion),
-	FOREIGN KEY (idhistoria) REFERENCES Historia_Clinica (idhistoria) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;	
+	FOREIGN KEY (idhistoria) REFERENCES Historia_Clinica (idhistoria) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idconsultorio) REFERENCES consultorio (idconsultorio) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (iddepartamento) REFERENCES departamento (iddepartamento) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idprofesional) REFERENCES profesional (idprofesional) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;	
 
 CREATE TABLE historia_clinica_atenciones_diagnostico(
 	iddiagnostico smallint(4) NOT NULL AUTO_INCREMENT,
@@ -16250,16 +16256,32 @@ CREATE TABLE historia_clinica_atenciones_procedimientos(
 	idprocedimientos smallint(4) NOT NULL AUTO_INCREMENT,
 	idatencion smallint(4) NOT NULL,
 	idprocedimiento smallint(4) NOT NULL,
-	tipo char(1),
+	indicaciones varchar(500),
+	estado char(1) DEFAULT '0',
+	avatar varchar(30),
 	activo char(1) DEFAULT '1',
 	PRIMARY KEY (idprocedimientos),
 	FOREIGN KEY (idatencion) REFERENCES Historia_Clinica_atenciones (idatencion) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (idprocedimiento) REFERENCES procedimiento (idprocedimiento) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
 	
+CREATE TABLE historia_clinica_atenciones_indicaciones(
+	idindicacion smallint(4) NOT NULL AUTO_INCREMENT,
+	idatencion smallint(4) NOT NULL,
+	idarticulo smallint(4) NOT NULL,
+	cantidad smallint(4),
+	indicaciones varchar(500),
+	activo char(1) DEFAULT '1',
+	PRIMARY KEY (idindicacion),
+	FOREIGN KEY (idatencion) REFERENCES Historia_Clinica_atenciones (idatencion) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (idarticulo) REFERENCES articulos (idarticulo) ON DELETE CASCADE ON UPDATE CASCADE)ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
 	
-
-
-
+	
+	
+	
+	
+	
+	
+	
 
 	
 	
