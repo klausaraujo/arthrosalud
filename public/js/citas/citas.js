@@ -215,10 +215,11 @@ $(document).ready(function (){
 				{ data: 'consultorio' },{ data: 'departamento' },{ data: 'nprof' },{ data: 'npac' },{ data: 'entrada' },{ data: 'salida' },
 				{
 					data: 'idpaciente',
-					render: function(data){
+					render: function(data,meta,row){
 						let var_status = '';
-						if(data === '1') var_status = '<span class="text-danger">Por Asignar</span>';
-						else var_status = '<span class="text-success">Asignado</span>';
+						if(row.atendido === '1') var_status = '<span class="text-success">Atendido</span>';
+						else if(data === '1') var_status = '<span class="text-danger">Por Asignar</span>';
+						else var_status = '<span class="text-primary">Asignado</span>';
 						
 						return var_status;
 					}

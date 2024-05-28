@@ -28,7 +28,7 @@ const renderCalendar = () => {
         // adding active class to li if the current day, month, and year matched
 		let clase = '';
 		if(i === date.getDate() && currMonth === new Date().getMonth() && currYear === new Date().getFullYear()){
-			clase = 'active';
+			clase = 'regular active';
 		}else if((i < date.getDate() && currMonth === new Date().getMonth() && currYear === new Date().getFullYear())
 				|| (currMonth < new Date().getMonth() && currYear === new Date().getFullYear()) || (currYear < new Date().getFullYear())){
 			clase = 'inactive';
