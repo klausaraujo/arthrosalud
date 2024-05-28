@@ -2,10 +2,10 @@
 							<div class="card-body">
 								<h4 class="">Citas</h4>
 								<hr>
-								<div class="float-left col-md-9">
+								<div class="float-left col-md-6 col-lg-6">
 									<div class="row">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="idestablecimiento">Establecimiento:</label>
-										<div class="col-md-6 col-lg-3">
+										<label class="control-label col-md-6 col-lg-4 align-self-center mb-0" for="idestablecimiento">Establecimiento:</label>
+										<div class="col-md-6 col-lg-5">
 											<div class="row">
 												<select class="form-control form-control-sm iddep" name="idestablecimiento" id="idestablecimiento" required="" >
 											<?
@@ -18,8 +18,8 @@
 										</div>
 									</div>
 									<div class="row mt-3">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="iddepartamento">Departamento:</label>
-										<div class="col-md-6 col-lg-3">
+										<label class="control-label col-md-6 col-lg-4 align-self-center mb-0" for="iddepartamento">Departamento:</label>
+										<div class="col-md-6 col-lg-5">
 											<div class="row">
 												<select class="form-control form-control-sm cdep" name="iddepartamento" id="iddepartamento" required="" >
 											<?
@@ -32,8 +32,8 @@
 										</div>
 									</div>
 									<div class="row mt-3">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="idconsultorio">Consultorio:</label>
-										<div class="col-md-6 col-lg-3">
+										<label class="control-label col-md-6 col-lg-4 align-self-center mb-0" for="idconsultorio">Consultorio:</label>
+										<div class="col-md-6 col-lg-5">
 											<div class="row">
 												<select class="form-control form-control-sm cons" name="idconsultorio" id="idconsultorio" required="" >
 											<?
@@ -46,8 +46,8 @@
 										</div>
 									</div>
 									<div class="row mt-3">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="idprofesional">Profesional:</label>
-										<div class="col-md-6 col-lg-3">
+										<label class="control-label col-md-6 col-lg-4 align-self-center mb-0" for="idprofesional">Profesional:</label>
+										<div class="col-md-6 col-lg-5">
 											<div class="row">
 												<select class="form-control form-control-sm cprof" name="idprofesional" id="idprofesional" required="" >
 											<?
@@ -60,8 +60,8 @@
 										</div>
 									</div>
 									<div class="row mt-3">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="anio">A&ntilde;o:</label>
-										<div class="col-md-6 col-lg-3">
+										<label class="control-label col-md-6 col-lg-4 align-self-center mb-0" for="anio">A&ntilde;o:</label>
+										<div class="col-md-6 col-lg-2">
 											<div class="row">
 												<select class="form-control form-control-sm canio" name="anio" id="anio" required="" >
 											<?
@@ -78,7 +78,10 @@
 										</div>
 									</div>
 								</div>
-								<div class="float-right"><a href="<?=base_url()?>citas/citas/nuevo" class="btn btn-sabogal">Nueva Cita</a></div>
+								<div class="float-left col-md-4 col-lg-5">
+									Hola
+								</div>
+								<div class="float-right"><a href="<?=base_url()?>citas/citas/nuevo" class="btn btn-sabogal mt-2">Nueva Cita</a></div>
 							</div>
 							<div class="row justify-content-center py-2">
 								<?if($this->session->flashdata('claseMsg')){?><div class="alert <?=$this->session->flashdata('claseMsg')?> py-1 px-5 fade show" role="alert">
