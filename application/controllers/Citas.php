@@ -41,8 +41,15 @@ class Citas extends CI_Controller
 	}
 	public function listacitas()
 	{
+		$data = array(
+			//'t.idconsultorio' => $this->input->post('idconsultorio'),
+			't.iddepartamento' => $this->input->post('iddepartamento'),
+			't.idprofesional' => $this->input->post('idprofesional'),
+			'DATE_FORMAT(t.fecha,"%Y")' => $this->input->post('anio'),
+			't.activo' => 1,
+		);
 		$this->load->model('Citas_model');
-		$citas = $this->Citas_model->listacitas();
+		$citas = $this->Citas_model->listacitas($data);
 		echo json_encode(['data' => $citas]);
 	}
 	

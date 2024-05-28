@@ -175,7 +175,11 @@ $(document).ready(function (){
 				url: base_url + 'citas/citas/lista',
 				type: 'POST',
 				data: function(d){
-
+					d.idconsultorio = $('.ccons').val();
+					d.iddepartamento = $('.cdep').val();
+					d.idprofesional = $('.cprof').val();
+					d.anio = $('.canio').val();
+					d.activo = 1;
 				}
 			},
 			bAutoWidth:false, bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
@@ -231,13 +235,23 @@ $('.iddep').bind('change', function(){
 		dataType: 'JSON',
 		beforeSend: function(){ $('.cons').html('<option> Cargando...</option>'); },
 		success: function (data) {
-			let html = '<option value="">-- Seleccione --</option>';
-			console.log(data);
+			let html = '';
+			if((segmento === 'citas' && segmento2 == '') || segmento2 == 'citas')
+				html = '';
+			else html = '<option value="">-- Seleccione --</option>';
 			$.each(data, function (i, e){ html += '<option value="' + e.idconsultorio + '">' + e.consultorio + '</option>'; });
 			$('.cons').html(html);
-			//console.log(data);
 		}
 	});
+});
+$('.cdep').bind('change', function(){
+	grillappal.ajax.reload();
+});
+$('.cprof').bind('change', function(){
+	grillappal.ajax.reload();
+});
+$('.anio').bind('change', function(){
+	grillappal.ajax.reload();
 });
 $('#guardar-horarios').bind('click', function(event){
 	event.preventDefault();

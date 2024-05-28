@@ -21,7 +21,7 @@
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="iddepartamento">Departamento:</label>
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
-												<select class="form-control form-control-sm" name="iddepartamento" id="iddepartamento" required="" >
+												<select class="form-control form-control-sm cdep" name="iddepartamento" id="iddepartamento" required="" >
 											<?
 												foreach($dep as $row):	?>
 													<option value="<?=$row->iddepartamento;?>"><?=$row->departamento;?></option>
@@ -49,7 +49,7 @@
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="idprofesional">Profesional:</label>
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
-												<select class="form-control form-control-sm" name="idprofesional" id="idprofesional" required="" >
+												<select class="form-control form-control-sm cprof" name="idprofesional" id="idprofesional" required="" >
 											<?
 												foreach($prof as $row):	?>
 													<option value="<?=$row->idprofesional;?>"><?=$row->apellidos.' '.$row->nombres;?></option>
@@ -63,7 +63,7 @@
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="anio">A&ntilde;o:</label>
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
-												<select class="form-control form-control-sm" name="anio" id="anio" required="" >
+												<select class="form-control form-control-sm canio" name="anio" id="anio" required="" >
 											<?
 												foreach($anio as $row):
 													if(intval($row->anio) >= date('Y')){

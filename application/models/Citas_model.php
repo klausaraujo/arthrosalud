@@ -51,16 +51,16 @@ class Citas_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
-	public function listacitas()
+	public function listacitas($where)
 	{
-		$this->db->select('t.*,DATE_FORMAT(t.entrada,"%H:%m") as entrada,DATE_FORMAT(t.salida,"%H:%m") as salida,c.consultorio,
-			d.departamento,CONCAT(p.nombres," ",p.apellidos) as nprof,CONCAT(pa.nombres," ",pa.apellidos) as npac');
+		$this->db->select('t.*,DATE_FORMAT(t.entrada,"%H:%m") as entrada,DATE_FORMAT(t.salida,"%H:%m") as salida,c.consultorio,d.departamento,
+			CONCAT(p.nombres," ",p.apellidos) as nprof,CONCAT(pa.nombres," ",pa.apellidos) as npac');
 		$this->db->from('citas t');
 		$this->db->join('consultorio c','t.idconsultorio=c.idconsultorio');
 		$this->db->join('departamento d','t.iddepartamento=d.iddepartamento');
 		$this->db->join('profesional p','t.idprofesional=p.idprofesional');
 		$this->db->join('paciente pa','t.idpaciente=pa.idpaciente');
-		$this->db->where(['t.activo' => 1]);
+		$this->db->where($where);
 		$this->db->order_by('t.idcita','ASC');
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
