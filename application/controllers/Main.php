@@ -102,8 +102,10 @@ class Main extends CI_Controller
 		$dep = $this->Citas_model->querysqlwhere('iddepartamento,departamento','departamento',['activo' => 1]);
 		$cons = null; $i = 1;
 		foreach($estab as $row):
-			if($i === 1)
+			if($i === 1){
 				$cons = $this->Citas_model->querysqlwhere('idconsultorio,consultorio','consultorio',['idempresa' => $row->idempresa,'activo' => 1]);
+				$i++;
+			}
 		endforeach;
 		$prof = $this->Citas_model->querysqlwhere('idprofesional,nombres,apellidos','profesional',['activo' => 1]);
 		$mes = $this->Citas_model->querysqlwhere('idmes,mes','mes',['activo' => 1]);

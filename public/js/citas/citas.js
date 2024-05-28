@@ -175,7 +175,7 @@ $(document).ready(function (){
 				url: base_url + 'citas/citas/lista',
 				type: 'POST',
 				data: function(d){
-					d.idconsultorio = $('.ccons').val();
+					d.idconsultorio = $('.cons').val();
 					d.iddepartamento = $('.cdep').val();
 					d.idprofesional = $('.cprof').val();
 					d.anio = $('.canio').val();
@@ -241,6 +241,8 @@ $('.iddep').bind('change', function(){
 			else html = '<option value="">-- Seleccione --</option>';
 			$.each(data, function (i, e){ html += '<option value="' + e.idconsultorio + '">' + e.consultorio + '</option>'; });
 			$('.cons').html(html);
+			if((segmento === 'citas' && segmento2 == '') || segmento2 == 'citas')
+				grillappal.ajax.reload();
 		}
 	});
 });
@@ -251,6 +253,9 @@ $('.cprof').bind('change', function(){
 	grillappal.ajax.reload();
 });
 $('.anio').bind('change', function(){
+	grillappal.ajax.reload();
+});
+$('.cons').bind('change', function(){
 	grillappal.ajax.reload();
 });
 $('#guardar-horarios').bind('click', function(event){
