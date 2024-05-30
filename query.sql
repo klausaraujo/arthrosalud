@@ -16160,6 +16160,7 @@ CREATE TABLE citas(
 CREATE TABLE historia_clinica(
 	idhistoria smallint(4) NOT NULL AUTO_INCREMENT,
 	numero smallint(4) NOT NULL,
+	numerofisico varchar(10),
 	fecha_registro date,
 	idpaciente smallint(4) NOT NULL,
 	avatar varchar(30),
