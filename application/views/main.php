@@ -76,6 +76,10 @@
 								if(!strlen($this->uri->segment(3))) $this->load->view('citas/turnos');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-turnos');
 								elseif($this->uri->segment(3) === 'detalle') $this->load->view('citas/detalle_turno');
+							}elseif($this->uri->segment(2) === 'historia'){
+								if(!strlen($this->uri->segment(3))) $this->load->view('citas/historia');
+								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-historia');
+								elseif($this->uri->segment(3) === 'regdetalle') $this->load->view('citas/form-detalle-historia');
 							}
 						}
 					?>

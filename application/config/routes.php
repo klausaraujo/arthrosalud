@@ -140,6 +140,12 @@ $route['citas/citas/desasignar'] = 'citas/despaciente';
 $route['citas/citas/cerrar'] = 'citas/cerrar';
 $route['citas/turnos/detalle'] = 'citas/detalle_turno';
 $route['citas/turnos/regdetalle'] = 'citas/regdetalle';
+$route['citas/historia'] = 'citas/historia';
+$route['citas/historia/lista'] = 'citas/listahistorias';
+$route['citas/historia/nuevo'] = 'citas/formhistoria';
+$route['citas/historia/reghistoria'] = 'citas/reghistoria';
+$route['citas/historia/regdetalle'] = 'citas/reghistdetalle';
+$route['citas/historia/listacie'] = 'citas/listaCIE';
 
 /**/
 $route['404_override'] = '';

@@ -77,6 +77,15 @@ class Citas_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->row() : array();
 	}
+	public function listahistorias()
+	{
+		$this->db->select('h.*,CONCAT(p.apellidos," ",p.nombres) as nombres');
+		$this->db->from('historia_clinica h');
+		$this->db->join('paciente p','p.idpaciente=h.idpaciente');
+		$this->db->where(['h.activo' => 1]);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
 	public function querysqlwhere($q,$t,$where)
 	{
 		$query = $this->db->select($q)->from($t)->where($where)->get();
@@ -86,6 +95,11 @@ class Citas_model extends CI_Model
 	{
 		$query = $this->db->select($q)->from($t)->get();
 		return $query->num_rows() > 0? $query->result() : array();
+	}
+	public function queryindividual($q,$t,$where)
+	{
+		$query = $this->db->select($q)->from($t)->where($where)->get();
+		return $query->num_rows() > 0? $query->row() : array();
 	}
 	public function registrar($t, $data)
 	{
@@ -103,7 +117,7 @@ class Citas_model extends CI_Model
 	}
 	public function actualizar($t, $data, $where)
 	{
-		$this->db->db_debug = TRUE;
+		//$this->db->db_debug = TRUE;
 		$this->db->where($where);
 		if($this->db->update($t, $data)) return true;
         else return false;

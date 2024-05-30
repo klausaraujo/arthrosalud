@@ -147,7 +147,7 @@
 		<script>
 			let botonesLog = JSON.parse('<?=$this->session->userdata('perCitas')?>');
 			let btnAsignaCita = false, btnConfirmaCita = false, btnAnulaCita = false; btnEditTurno = false, btnAsignaTurno = false, btnAnulaTurno = false;
-			let btnEdit = false, btnAnular = false;
+			let btnEdit = false, btnAnular = false, btnRegAtencion = false, btnVerHistoria = false, btnAnulaHistoria = false;
 			
 			$.each(botonesLog,function(i,e){
 				if(e.idboton === '27') btnEditTurno = true;
@@ -156,8 +156,9 @@
 				else if(e.idboton === '30') btnAsignaCita = true;
 				else if(e.idboton === '31') btnConfirmaCita = true;
 				else if(e.idboton === '32') btnAnulaCita = true;
-				/*else if(e.idboton === '15') btnServ = true;
-				else if(e.idboton === '16') btnAnularServ = true;*/
+				else if(e.idboton === '36') btnRegAtencion = true;
+				else if(e.idboton === '37') btnVerHistoria = true;
+				else if(e.idboton === '38') btnAnulaHistoria = true;
 			});
 		</script>
 		<?}

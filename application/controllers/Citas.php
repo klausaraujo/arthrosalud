@@ -4,11 +4,13 @@ if (! defined("BASEPATH")) exit("No direct script access allowed");
 class Citas extends CI_Controller
 {
 	private $usuario;
+	private $absolutePath;
 	
     public function __construct()
 	{
 		parent::__construct();
 		date_default_timezone_set('America/Lima');
+		$this->absolutePath = $_SERVER['DOCUMENT_ROOT'].'/arthrosalud/';
 		if($this->session->userdata('user')) $this->usuario = json_decode($this->session->userdata('user'));
 		else header('location:' .base_url());
 	}
@@ -49,6 +51,16 @@ class Citas extends CI_Controller
 		));
 		$this->datatables_server_side->process();
 	}
+	public function listaCIE()
+	{
+		$this->load->library('datatables_server_side', array(
+			'table' => 'cie10',
+			'primary_key' => 'idcie10',
+			'columns' => array('cie10','descripcion_cie10','idcie10'),
+			//'where' => array('activo' => 1,'idpaciente >' => 1),
+		));
+		$this->datatables_server_side->process();
+	}
 	public function listacitas()
 	{
 		$data = array(
@@ -63,6 +75,12 @@ class Citas extends CI_Controller
 		$this->load->model('Citas_model');
 		$citas = $this->Citas_model->listacitas($data);
 		echo json_encode(['data' => $citas]);
+	}
+	public function listahistorias()
+	{
+		$this->load->model('Citas_model');
+		$hist = $this->Citas_model->listahistorias();
+		echo json_encode(['data' => $hist]);
 	}
 	
 	public function pacientes()
@@ -362,5 +380,64 @@ class Citas extends CI_Controller
 			$msg = 'Se confirm&oacute; la cita';
 		}
 		echo json_encode(['msg' => $msg]);
+	}
+	public function historia()
+	{
+		return $this->load->view('main');
+	}
+	public function formhistoria()
+	{
+		return $this->load->view('main');
+	}
+	public function reghistoria()
+	{
+		$this->load->model('Citas_model');
+		$this->session->set_flashdata('claseMsg', 'alert-danger');
+		$this->session->set_flashdata('flashMessage', 'No se pudo registrar la <b>Historia Cl&iacute;nica</b>');
+		
+		$n = date('dmY').''.str_replace('.','',(microtime(true) - intval(microtime(true)))); $file = null; $ext = '';
+		if($_FILES['file-2']['name'] !== '') $ext = pathinfo($_FILES['file-2']['name'],PATHINFO_EXTENSION);
+		
+		if($ext === 'pdf'){
+			$content = file_get_contents($_FILES['file-2']['tmp_name']);
+			if(file_put_contents('./public/images/avatar/'.$n.'.'.$ext, $content)) $file = $n.'.'.$ext;
+		}
+		if($this->input->post('idpaciente') === ''){
+			$this->session->set_flashdata('adv', 'Debe elegir un paciente');
+			header('location:'.base_url().'citas/historia/nuevo');
+			exit;
+		}		
+		$data = array(
+			'numerofisico' => $this->input->post('nrofisico'),
+			'fecha_registro' => date('Y-m-d'),
+			'idpaciente' => $this->input->post('idpaciente'),
+			'avatar' => $file,
+		);
+		if($id = $this->Citas_model->registrar('historia_clinica', $data)){
+			$this->Citas_model->actualizar('historia_clinica', ['numero' => $id], ['idhistoria' => $id]);
+			$this->session->set_flashdata('claseMsg', 'alert-success');
+			$this->session->set_flashdata('flashMessage', '<b>Historia Cl&iacute;nica</b> registrada exitosamente');
+		}
+		
+		header('location:'.base_url().'citas/historia');
+	}
+	public function reghistdetalle()
+	{
+		$this->load->model('Citas_model');
+		$historia = $this->Citas_model->queryindividual('numero,idpaciente','historia_clinica',['idhistoria' => $this->input->get('id')]);
+		$paciente = $this->Citas_model->queryindividual('*','paciente',['idpaciente' => $historia->idpaciente]);
+		$estab = $this->Citas_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
+		$dep = $this->Citas_model->querysqlwhere('iddepartamento,departamento','departamento',['activo' => 1]);
+		$prof = $this->Citas_model->querysqlwhere('idprofesional,nombres,apellidos','profesional',['activo' => 1]);
+		
+		$data = array(
+			'pac' => $paciente,
+			'hist' => $historia,
+			'estab' => $estab,
+			'dep' => $dep,
+			'prof' => $prof
+		);
+		
+		return $this->load->view('main', $data);
 	}
 }

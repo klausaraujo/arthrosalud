@@ -1,4 +1,4 @@
-let grillappal = null, tablaPacientes = null;
+let grillappal = null, tablaPacientes = null, cie = null, tablaCIE = null;
 
 $(document).ready(function (){
 	if(segmento2 === 'turnos'){
@@ -66,17 +66,6 @@ $(document).ready(function (){
 				},
 				{ data: 'tipo_documento' },{ data: 'numero_documento' },{ data: 'nombres' },{ data: 'apellidos' },{ data: 'tipo_profesional' },{ data: 'especialidad' },
 				{ data: 'celular' },{ data: 'correo' },
-				/*{
-					data: 'activo',
-					render: function(data){
-						let var_status = '';
-						switch(data){
-							case '1': var_status = '<span class="text-success">Activo</span>'; break;
-							case '0': var_status = '<span class="text-danger">Inactivo</span>'; break;
-						}
-						return var_status;
-					}
-				},*/
 			],
 			columnDefs:[
 				{title:'Acciones',targets: 0},{title:'Tipo.Doc',targets: 1},{title:'Doc.',targets: 2},{title:'Nombres',targets: 3},{title:'Apellidos',targets: 4},
@@ -109,17 +98,6 @@ $(document).ready(function (){
 					}
 				},
 				{ data: 'nombre_comercial' },{ data: 'consultorio' },
-				/*{
-					data: 'activo',
-					render: function(data){
-						let var_status = '';
-						switch(data){
-							case '1': var_status = '<span class="text-success">Activo</span>'; break;
-							case '0': var_status = '<span class="text-danger">Inactivo</span>'; break;
-						}
-						return var_status;
-					}
-				},*/
 			],
 			columnDefs:[
 				{title:'Acciones',targets: 0},{title:'Establecimiento',targets: 1},{title:'Consultorio',targets: 2},
@@ -152,17 +130,6 @@ $(document).ready(function (){
 				},
 				{ data: 'tipo_documento' },{ data: 'numero_documento' },{ data: 'nombres' },{ data: 'apellidos' },{ data: 'fechanac' },{ data: 'estado_civil' },
 				{ data: 'celular' },{ data: 'correo' },
-				/*{
-					data: 'activo',
-					render: function(data){
-						let var_status = '';
-						switch(data){
-							case '1': var_status = '<span class="text-success">Activo</span>'; break;
-							case '0': var_status = '<span class="text-danger">Inactivo</span>'; break;
-						}
-						return var_status;
-					}
-				},*/
 			],
 			columnDefs:[
 				{title:'Acciones',targets: 0},{title:'Tipo.Doc',targets: 1},{title:'Doc.',targets: 2},{title:'Nombres',targets: 3},{title:'Apellidos',targets: 4},
@@ -204,7 +171,7 @@ $(document).ready(function (){
 						/* Boton de confirmacion */
 						'<a title="Confirmación de Cita" '+(data.atendido === '0' && data.idpaciente !== '1' && btnConfirmaCita? hrefConfirmar:'')+
 							' class="bg-light btnTable '+((data.idpaciente === '1' || !btnConfirmaCita || data.atendido === '1')? 'disabled':'')+
-							' cerrar" '+style+'><img src="'+base_url+'public/images/iconos/evaluar_ico.png" width="18" style="max-height:20px"></a>'+
+							' cerrar" '+style+'><img src="'+base_url+'public/images/iconos/evaluar_ico.png" width="18" style="max-height:23px"></a>'+
 						/* Boton anular cita */
 						'<a title="Desasignar" '+(data.atendido === '0' || data.idpaciente !== '1' && btnAnulaCita? hrefAnular:'')+' class="bg-light btnTable '+
 							((data.idpaciente === '1' || !btnAnulaCita || data.atendido === '1')
@@ -246,6 +213,120 @@ $(document).ready(function (){
 			dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
 			colReorder: { order: [ 4, 3, 2, 1, 0 ] }, language: lngDataTable,
 		});
+	}else if(segmento2 === 'historia'){
+		grillappal = $('#tablaHistoria').DataTable({
+			ajax: {
+				url: base_url + 'citas/historia/lista',
+			},
+			bAutoWidth:false, bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+			columns:[
+				{
+					data: null,
+					orderable: false,
+					render: function(data){
+						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
+						let hrefAtencion = 'href="'+base_url+'citas/historia/regdetalle?id='+data.idhistoria+'"';
+						let hrefVer = 'href="'+base_url+'citas/historia/ver?id='+data.idhistoria+'"';
+						let hrefAnular = 'href="'+base_url+'citas/historia/anular?id='+data.idhistoria+'"';
+						let btnAccion =
+						'<div class="btn-group">'+
+						/* Boton de Registro de detalle */
+						'<a title="Registrar Atención" '+(btnRegAtencion? hrefAtencion:'')+' class="bg-light btnTable '+(!btnRegAtencion?'disabled':'')+
+							' atencion" '+style+'><img src="'+base_url+'public/images/iconos/result_ico.png" width="18" style="max-height:20px"></a>'+
+						/* Boton Ver Historia */
+						'<a title="Ver Historia" '+(btnVerHistoria? hrefVer:'')+' class="bg-light btnTable '+(!btnVerHistoria?'disabled':'')+' verhistoria" '+
+							style+' data-target="#modalAsigna" data-toggle="modal"><img src="'+base_url+'public/images/iconos/evaluar_ico.png" width="18" '+
+							'style="max-height:23px"></a>'+
+						/* Boton anular Historia */
+						'<a title="Desasignar" '+(btnAnulaHistoria? hrefAnular:'')+' class="bg-light btnTable '+(!btnAnulaHistoria?'disabled':'')+
+							' desasignar" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
+						return btnAccion;
+					}
+				},
+				{ data: 'numero' },{ data: 'nombres' },{ data: 'fecha_registro' },{ data: 'avatar' },
+			],
+			columnDefs:[
+				{title:'Acciones',targets: 0},{title:'N&uacute;mero de Historia',targets: 1},{title:'Paciente',targets: 2},{title:'Fecha Registro',targets: 3},
+				{title:'Avatar',targets: 4},
+			], order: [],
+		});
+		tablaPacientes = $('#tablaPacientes').DataTable({
+			processing: true,
+			serverSide: true,
+			ajax:{
+				url: base_url + 'citas/citas/buscarpacientes',
+				type: 'GET',
+				error: function(){
+					$("#post_list_processing").css('display','none');
+				}
+			},
+			columns:[
+				{ data: 0 },{ data: 1 },{ data: 2 },{ data: 3 },{ data: 4, visible: false },
+			],
+			dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
+			colReorder: { order: [ 4, 3, 2, 1, 0 ] }, language: lngDataTable,
+		});
+		if(segmento3 === 'regdetalle'){
+			cie = $('#tablacie').DataTable({
+				data : [],
+				bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+				columns:[
+				{
+					data: null, orderable: false,
+					render: function(data){
+						let btnAccion =
+						'<div class="btn-group">'+
+							'<a title="Anular" href="#" class="bg-danger btnTable remover"><i class="fa fa-trash-o" aria-hidden="true"></i></a>'+
+						'</div>';
+						return btnAccion;
+					}
+				},
+				{ data: 'cie10' },{ data: 'descripcion' },{ data: 'tipo' }
+				],
+				columnDefs:[
+					{ title: 'Acciones', targets: 0 },{ title: 'CIE10', targets: 1 },{ title: 'Diagn&oacute;stico', targets: 2 },{ title: 'Tipo', targets: 3 },
+					{ title: 'ID', targets: 4, visible: false }
+				],order: [],dom: 'tp',
+				
+			});
+			tablaCIE = $('#tablaCIE10').DataTable({
+				processing: true,
+				serverSide: true,
+				ajax:{
+					url: base_url + 'citas/historia/listacie',
+					type: 'GET',
+					error: function(){
+						$("#post_list_processing").css('display','none');
+					}
+				},
+				columns:[
+					{ data: 0 },{ data: 1 },{ data: 2, visible: false }
+				],
+				dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
+				colReorder: { order: [ 2, 1, 0 ] }, language: lngDataTable,
+			});
+			cie = $('#tablaproc').DataTable({
+				data : [],
+				bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+				columns:[
+				{
+					data: null, orderable: false,
+					render: function(data){
+						let btnAccion =
+						'<div class="btn-group">'+
+							'<a title="Anular" href="#" class="bg-danger btnTable remover"><i class="fa fa-trash-o" aria-hidden="true"></i></a>'+
+						'</div>';
+						return btnAccion;
+					}
+				},
+				{ data: 'articulo' },{ data: 'cantidad' },{ data: 'indicaciones' }
+				],
+				columnDefs:[
+					{ title: 'Acciones', targets: 0 },{ title: 'Art&iacute;culo', targets: 1 },{ title: 'Cantidad', targets: 2 },{ title: 'Indicaciones', targets: 3 }
+				],order: [],dom: 'tp',
+				
+			});
+		}
 	}
 });
 $('.iddep').bind('change', function(){
@@ -387,11 +468,16 @@ $('#tablaPacientes').on('dblclick','tr',function(){
 	let data = tablaPacientes.row( this ).data();
 	$('#idpaciente').val(data[4]);
 	$('#paciente').val(data[0] + ' ' + data[1]);
+	if(segmento2 === 'historia'){
+		$('#modalAsigna').modal('hide');
+		$('.msg').html('');
+	}
 });
 $('#modalAsigna').on('hidden.bs.modal',function(e){
 	tablaPacientes.ajax.reload();
 	grillappal.ajax.reload();
-	$('#paciente').val('');
+	if(segmento2 !== 'historia')
+		$('#paciente').val('');
 	$('#obs').val('');
 });
 $('#asigna').bind('click',function(){
@@ -413,4 +499,10 @@ $('#asigna').bind('click',function(){
 			}
 		});
 	}
+});
+$('#tablaCIE10').on('dblclick','tr',function(){
+	let data = tablaCIE.row( this ).data();
+	$('#idcie').val(data[2]);
+	$('#cie10').val(data[1]);
+	$('#modalCie10').modal('hide');
 });
