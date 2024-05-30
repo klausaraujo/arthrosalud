@@ -88,6 +88,7 @@
 										</div>
 									</div>
 								</div>
+								<div class="container-fluid row"><hr class="col-sm-12"></div>
 								<div class="row my-1">
 									<ul class="nav nav-tabs" id="myTab-1" role="tablist">
 									  <li class="nav-item">
