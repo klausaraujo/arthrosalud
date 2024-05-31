@@ -248,7 +248,7 @@ $(document).ready(function (){
 				{
 					data: 'avatar',
 					render: function(data){
-						return '<img src="'+base_url+'public/images/iconos/pdf_ico.png" style="display:block;margin:auto;width:40px" class="img img-fluid" >';
+						return '<img src="'+base_url+'public/images/iconos/pdf_ico.png" style="display:block;margin:auto;width:25px" class="img img-fluid" >';
 					}
 				},
 			],

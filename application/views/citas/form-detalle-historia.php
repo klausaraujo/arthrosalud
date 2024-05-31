@@ -11,19 +11,22 @@
 											<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="paciente">Paciente:</label>
 											<div class="col-md-3 col-lg-2">
 												<div class="row">
-													<input type="text" class="form-control form-control-sm" name="paciente" id="paciente" value="<?=$pac->nombres.' '.$pac->apellidos?>" readonly />
+													<input type="text" class="form-control form-control-sm" name="paciente" id="paciente" 
+															value="<?=$pac->nombres.' '.$pac->apellidos?>" readonly />
 												</div>
 											</div>
 											<label class="control-label col-md-1 col-lg-1 align-self-center mb-0 pl-lg-5" for="sexo">Sexo:</label>
 											<div class="col-md-2 col-lg-1">
 												<div class="row">
-													<input type="text" class="form-control form-control-sm" name="sexo" id="sexo" value="<?=$pac->sexo === 'm'? 'Masculino':'Femenino'?>" readonly />
+													<input type="text" class="form-control form-control-sm" name="sexo" id="sexo" 
+															value="<?=$pac->sexo === 'm'? 'Masculino':'Femenino'?>" readonly />
 												</div>
 											</div>
 											<label class="control-label col-md-2 col-lg-2 align-self-center mb-0 pl-lg-5" for="nro">Nro. Historia:</label>
 											<div class="col-md-2 col-lg-1">
 												<div class="row">
-													<input type="text" class="form-control form-control-sm" name="nro" id="nro" value="<?=$hist->numero?>" readonly />
+													<input type="text" class="form-control form-control-sm" name="nro" id="nro" 
+															value="<?=sprintf("%06s",$hist->numero)?>" readonly />
 												</div>
 											</div>
 										</div>
@@ -116,6 +119,8 @@
 													<div class="row">
 														<select type="text" class="form-control form-control-sm" name="atencion" id="atencion" />
 															<option>-- Seleccione --</option>
+															<option value="1">1 - M&eacute;dica</option>
+															<option value="2">1 - No M&eacute;dica</option>
 														</select>
 													</div>
 												</div>
@@ -124,6 +129,10 @@
 													<div class="row">
 														<select type="text" class="form-control form-control-sm" name="prioridad" id="prioridad" />
 															<option>-- Seleccione --</option>
+															<option value="1">Prioridad I</option>
+															<option value="2">Prioridad II</option>
+															<option value="3">Prioridad III</option>
+															<option value="4">Prioridad IV</option>
 														</select>
 													</div>
 												</div>
@@ -203,28 +212,49 @@
 												</div>
 											</div>
 											<div class="row mt-3">
-												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="atencion">AO:</label>
+												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="ao">AO:</label>
 												<div class="col-md-2 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm"/>
+														<select type="text" class="form-control form-control-sm" name="ao" id="ao" />
+															<option>-- Seleccione --</option>
+															<option value="1">1 - No Responde</option>
+															<option value="2">2 - Ante el Dolor</option>
+															<option value="3">3 - Ante una Orden Verbal</option>
+															<option value="4">4 - Espont&aacute;neamente</option>
+														</select>
 													</div>
 												</div>
-												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="prioridad">RV:</label>
+												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="rv">RV:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm"/>
+														<select type="text" class="form-control form-control-sm" name="rv" id="rv" />
+															<option>-- Seleccione --</option>
+															<option value="1">1 - Ninguna Respuesta</option>
+															<option value="2">2 - Sonidos Incomprensibles</option>
+															<option value="3">3 - Palabras Inapropiadas</option>
+															<option value="4">4 - Confusa y desorientada</option>
+															<option value="5">5 - Orientada y Conversando</option>
+														</select>
 													</div>
 												</div>
-												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="prioridad">RM:</label>
+												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="rm">RM:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm"/>
+														<select type="text" class="form-control form-control-sm" name="rm" id="rm" />
+															<option>-- Seleccione --</option>
+															<option value="1">1 - Ninguna Respuesta</option>
+															<option value="2">2 - Extensi&oacute;n Hipertonica (Postura en extensi&oacute;n) Descerebraci&oacute;n</option>
+															<option value="3">3 - Flexi&oacute;n Hipertonica (Postura de flexi&oacute;n) / Decorticaci&oacute;n</option>
+															<option value="4">4 - Movimiento de Retirada (Flexi&oacute;n inespec&iacute;fico)</option>
+															<option value="5">5 - Localiza el Dolor</option>
+															<option value="6">6 - Obedece Comandos</option>
+														</select>
 													</div>
 												</div>
-												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0 mayusc" for="prioridad">Glasgow:</label>
+												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0" for="glasgow">Glasgow:</label>
 												<div class="col-md-3 col-lg-4">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm"/>
+														<input type="text" class="form-control form-control-sm mayusc" name="glasgow" />
 													</div>
 												</div>
 											</div>
@@ -232,7 +262,7 @@
 												<label class="control-label col-md-3 col-lg-2 align-self-center mb-0" for="atencion">Observaciones:</label>
 												<div class="col-md-9 col-lg-9">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm"/>
+														<input type="text" class="form-control form-control-sm mayusc" name="obs" />
 													</div>
 												</div>
 											</div>
