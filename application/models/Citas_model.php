@@ -79,9 +79,11 @@ class Citas_model extends CI_Model
 	}
 	public function listahistorias()
 	{
-		$this->db->select('h.*,CONCAT(p.apellidos," ",p.nombres) as nombres');
+		$this->db->select('h.*,CONCAT(p.apellidos," ",p.nombres) as nombres,p.numero_documento,ec.estado_civil,t.tipo_documento');
 		$this->db->from('historia_clinica h');
 		$this->db->join('paciente p','p.idpaciente=h.idpaciente');
+		$this->db->join('tipo_documento t','p.idtipodocumento=t.idtipodocumento');
+		$this->db->join('estado_civil ec','ec.idestadocivil=p.idestadocivil');
 		$this->db->where(['h.activo' => 1]);
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();

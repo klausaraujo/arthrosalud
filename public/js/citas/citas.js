@@ -243,11 +243,18 @@ $(document).ready(function (){
 						return btnAccion;
 					}
 				},
-				{ data: 'numero' },{ data: 'nombres' },{ data: 'fecha_registro' },{ data: 'avatar' },
+				{ data: 'numero', render: function(data){ return ceros(data,6); } },{ data: 'numerofisico' },{ data: 'nombres' },{ data: 'tipo_documento' },
+				{ data: 'numero_documento' },{ data: 'estado_civil' },{ data: 'fecha_registro' },
+				{
+					data: 'avatar',
+					render: function(data){
+						return '<img src="'+base_url+'public/images/iconos/pdf_ico.png" style="display:block;margin:auto;width:40px" class="img img-fluid" >';
+					}
+				},
 			],
 			columnDefs:[
-				{title:'Acciones',targets: 0},{title:'N&uacute;mero de Historia',targets: 1},{title:'Paciente',targets: 2},{title:'Fecha Registro',targets: 3},
-				{title:'Avatar',targets: 4},
+				{title:'Acciones',targets: 0},{title:'N&uacute;mero',targets: 1},{title:'H.F&iacute;sica',targets: 2},{title:'Paciente',targets: 3},
+				{title:'Tipo Doc',targets: 4},{title:'Nro. Doc.',targets: 5},{title:'Edo.Civil',targets: 6},{title:'Fecha Registro',targets: 7},{title:'Avatar',targets: 8},
 			], order: [],
 		});
 		tablaPacientes = $('#tablaPacientes').DataTable({

@@ -425,7 +425,7 @@ class Citas extends CI_Controller
 	{
 		$this->load->model('Citas_model');
 		$historia = $this->Citas_model->queryindividual('numero,idpaciente','historia_clinica',['idhistoria' => $this->input->get('id')]);
-		$paciente = $this->Citas_model->queryindividual('*','paciente',['idpaciente' => $historia->idpaciente]);
+		$paciente = $this->Citas_model->queryindividual('*,DATE_FORMAT(fecnac,"%d/%m/%Y") as fecha','paciente',['idpaciente' => $historia->idpaciente]);
 		$estab = $this->Citas_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
 		$dep = $this->Citas_model->querysqlwhere('iddepartamento,departamento','departamento',['activo' => 1]);
 		$prof = $this->Citas_model->querysqlwhere('idprofesional,nombres,apellidos','profesional',['activo' => 1]);

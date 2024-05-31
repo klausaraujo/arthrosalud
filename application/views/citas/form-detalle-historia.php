@@ -11,19 +11,19 @@
 											<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="paciente">Paciente:</label>
 											<div class="col-md-3 col-lg-2">
 												<div class="row">
-													<input type="text" class="form-control form-control-sm" name="paciente" id="paciente" readonly />
+													<input type="text" class="form-control form-control-sm" name="paciente" id="paciente" value="<?=$pac->nombres.' '.$pac->apellidos?>" readonly />
 												</div>
 											</div>
 											<label class="control-label col-md-1 col-lg-1 align-self-center mb-0 pl-lg-5" for="sexo">Sexo:</label>
 											<div class="col-md-2 col-lg-1">
 												<div class="row">
-													<input type="text" class="form-control form-control-sm" name="sexo" id="sexo" readonly />
+													<input type="text" class="form-control form-control-sm" name="sexo" id="sexo" value="<?=$pac->sexo === 'm'? 'Masculino':'Femenino'?>" readonly />
 												</div>
 											</div>
 											<label class="control-label col-md-2 col-lg-2 align-self-center mb-0 pl-lg-5" for="nro">Nro. Historia:</label>
 											<div class="col-md-2 col-lg-1">
 												<div class="row">
-													<input type="text" class="form-control form-control-sm" name="nro" id="nro" readonly />
+													<input type="text" class="form-control form-control-sm" name="nro" id="nro" value="<?=$hist->numero?>" readonly />
 												</div>
 											</div>
 										</div>
@@ -31,7 +31,7 @@
 											<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="fechanac">Fecha Nac.:</label>
 											<div class="col-md-2 col-lg-1">
 												<div class="row">
-													<input type="text" class="form-control form-control-sm" name="fechanac" id="fechanac" readonly />
+													<input type="text" class="form-control form-control-sm" name="fechanac" id="fechanac" value="<?=$pac->fecha?>" readonly />
 												</div>
 											</div>
 										</div>
