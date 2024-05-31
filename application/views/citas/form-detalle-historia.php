@@ -139,8 +139,8 @@
 												<div class="col-md-1 col-lg-2">
 													<div class="row">
 														<div class="custom-control custom-switch col-12 ml-3 pl-md-5">
+															<input type="checkbox" class="custom-control-input" name="gestante" id="gestante" />
 															<label class="custom-control-label" for="gestante">Gestante:</label>
-														<input type="checkbox" class="custom-control-input" name="gestante">
 														</div>
 													</div>
 												</div>
@@ -280,11 +280,13 @@
 													<a href="<?=base_url()?>citas/historia/buscarcie" class="btn btn-primary" data-target="#modalCie10" 
 														data-toggle="modal">Buscar</a>
 												</div>
-												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0 ml-md-4" for="atencion">Tipo:</label>
+												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0 ml-md-4" for="tpdiag">Tipo:</label>
 												<div class="col-md-2 col-lg-2">
 													<div class="row">
-														<select type="text" class="form-control form-control-sm" name="prioridad" id="prioridad" />
+														<select type="text" class="form-control form-control-sm" name="tpdiag" id="tpdiag" />
 															<option>-- Seleccione --</option>
+															<option value="1">1 - Presuntivo</option>
+															<option value="2">2 - Definitivo</option>
 														</select>
 													</div>
 												</div>
