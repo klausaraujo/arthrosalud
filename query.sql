@@ -2000,7 +2000,8 @@ create table tipo_documento(
 	INSERT INTO tipo_documento(idtipodocumento,codigo_curl,codigo_sunat,tipo_documento,longitud) VALUES(1,'01','1','D.N.I.',8);
 	INSERT INTO tipo_documento(idtipodocumento,codigo_curl,codigo_sunat,tipo_documento,longitud) VALUES(2,'03','4','CARNET ETX.',9);
 	INSERT INTO tipo_documento(idtipodocumento,codigo_curl,codigo_sunat,tipo_documento,longitud) VALUES(3,'06','6','R.U.C.',11);
-	INSERT INTO tipo_documento(idtipodocumento,codigo_curl,codigo_sunat,tipo_documento,longitud) VALUES(4,'06','6','PASAPORTE',12);
+	INSERT INTO tipo_documento(idtipodocumento,codigo_curl,codigo_sunat,tipo_documento,longitud) VALUES(4,'07','7','PASAPORTE',12);
+	INSERT INTO tipo_documento(idtipodocumento,codigo_curl,codigo_sunat,tipo_documento,longitud) VALUES(5,'00','0','OTROS',15);
 
 CREATE TABLE usuarios  (
 	idusuario smallint(4) NOT NULL AUTO_INCREMENT,
@@ -2102,7 +2103,7 @@ CREATE TABLE menu  (
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(15,4,'Registro Consultorios','0','consultorios','fa fa-life-ring');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(16,4,'Registro de Turnos','0','turnos','fa fa-bars');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(17,4,'Registro de Citas','0','citas','fa fa-window-maximize');        
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(18,4,'Registro Procedimientos','0','citas','fa fa-window-maximize');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(18,4,'Registro Procedimientos','0','procedimientos','fa fa-window-maximize');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(19,4,'Historia Clinica','0','historia','fa fa-id-card-o');
 	
 CREATE TABLE permisos_menu  (
