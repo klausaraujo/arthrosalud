@@ -1982,7 +1982,11 @@ CREATE TABLE perfil  (
 	PRIMARY KEY (idperfil)) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci;
 
 	insert into perfil (perfil) values('ADMINISTRADOR');
+	insert into perfil (perfil) values('ADMISION');
 	insert into perfil (perfil) values('LOGISTICO');
+	insert into perfil (perfil) values('FACTURACION');
+	insert into perfil (perfil) values('MEDICO');
+	insert into perfil (perfil) values('LABORATORIO');
 
 create table tipo_documento(
 	idtipodocumento smallint(4) NOT NULL AUTO_INCREMENT,
@@ -2094,7 +2098,7 @@ CREATE TABLE menu  (
 	
 	/*Menus del Módulo Citas*/
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(13,4,'Registro Pacientes','0','pacientes','fa fa-child');
-	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(14,4,'Registro Procesionales','0','medicos','fa fa-heartbeat');
+	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(14,4,'Registro Profesionales','0','medicos','fa fa-heartbeat');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(15,4,'Registro Consultorios','0','consultorios','fa fa-life-ring');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(16,4,'Registro de Turnos','0','turnos','fa fa-bars');
 	INSERT INTO menu(idmenu,idmodulo,descripcion,nivel,url,icono) VALUES(17,4,'Registro de Citas','0','citas','fa fa-window-maximize');        
@@ -16095,6 +16099,7 @@ create table profesional(
 	colegiatura varchar(6),
 	idespecialidad smallint(4) NOT NULL,
 	rne varchar(6),
+	idusuario_sistema  smallint(4),
 	idusuario_registro smallint(4),
 	fecha_registro date,
 	celular varchar(9),
@@ -16177,7 +16182,7 @@ CREATE TABLE historia_clinica_atenciones(
 	fecha_atencion date,
 	hora_atencion time,
 	tipo_atencion char(1) DEFAULT '1',
-	prioridad char(1) DEFAULT '1', 
+	prioridad char(1) DEFAULT '4', 
 	gestante char(1) default '0',
 	tiempo_gestacion smallint(4),
 	presion01 smallint(4) DEFAULT 0,
