@@ -300,3 +300,14 @@ $('.dis1').change(function(){
 		});
 	}
 });
+$('.tpdoc').bind('change',function(){
+	$('.numerodoc').val('');
+	if(!$('.numerodoc').hasClass('num')) $('.numerodoc').addClass('num'), alert('no tiene');
+	
+	if(this.value === '1') $('.numerodoc').prop('maxlength',8), $('.numerodoc').prop('minlength',8);
+	else if(this.value === '2') $('.numerodoc').prop('maxlength',9), $('.numerodoc').prop('minlength',9);
+	else if(this.value === '3') $('.numerodoc').prop('maxlength',11), $('.numerodoc').prop('minlength',11);
+	else if(this.value === '4'){
+		$('.numerodoc').prop('maxlength',15), $('.numerodoc').prop('minlength',15), $('.numerodoc').removeClass('num');
+	}
+});

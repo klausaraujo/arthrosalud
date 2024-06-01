@@ -17,16 +17,14 @@
 										<div class="col-lg-6">
 											<div class="row mt-3">
 												<label class="control-label col-md-6 col-lg-6 align-self-center mb-0" for="tipo">Tipo Documento:</label>
-												<div class="col-md-6 col-lg-4">
+												<div class="col-md-4 col-lg-4">
 													<div class="row">
-														<select class="form-control form-control-sm" name="tipo" id="tipo" required="" >
-															<option value="">-- Seleccione --</option>
+														<select class="form-control form-control-sm tpdoc" name="tipo" id="tipo" required="" >
 													<?
 														foreach($tipo as $row):	?>
 															<option value="<?=$row->idtipodocumento;?>"><?=$row->tipo_documento;?></option>
 													<?	endforeach;	?>
 														</select>
-														<div class="invalid-feedback">Campo Requerido</div>
 													</div>
 												</div>
 											</div>
@@ -34,8 +32,8 @@
 												<label class="control-label col-md-6 col-lg-6 align-self-center mb-0" for="doc">N&uacute;mero Documento:</label>
 												<div class="col-md-4 col-lg-4">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm ruc num" name="doc" id="doc" placeholder="Número Documento" 
-															value="" minlength="8" maxlength="9" required="" />
+														<input type="text" class="form-control form-control-sm num mayusc numerodoc" name="doc" id="doc" 
+															placeholder="Número Documento"  minlength="8" maxlength="8" required="" />
 														<div class="invalid-feedback" id="error-doc">Campo Requerido</div>
 													</div>
 												</div>

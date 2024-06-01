@@ -318,26 +318,23 @@ class Citas extends CI_Controller
 		if($this->Citas_model->borrar('turnos_detalle', ['idturno' => $detalle[0]->idturno])){
 			$borracitas = false;
 			if($this->Citas_model->borrar('citas',['idturno' => $detalle[0]->idturno])) $borracitas = true;
-			
 			foreach($detalle as $row):
 				if($this->Citas_model->registrar('turnos_detalle', $row)){
-					$msg = 'Horarios Registrados';
+					$msg = 'Horarios Registrados'; $j = 0;
 					// Diferencia entre las horas
 					$h1 = new DateTime($row->entrada1);
 					$h2 = new DateTime($row->salida1);
 					$dif = $h1->diff($h2);
-					// Minutos totales entre la Ultima hora y la primera 
 					$minutos = (intval($dif->format('%H')) * 60) + intval($dif->format('%i'));
-					// Cantidad de citas disponibles
 					$nrocitas = intval($minutos / intval($dura));
-					$cita = [];
-					for($i = 1; $i <= $nrocitas; $i++){
+					
+					for($i = 0; $i < $nrocitas; $i++){
 						$hi = $h1->format('H:i');
 						// Variable temporal para formatear la hora final
 						$ht = $h1->modify('+'.$dura.' minutes');
 						$hf = $ht->format('H:i');
 						// Array para insertar los registros en la tabla citas
-						$cita[$i-1] = array(
+						$cita[$j] = array(
 							'idconsultorio' => $cons,
 							'iddepartamento' => $dep,
 							'idprofesional' => $prof,
@@ -347,7 +344,62 @@ class Citas extends CI_Controller
 							'entrada' => $hi,
 							'salida' => $hf,
 						);
+						$j++;
 					}
+					
+					$h3 = new DateTime($row->entrada2);
+					$h4 = new DateTime($row->salida2);
+					$dif = $h3->diff($h4);
+					// Minutos totales entre la Ultima hora y la primera 
+					$minutos = (intval($dif->format('%H')) * 60) + intval($dif->format('%i'));
+					$nrocitas = intval($minutos / intval($dura));
+					
+					for($i = 0; $i < $nrocitas; $i++){
+						$hi = $h3->format('H:i');
+						// Variable temporal para formatear la hora final
+						$ht = $h3->modify('+'.$dura.' minutes');
+						$hf = $ht->format('H:i');
+						// Array para insertar los registros en la tabla citas
+						$cita[$j] = array(
+							'idconsultorio' => $cons,
+							'iddepartamento' => $dep,
+							'idprofesional' => $prof,
+							'idpaciente' => 1,
+							'idturno' => $row->idturno,
+							'fecha' => $row->fecha,
+							'entrada' => $hi,
+							'salida' => $hf,
+						);
+						$j++;
+					}
+					
+					$h5 = new DateTime($row->entrada3);
+					$h6 = new DateTime($row->salida3);
+					$dif = $h5->diff($h6);
+					// Minutos totales entre la Ultima hora y la primera 
+					$minutos = (intval($dif->format('%H')) * 60) + intval($dif->format('%i'));
+					// Cantidad de citas disponibles
+					$nrocitas = intval($minutos / intval($dura));
+					
+					for($i = 0; $i < $nrocitas; $i++){
+						$hi = $h5->format('H:i');
+						// Variable temporal para formatear la hora final
+						$ht = $h5->modify('+'.$dura.' minutes');
+						$hf = $ht->format('H:i');
+						// Array para insertar los registros en la tabla citas
+						$cita[$j] = array(
+							'idconsultorio' => $cons,
+							'iddepartamento' => $dep,
+							'idprofesional' => $prof,
+							'idpaciente' => 1,
+							'idturno' => $row->idturno,
+							'fecha' => $row->fecha,
+							'entrada' => $hi,
+							'salida' => $hf,
+						);
+						$j++;
+					}
+					
 					if($borracitas) $this->Citas_model->registrarbatch('citas', $cita);
 				}
 			endforeach;
@@ -392,33 +444,41 @@ class Citas extends CI_Controller
 	public function reghistoria()
 	{
 		$this->load->model('Citas_model');
-		$this->session->set_flashdata('claseMsg', 'alert-danger');
-		$this->session->set_flashdata('flashMessage', 'No se pudo registrar la <b>Historia Cl&iacute;nica</b>');
 		
-		$n = date('dmY').''.str_replace('.','',(microtime(true) - intval(microtime(true)))); $file = null; $ext = '';
-		if($_FILES['file-2']['name'] !== '') $ext = pathinfo($_FILES['file-2']['name'],PATHINFO_EXTENSION);
-		
-		if($ext === 'pdf'){
-			$content = file_get_contents($_FILES['file-2']['tmp_name']);
-			if(file_put_contents('./public/images/avatar/'.$n.'.'.$ext, $content)) $file = $n.'.'.$ext;
-		}
 		if($this->input->post('idpaciente') === ''){
 			$this->session->set_flashdata('adv', 'Debe elegir un paciente');
 			header('location:'.base_url().'citas/historia/nuevo');
 			exit;
-		}		
-		$data = array(
-			'numerofisico' => $this->input->post('nrofisico'),
-			'fecha_registro' => date('Y-m-d'),
-			'idpaciente' => $this->input->post('idpaciente'),
-			'avatar' => $file,
-		);
-		if($id = $this->Citas_model->registrar('historia_clinica', $data)){
-			$this->Citas_model->actualizar('historia_clinica', ['numero' => $id], ['idhistoria' => $id]);
-			$this->session->set_flashdata('claseMsg', 'alert-success');
-			$this->session->set_flashdata('flashMessage', '<b>Historia Cl&iacute;nica</b> registrada exitosamente');
 		}
 		
+		$valida = $this->Citas_model->queryindividual('idpaciente','historia_clinica',['idpaciente' => $this->input->post('idpaciente')]);
+		if(empty($valida)){
+			$this->session->set_flashdata('claseMsg', 'alert-danger');
+			$this->session->set_flashdata('flashMessage', 'No se pudo registrar la <b>Historia Cl&iacute;nica</b>');
+			
+			$n = date('dmY').''.str_replace('.','',(microtime(true) - intval(microtime(true)))); $file = null; $ext = '';
+			if($_FILES['file-2']['name'] !== '') $ext = pathinfo($_FILES['file-2']['name'],PATHINFO_EXTENSION);
+			
+			if($ext === 'pdf'){
+				$content = file_get_contents($_FILES['file-2']['tmp_name']);
+				if(file_put_contents('./public/images/avatar/'.$n.'.'.$ext, $content)) $file = $n.'.'.$ext;
+			}
+			
+			$data = array(
+				'numerofisico' => $this->input->post('nrofisico'),
+				'fecha_registro' => date('Y-m-d'),
+				'idpaciente' => $this->input->post('idpaciente'),
+				'avatar' => $file,
+			);
+			if($id = $this->Citas_model->registrar('historia_clinica', $data)){
+				$this->Citas_model->actualizar('historia_clinica', ['numero' => $id], ['idhistoria' => $id]);
+				$this->session->set_flashdata('claseMsg', 'alert-success');
+				$this->session->set_flashdata('flashMessage', '<b>Historia Cl&iacute;nica</b> registrada exitosamente');
+			}
+		}else{
+			$this->session->set_flashdata('claseMsg', 'alert-warning');
+			$this->session->set_flashdata('flashMessage', 'La <b>Historia Cl&iacute;nica</b> ya est&aacute; registrada');
+		}
 		header('location:'.base_url().'citas/historia');
 	}
 	public function reghistdetalle()

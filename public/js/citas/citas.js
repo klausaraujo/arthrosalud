@@ -370,27 +370,29 @@ $('.cons').bind('change', function(){
 });
 $('#guardar-horarios').bind('click', function(event){
 	event.preventDefault();
-	let tr = document.querySelectorAll('.f-horas'), idturno = $('#idturno').val(), json = {}, valida = false, data = [];
+	let tr = document.querySelectorAll('.f-horas'), idturno = $('#idturno').val(), json = {}, data = [], valida = false;
 	
 	$.each($(tr),function(i,e){
 		let f = $(e).find('.fecha'), e0 = $(e).find('.e'), e1 = $(e).find('.e1'), e2 = $(e).find('.e2');
+		
 		let s = $(e).find('.s'), s1 = $(e).find('.s1'), s2 = $(e).find('.s2');
-		let sep0 = e0.val().split(':'), sep1 = s.val().split(':');
 		let en = '', en2 = '', en3 = '', sa = '', sa2 = '', sa3 = '';
+		
+		let sep0 = e0.val().split(':'), sep1 = s.val().split(':');
 		if(parseInt(sep1[0]) > parseInt(sep0[0]) && parseInt(sep1[1]) >= parseInt(sep0[1]) && parseInt(sep0[0]) > 0){
 			en = e0.val(), sa = s.val(), valida = true;
 		}
-		sep0 = e1.val().split(':'), sep1 = s1.val().split(':');
-		if(parseInt(sep1[0]) > parseInt(sep0[0]) && parseInt(sep1[1]) >= parseInt(sep0[1]) && parseInt(sep0[0]) > 0){
-			en2 = e0.val(), sa2 = s.val(), valida = true;
+		let sep2 = e1.val().split(':'), sep3 = s1.val().split(':');
+		if(parseInt(sep3[0]) > parseInt(sep2[0]) && parseInt(sep3[1]) >= parseInt(sep2[1]) && parseInt(sep2[0]) > 0){
+			en2 = e1.val(), sa2 = s1.val(), valida = true;
 		}
-		sep0 = e2.val().split(':'), sep1 = s2.val().split(':');
-		if(parseInt(sep1[0]) > parseInt(sep0[0]) && parseInt(sep1[1]) >= parseInt(sep0[1]) && parseInt(sep0[0]) > 0){
-			en3 = e0.val(), sa3 = s.val(), valida = true;
+		let sep4 = e2.val().split(':'), sep5 = s2.val().split(':');
+		if(parseInt(sep5[0]) > parseInt(sep4[0]) && parseInt(sep5[1]) >= parseInt(sep4[1]) && parseInt(sep4[0]) > 0){
+			en3 = e2.val(), sa3 = s2.val(), valida = true;
 		}
-		if(valida)
+		if(valida){
 			data.push({idturno:idturno,fecha:f.val(),entrada1:en,salida1:sa,entrada2:en2,salida2:sa2,entrada3:en3,salida3:sa3});
-			
+		}
 		valida = false;
 	});
 	json.data = data;
