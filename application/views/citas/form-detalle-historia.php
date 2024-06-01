@@ -9,7 +9,7 @@
 									<div class="col-12">
 										<div class="row">
 											<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="paciente">Paciente:</label>
-											<div class="col-md-3 col-lg-2">
+											<div class="col-md-3 col-lg-3">
 												<div class="row">
 													<input type="text" class="form-control form-control-sm" name="paciente" id="paciente" 
 															value="<?=$pac->nombres.' '.$pac->apellidos?>" readonly />
@@ -42,7 +42,7 @@
 									<div class="col-12 my-3">
 										<div class="row">
 											<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="idest">Establecimiento:</label>
-											<div class="col-md-3 col-lg-2">
+											<div class="col-md-3 col-lg-3">
 												<div class="row">
 													<select class="form-control form-control-sm" name="idest" id="idest" >
 												<?
@@ -66,7 +66,7 @@
 										</div>
 										<div class="row mt-md-3">
 											<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="prof">Profesional:</label>
-											<div class="col-md-3 col-lg-2">
+											<div class="col-md-3 col-lg-3">
 												<div class="row">
 													<select class="form-control form-control-sm" name="prof" id="prof" >
 												<?
@@ -120,7 +120,7 @@
 														<select type="text" class="form-control form-control-sm" name="atencion" id="atencion" />
 															<option>-- Seleccione --</option>
 															<option value="1">1 - M&eacute;dica</option>
-															<option value="2">1 - No M&eacute;dica</option>
+															<option value="2">2 - No M&eacute;dica</option>
 														</select>
 													</div>
 												</div>
@@ -152,68 +152,68 @@
 													</div>
 												</div>
 											</div>
-											<div class="row mt-3">
-												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="atencion">Presi&oacute;n Arterial:</label>
+											<div class="row mt-md-4">
+												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="parterial">Presi&oacute;n Arterial:</label>
 												<div class="col-md-2 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm col-5"/>&nbsp;/&nbsp;
-														<input type="text" class="form-control form-control-sm col-5"/>
+														<input type="text" class="form-control form-control-sm col-5" name="parterial1" id="parterial1" />&nbsp;/&nbsp;
+														<input type="text" class="form-control form-control-sm col-5" name="parterial2" id="parterial2" />
 													</div>
 												</div>
-												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0 pl-lg-5" for="prioridad">Presi&oacute;n Venosa:</label>
+												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0 pl-lg-5" for="pvenosa">Presi&oacute;n Venosa:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm"/>
+														<input type="text" class="form-control form-control-sm" name="pvenosa" id="pvenosa" />
 													</div>
 												</div>
-												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0" for="prioridad">Saturaci&oacute;n:</label>
+												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0" for="saturacion">Saturaci&oacute;n:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm"/>
+														<input type="text" class="form-control form-control-sm" name="saturacion" id="saturacion" />
 													</div>
 												</div>
-												<label class="control-label col-md-1 col-lg-2 align-self-center mb-0 pl-lg-5" for="prioridad">Temperatura:</label>
+												<label class="control-label col-md-1 col-lg-2 align-self-center mb-0 pl-lg-5" for="temp">Temperatura:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm"/>
+														<input type="text" class="form-control form-control-sm" name="temp" id="temp" />
 													</div>
 												</div>
 											</div>
-											<div class="row mt-3">
-												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0" for="atencion">F. Card&iacute;aca:</label>
+											<div class="row mt-md-4">
+												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="fcardiaca">F. Card&iacute;aca:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm"/>
+														<input type="text" class="form-control form-control-sm" name="fcardiaca" id="fcardiaca" />
 													</div>
 												</div>
-												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="prioridad">F. Respiratoria:</label>
+												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="frespiratoria">F. Respiratoria:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm"/>
+														<input type="text" class="form-control form-control-sm" name="frespiratoria" id="frespiratoria" />
 													</div>
 												</div>
-												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="prioridad">Peso:</label>
+												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="peso">Peso:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm"/>
+														<input type="text" class="form-control form-control-sm" name="peso" id="peso" />
 													</div>
 												</div>
-												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="prioridad">Talla:</label>
+												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="talla">Talla:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm"/>
-													</div>
-												</div>
-												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="prioridad">IMC:</label>
-												<div class="col-md-1 col-lg-1">
-													<div class="row">
-														<input type="text" class="form-control form-control-sm"/>
+														<input type="text" class="form-control form-control-sm" name="" id="talla" />
 													</div>
 												</div>
 											</div>
-											<div class="row mt-3">
+											<div class="row mt-md-4">
+												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="imc">IMC:</label>
+												<div class="col-md-1 col-lg-1">
+													<div class="row">
+														<input type="text" class="form-control form-control-sm" name="imc" id="imc" />
+													</div>
+												</div>
 												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="ao">AO:</label>
-												<div class="col-md-2 col-lg-1">
+												<div class="col-md-2 col-lg-2">
 													<div class="row">
 														<select type="text" class="form-control form-control-sm" name="ao" id="ao" />
 															<option>-- Seleccione --</option>
@@ -225,7 +225,7 @@
 													</div>
 												</div>
 												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="rv">RV:</label>
-												<div class="col-md-1 col-lg-1">
+												<div class="col-md-2 col-lg-2">
 													<div class="row">
 														<select type="text" class="form-control form-control-sm" name="rv" id="rv" />
 															<option>-- Seleccione --</option>
@@ -238,7 +238,7 @@
 													</div>
 												</div>
 												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="rm">RM:</label>
-												<div class="col-md-1 col-lg-1">
+												<div class="col-md-2 col-lg-2">
 													<div class="row">
 														<select type="text" class="form-control form-control-sm" name="rm" id="rm" />
 															<option>-- Seleccione --</option>
@@ -251,16 +251,16 @@
 														</select>
 													</div>
 												</div>
+											</div>
+											<div class="row mt-md-4">
 												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0" for="glasgow">Glasgow:</label>
-												<div class="col-md-3 col-lg-4">
+												<div class="col-md-3 col-lg-3">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm mayusc" name="glasgow" />
+														<input type="text" class="form-control form-control-sm mayusc" name="glasgow" id="glasgow" />
 													</div>
 												</div>
-											</div>
-											<div class="row mt-3">
-												<label class="control-label col-md-3 col-lg-2 align-self-center mb-0" for="atencion">Observaciones:</label>
-												<div class="col-md-9 col-lg-9">
+												<label class="control-label col-md-3 col-lg-2 align-self-center mb-0 pl-md-5" for="atencion">Observaciones:</label>
+												<div class="col-md-4 col-lg-5">
 													<div class="row">
 														<input type="text" class="form-control form-control-sm mayusc" name="obs" />
 													</div>
@@ -270,6 +270,7 @@
 										<div class="tab-pane fade" id="diagnosticos" role="tabpanel" aria-labelledby="diagnosticos-tab">
 											<div class="row mt-3">
 												<input type="hidden" id="idcie" />
+												<input type="hidden" id="codcie" />
 												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="cie10">CIE10:</label>
 												<div class="col-md-4 col-lg-3">
 													<div class="row">
@@ -280,17 +281,17 @@
 													<a href="<?=base_url()?>citas/historia/buscarcie" class="btn btn-primary" data-target="#modalCie10" 
 														data-toggle="modal">Buscar</a>
 												</div>
-												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0 ml-md-4" for="tpdiag">Tipo:</label>
+												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0 ml-md-5" for="tpdiag">Tipo:</label>
 												<div class="col-md-2 col-lg-2">
 													<div class="row">
 														<select type="text" class="form-control form-control-sm" name="tpdiag" id="tpdiag" />
-															<option>-- Seleccione --</option>
+															<option value="">-- Seleccione --</option>
 															<option value="1">1 - Presuntivo</option>
 															<option value="2">2 - Definitivo</option>
 														</select>
 													</div>
 												</div>
-												<div class="col-md-1 col-lg-1"><a class="btn btn-sabogal">Agregar</a></div>
+												<div class="col-md-1 col-lg-1"><a class="btn btn-sabogal" id="addtipo">Agregar</a></div>
 											</div>
 											<div class="container-fluid">
 												<div class="row mt-3">

@@ -1,4 +1,4 @@
-let grillappal = null, tablaPacientes = null, cie = null, tablaCIE = null;
+let grillappal = null, tablaPacientes = null, cie = null, tablaCIE = null, proc = null;
 
 $(document).ready(function (){
 	if(segmento2 === 'turnos'){
@@ -283,16 +283,17 @@ $(document).ready(function (){
 					render: function(data){
 						let btnAccion =
 						'<div class="btn-group">'+
-							'<a title="Anular" href="#" class="bg-danger btnTable remover"><i class="fa fa-trash-o" aria-hidden="true"></i></a>'+
+							'<a title="Remover" href="#" class="bg-danger btnTable remover">'+
+								'<i class="fa fa-trash-o" aria-hidden="true" style="padding:5px"></i></a>'+
 						'</div>';
 						return btnAccion;
 					}
 				},
-				{ data: 'cie10' },{ data: 'descripcion' },{ data: 'tipo' }
+				{ data: 'idcie' },{ data: 'cie10' },{ data: 'diagnostico' },{ data: 'tipo' }
 				],
 				columnDefs:[
-					{ title: 'Acciones', targets: 0 },{ title: 'CIE10', targets: 1 },{ title: 'Diagn&oacute;stico', targets: 2 },{ title: 'Tipo', targets: 3 },
-					{ title: 'ID', targets: 4, visible: false }
+					{ title: 'Acciones', targets: 0 },{ title: 'ID', targets: 1, visible: false },{ title: 'CIE10', targets: 2 },
+					{ title: 'Diagn&oacute;stico', targets: 3 },{ title: 'Tipo', targets: 4 }
 				],order: [],dom: 'tp',
 				
 			});
@@ -312,7 +313,7 @@ $(document).ready(function (){
 				dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
 				colReorder: { order: [ 2, 1, 0 ] }, language: lngDataTable,
 			});
-			cie = $('#tablaproc').DataTable({
+			proc = $('#tablaproc').DataTable({
 				data : [],
 				bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
 				columns:[
@@ -511,5 +512,23 @@ $('#tablaCIE10').on('dblclick','tr',function(){
 	let data = tablaCIE.row( this ).data();
 	$('#idcie').val(data[2]);
 	$('#cie10').val(data[1]);
+	$('#codcie').val(data[0]);
 	$('#modalCie10').modal('hide');
+});
+$('#addtipo').bind('click',function(){
+	if($('#tpdiag').val() && $('#cie10').val()){
+		let json = [{'idcie':$('#idcie').val(),'cie10':$('#codcie').val(),'diagnostico':$('#cie10').val(),
+					'idtipo':$('#tpdiag').val(),'tipo':$('#tpdiag :selected').text()}];
+		
+		if(cie.rows().count()){
+			cie.rows().data().each(function(e){
+				if($('#idcie').val() === e['idcie']) alert('El item ya está agregado');
+				else cie.rows.add(json).draw();
+			});
+		}else cie.rows.add(json).draw();
+	}
+});
+$('#tablacie').bind('click','a',function(e){
+	let a = e.target;
+	cie.row($(a).parents('tr')).remove().draw();
 });
