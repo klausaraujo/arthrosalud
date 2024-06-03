@@ -19,7 +19,7 @@
 										<div class="col-md-2 col-lg-1">
 											<div class="row">
 												<input type="text" class="form-control form-control-sm" name="sexo" id="sexo" 
-														value="<?=$pac->sexo === 'm'? 'Masculino':'Femenino'?>" readonly />
+														value="<?=$pac->sexo === '2'? 'Masculino':'Femenino'?>" readonly />
 											</div>
 										</div>
 										<label class="control-label col-md-2 col-lg-2 align-self-center mb-0 pl-lg-5" for="nro">Nro. Historia:</label>
