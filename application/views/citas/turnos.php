@@ -43,6 +43,7 @@
 											<div class="col-md-7 col-lg-7">
 												<div class="row">
 													<select class="form-control form-control-sm mx-sm-3 mt-md-3 mt-lg-0 cons" name="consult" id="consult" required="" >
+														<option value="" >-- Todos --</option>
 												<?
 													foreach($cons as $row):	?>
 														<option value="<?=$row->idconsultorio;?>"><?=$row->consultorio;?></option>
@@ -58,6 +59,7 @@
 											<div class="col-md-7 col-lg-7">
 												<div class="row">
 													<select class="form-control form-control-sm mr-md-3 mt-md-3 mx-sm-3 cprof" name="prof" id="prof" required="" >
+														<option value="" >-- Todos --</option>
 												<?
 													foreach($prof as $row):	?>
 														<option value="<?=$row->idprofesional;?>"><?=$row->apellidos.' '.$row->nombres;?></option>
@@ -90,7 +92,7 @@
 													<select class="form-control form-control-sm mx-sm-3 mt-md-3 tmes" name="mes" id="mes" required="" >
 												<?
 													foreach($mes as $row):	?>
-														<option value="<?=$row->idmes;?>"><?=$row->mes;?></option>
+														<option value="<?=$row->idmes;?>" <?=$row->idmes === date('n')? 'selected':'';?>><?=$row->mes;?></option>
 												<?	endforeach;	?>
 													</select>
 												</div>
