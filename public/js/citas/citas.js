@@ -1,10 +1,19 @@
-let grillappal = null, tablaPacientes = null, cie = null, tablaCIE = null, proc = null;
+let grillappal = null, tablaPacientes = null, cie = null, tablaCIE = null, proc = null, indic = null, tablaPROC = null, tablaART = null;
 
 $(document).ready(function (){
 	if(segmento2 === 'turnos'){
 		grillappal = $('#tablaTurnos').DataTable({
 			ajax: {
 				url: base_url + 'citas/turnos/lista',
+				type: 'POST',
+				data: function(d){
+					d.idconsultorio = $('.cons').val();
+					d.iddepartamento = $('.cdep').val();
+					d.idprofesional = $('.cprof').val();
+					d.anio = $('.canio').val();
+					d.mes = $('.tmes').val();
+					d.activo = 1;
+				}
 			},
 			bAutoWidth:false, bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
 			columns:[
@@ -76,6 +85,10 @@ $(document).ready(function (){
 		grillappal = $('#tablaConsultorios').DataTable({
 			ajax: {
 				url: base_url + 'citas/consultorios/lista',
+				type: 'POST',
+				data: function(d){
+					d.idempresa = $('.iddep').val();
+				}
 			},
 			bAutoWidth:false, bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
 			columns:[
@@ -235,8 +248,7 @@ $(document).ready(function (){
 							' atencion" '+style+'><img src="'+base_url+'public/images/iconos/result_ico.png" width="18" style="max-height:20px"></a>'+
 						/* Boton Ver Historia */
 						'<a title="Ver Historia" '+(btnVerHistoria? hrefVer:'')+' class="bg-light btnTable '+(!btnVerHistoria?'disabled':'')+' verhistoria" '+
-							style+' data-target="#modalAsigna" data-toggle="modal"><img src="'+base_url+'public/images/iconos/evaluar_ico.png" width="18" '+
-							'style="max-height:23px"></a>'+
+							style+' ><img src="'+base_url+'public/images/iconos/evaluar_ico.png" width="18" style="max-height:23px"></a>'+
 						/* Boton anular Historia */
 						'<a title="Desasignar" '+(btnAnulaHistoria? hrefAnular:'')+' class="bg-light btnTable '+(!btnAnulaHistoria?'disabled':'')+
 							' desasignar" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
@@ -244,7 +256,7 @@ $(document).ready(function (){
 					}
 				},
 				{ data: 'numero', render: function(data){ return ceros(data,6); } },{ data: 'numerofisico' },{ data: 'nombres' },{ data: 'tipo_documento' },
-				{ data: 'numero_documento' },{ data: 'estado_civil' },{ data: 'fecha_registro' },
+				{ data: 'numero_documento' },{ data: 'estado_civil' },{ data: 'freg' },
 				{
 					data: 'avatar',
 					render: function(data){
@@ -268,32 +280,42 @@ $(document).ready(function (){
 				}
 			},
 			columns:[
-				{ data: 0 },{ data: 1 },{ data: 2 },{ data: 3 },{ data: 4, visible: false },
+				{ data: 0, visible: false },{ data: 1, render: function(d,m,r){ return r[1]+' '+r[0] } },{ data: 2 },{ data: 3 },{ data: 4, visible: false },
 			],
 			dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
 			colReorder: { order: [ 4, 3, 2, 1, 0 ] }, language: lngDataTable,
 		});
 		if(segmento3 === 'regdetalle'){
 			cie = $('#tablacie').DataTable({
-				data : [],
-				bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
-				columns:[
-				{
-					data: null, orderable: false,
-					render: function(data){
-						let btnAccion =
-						'<div class="btn-group">'+
-							'<a title="Remover" href="#" class="bg-danger btnTable remover">'+
-								'<i class="fa fa-trash-o" aria-hidden="true" style="padding:5px"></i></a>'+
-						'</div>';
-						return btnAccion;
+				ajax: {
+					url: base_url + 'citas/historia/listadiagnostico',
+					type: 'POST',
+					data: function(d){
+						d.idatencion = $('#idatencion').val();
 					}
 				},
-				{ data: 'idcie' },{ data: 'cie10' },{ data: 'diagnostico' },{ data: 'tipo' }
+				bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+				columns:[
+					{
+						data: null, orderable: false,
+						render: function(data){
+							let btnAccion =
+							'<div class="btn-group">'+
+								'<a title="Remover" href="borrar" class="bg-danger btnTable remover">'+
+									'<i class="fa fa-trash-o" aria-hidden="true" style="padding:5px"></i></a>'+
+							'</div>';
+							return btnAccion;
+						}
+					},
+					{ data: 'idcie10' },{ data: 'cie10' },{ data: 'descripcion_cie10' },
+					{ 
+						data: null,
+						render: function(d,m,r){ return r.tipo === '1'? '1 - Presuntivo' : '2 - Definitivo'; } 
+					},{ data: 'tipo' }
 				],
 				columnDefs:[
 					{ title: 'Acciones', targets: 0 },{ title: 'ID', targets: 1, visible: false },{ title: 'CIE10', targets: 2 },
-					{ title: 'Diagn&oacute;stico', targets: 3 },{ title: 'Tipo', targets: 4 }
+					{ title: 'Diagn&oacute;stico', targets: 3 },{ title: 'Tipo', targets: 4 },{ title: 'ID Tipo', targets: 5, visible: false }
 				],order: [],dom: 'tp',
 				
 			});
@@ -314,7 +336,13 @@ $(document).ready(function (){
 				colReorder: { order: [ 2, 1, 0 ] }, language: lngDataTable,
 			});
 			proc = $('#tablaproc').DataTable({
-				data : [],
+				ajax: {
+					url: base_url + 'citas/historia/listaprocedimientos',
+					type: 'POST',
+					data: function(d){
+						d.idatencion = $('#idatencion').val();
+					}
+				},
 				bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
 				columns:[
 				{
@@ -322,39 +350,113 @@ $(document).ready(function (){
 					render: function(data){
 						let btnAccion =
 						'<div class="btn-group">'+
-							'<a title="Anular" href="#" class="bg-danger btnTable remover"><i class="fa fa-trash-o" aria-hidden="true"></i></a>'+
+							'<a title="Remover" href="borrar" class="bg-danger btnTable remover">'+
+							'<i class="fa fa-trash-o" aria-hidden="true" style="padding:5px"></i></a>'+
 						'</div>';
 						return btnAccion;
 					}
 				},
-				{ data: 'articulo' },{ data: 'cantidad' },{ data: 'indicaciones' }
+				{ data: 'idprocedimiento' },{ data: 'tipo_procedimiento' },{ data: 'procedimiento' },{ data: 'indicaciones' }
 				],
 				columnDefs:[
-					{ title: 'Acciones', targets: 0 },{ title: 'Art&iacute;culo', targets: 1 },{ title: 'Cantidad', targets: 2 },{ title: 'Indicaciones', targets: 3 }
+					{ title: 'Acciones', targets: 0 },{ title: 'ID', targets: 1, visible: false },{ title: 'Tipo Procedimiento', targets: 2 },
+					{ title: 'Procedimiento', targets: 3 },{ title: 'Indicaciones', targets: 4 }
 				],order: [],dom: 'tp',
 				
+			});
+			tablaPROC = $('#tablaPROC').DataTable({
+				processing: true,
+				serverSide: true,
+				ajax:{
+					url: base_url + 'citas/historia/listaproc',
+					data: function(d){
+						d.idtipo = $('#tipoproc').val();
+					},
+					type: 'GET',
+					error: function(){
+						$("#post_list_processing").css('display','none');
+					}
+				},
+				columns:[
+					{ data: 0 },{ data: 1 },{ data: 2 }
+				],
+				dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
+				colReorder: { order: [ 0, 1, 2 ] }, language: lngDataTable,
+			});
+			indic = $('#tablaindicaciones').DataTable({
+				ajax: {
+					url: base_url + 'citas/historia/listaindicaciones',
+					type: 'POST',
+					data: function(d){
+						d.idatencion = $('#idatencion').val();
+					}
+				},
+				bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+				columns:[
+				{
+					data: null, orderable: false,
+					render: function(data){
+						let btnAccion =
+						'<div class="btn-group">'+
+							'<a title="Remover" href="borrar" class="bg-danger btnTable remover">'+
+							'<i class="fa fa-trash-o" aria-hidden="true" style="padding:5px"></i></a>'+
+						'</div>';
+						return btnAccion;
+					}
+				},
+				{ data: 'idarticulo' },{ data: 'descripcion' },{ data: 'cantidad' },{ data: 'indicaciones' },
+				],
+				columnDefs:[
+					{ title: 'Acciones', targets: 0 },{ title: 'ID', targets: 1, visible: false },{ title: 'Art&iacute;culo', targets: 2 },
+					{ title: 'Cantidad', targets: 3 },{ title: 'Indicaciones', targets: 4 }
+				],order: [],dom: 'tp',
+				
+			});
+			tablaART = $('#tablaART').DataTable({
+				processing: true,
+				serverSide: true,
+				ajax:{
+					url: base_url + 'citas/historia/listaart',
+					data: function(d){
+						d.idtipo = $('#tipoproc').val();
+					},
+					type: 'GET',
+					error: function(){
+						$("#post_list_processing").css('display','none');
+					}
+				},
+				columns:[
+					{ data: 0 },{ data: 1 }
+				],
+				dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
+				colReorder: { order: [ 0, 1 ] }, language: lngDataTable,
 			});
 		}
 	}
 });
 $('.iddep').bind('change', function(){
-	$.ajax({
-		data: { idempresa: this.value },
-		url: base_url + 'citas/turnos/consultorios',
-		method: 'POST',
-		dataType: 'JSON',
-		beforeSend: function(){ $('.cons').html('<option> Cargando...</option>'); },
-		success: function (data) {
-			let html = '';
-			if((segmento === 'citas' && segmento2 == '') || segmento2 == 'citas')
-				html = '';
-			else html = '<option value="">-- Seleccione --</option>';
-			$.each(data, function (i, e){ html += '<option value="' + e.idconsultorio + '">' + e.consultorio + '</option>'; });
-			$('.cons').html(html);
-			if((segmento === 'citas' && segmento2 == '') || segmento2 == 'citas')
-				grillappal.ajax.reload();
-		}
-	});
+	if(segmento2 === 'consultorios'){
+		grillappal.ajax.reload();
+	}else{
+		$.ajax({
+			data: { idempresa: this.value },
+			url: base_url + 'citas/turnos/consultorios',
+			method: 'POST',
+			dataType: 'JSON',
+			beforeSend: function(){ $('.cons').html('<option> Cargando...</option>'); },
+			success: function (data) {
+				let html = '';
+				if((segmento === 'citas' && segmento2 == '') || segmento2 == 'citas')
+					html = '';
+				else html = '<option value="">-- Seleccione --</option>';
+				$.each(data, function (i, e){ html += '<option value="' + e.idconsultorio + '">' + e.consultorio + '</option>'; });
+				$('.cons').html(html);
+				if((segmento === 'citas' && segmento2 == '') || segmento2 == 'citas')
+					grillappal.ajax.reload();
+			}
+		});
+	}
+	
 });
 $('.cdep').bind('change', function(){
 	grillappal.ajax.reload();
@@ -362,10 +464,13 @@ $('.cdep').bind('change', function(){
 $('.cprof').bind('change', function(){
 	grillappal.ajax.reload();
 });
-$('.anio').bind('change', function(){
+$('.canio').bind('change', function(){
 	grillappal.ajax.reload();
 });
 $('.cons').bind('change', function(){
+	grillappal.ajax.reload();
+});
+$('.tmes').bind('change', function(){
 	grillappal.ajax.reload();
 });
 $('#guardar-horarios').bind('click', function(event){
@@ -477,7 +582,7 @@ $('#tablaCitas').on('click', function(e){
 $('#tablaPacientes').on('dblclick','tr',function(){
 	let data = tablaPacientes.row( this ).data();
 	$('#idpaciente').val(data[4]);
-	$('#paciente').val(data[0] + ' ' + data[1]);
+	$('#paciente').val(data[1]+' '+data[0]);
 	if(segmento2 === 'historia'){
 		$('#modalAsigna').modal('hide');
 		$('.msg').html('');
@@ -517,20 +622,159 @@ $('#tablaCIE10').on('dblclick','tr',function(){
 	$('#codcie').val(data[0]);
 	$('#modalCie10').modal('hide');
 });
+$('#tablaPROC').on('dblclick','tr',function(){
+	let data = tablaPROC.row( this ).data();
+	$('#idproc').val(data[0]);
+	$('#procedimiento').val(data[1]);
+	$('#tarifa').val(data[2]);
+	$('#modalProcedimiento').modal('hide');
+});
+$('#tablaART').on('dblclick','tr',function(){
+	let data = tablaART.row( this ).data();
+	$('#idarticulo').val(data[0]);
+	$('#articulo').val(data[1]);
+	$('#modalArticulo').modal('hide');
+});
 $('#addtipo').bind('click',function(){
+	let valida = false;
 	if($('#tpdiag').val() && $('#cie10').val()){
-		let json = [{'idcie':$('#idcie').val(),'cie10':$('#codcie').val(),'diagnostico':$('#cie10').val(),
-					'idtipo':$('#tpdiag').val(),'tipo':$('#tpdiag :selected').text()}];
+		let json = [{'idcie10':$('#idcie').val(),'cie10':$('#codcie').val(),'descripcion_cie10':$('#cie10').val(),
+					'tipo':$('#tpdiag').val()}];
 		
 		if(cie.rows().count()){
 			cie.rows().data().each(function(e){
-				if($('#idcie').val() === e['idcie']) alert('El item ya está agregado');
-				else cie.rows.add(json).draw();
+				if($('#idcie').val() === e['idcie']){
+					alert('El item ya está agregado');
+					valida = true;
+				}
 			});
-		}else cie.rows.add(json).draw();
+		}
+		if(!valida) cie.rows.add(json).draw();
+	}
+});
+$('#addproc').bind('click',function(){
+	let valida = false;
+	if($('#tipoproc').val() && $('#procedimiento').val()){
+		let json = [{'idprocedimiento':$('#idproc').val(),'tipo_procedimiento':$('#tipoproc :selected').text(),'procedimiento':$('#procedimiento').val(),
+					'indicaciones':$('#observaciones').val()}];
+		
+		if(proc.rows().count()){
+			proc.rows().data().each(function(e){
+				if($('#idproc').val() === e['idprocedimiento']){
+					alert('El item ya está agregado');
+					valida = true;
+				}
+			});
+		}
+		if(!valida) proc.rows.add(json).draw();
+	}
+});
+$('#addindic').bind('click',function(){
+	let valida = false;
+	if($('#articulo').val() && $('#cantidad').val()){
+		let json = [{'idarticulo':$('#idarticulo').val(),'descripcion':$('#articulo').val(),'cantidad':$('#cantidad').val(),
+					'indicaciones':$('#indica').val()}];
+		
+		if(indic.rows().count()){
+			indic.rows().data().each(function(e){
+				if($('#idarticulo').val() === e['idarticulo']){
+					alert('El item ya está agregado');
+					valida = true;
+				}
+			});
+		}
+		if(!valida) indic.rows.add(json).draw();
 	}
 });
 $('#tablacie').bind('click','a',function(e){
-	let a = e.target;
-	cie.row($(a).parents('tr')).remove().draw();
+	let t = e.target, a = $(t).parents('a');
+	if(a.hasClass('remover')){
+		event.preventDefault();
+		cie.row($(a).parents('tr')).remove().draw();
+	}
 });
+$('#tablaproc').bind('click','a',function(e){
+	let t = e.target, a = $(t).parents('a');
+	if(a.hasClass('remover')){
+		event.preventDefault();
+		proc.row($(a).parents('tr')).remove().draw();
+	}
+});
+$('#tablaindicaciones').bind('click','a',function(e){
+	let t = e.target, a = $(t).parents('a');
+	if(a.hasClass('remover')){
+		event.preventDefault();
+		indic.row($(a).parents('tr')).remove().draw();
+	}
+});
+$('#gestante').bind('change', function(){
+	if(this.checked) $('#semanas').prop('disabled', false);
+	else $('#semanas').prop('disabled', true);
+});
+$('#btnRegistrar').bind('click', function(){
+	let id = $('div.active').prop('id'), url = '', data = null, valida = true, json = {};
+	
+	if(id === 'atenciones'){
+		let f = document.getElementById('form_atenciones'), formData = new FormData(f);
+		url = $(f).prop('action');
+		//formData.set('idatencion',$('#idatencion').find(':selected').text());
+		formData.set('idatencion',$('#idatencion').val());
+		formData.set('idcons',$('#idcons').val());
+		formData.set('iddep',$('#iddep').val());
+		formData.set('idprof',$('#prof').val());
+		formData.set('idhistoria',$('#idhistoria').val());
+		formData.set('hora',$('#hora').val());
+		data = new URLSearchParams(formData).toString();
+	}else if(id === 'diagnosticos'){
+		url = base_url + 'citas/historia/regdiagnostico';
+		let rs = cie.rows().data().toArray(), filas = [];
+		if(rs.length){
+			$.each(rs, function(i,e){
+				filas[i] = { idatencion: $('#idatencion').val(),idcie10: e.idcie10,tipo: e.tipo };
+			});
+		}else valida = false;
+		data = JSON.stringify(filas);
+	}else if(id === 'procedimientos'){
+		url = base_url + 'citas/historia/regprocedimiento';
+		let rs = proc.rows().data().toArray(), filas = [];
+		if(rs.length){
+			$.each(rs, function(i,e){
+				filas[i] = { idatencion: $('#idatencion').val(),idprocedimiento: e.idprocedimiento,indicaciones: e.indicaciones };
+			});
+		}else valida = false;
+		data = JSON.stringify(filas);
+	}else if(id === 'indicaciones'){
+		url = base_url + 'citas/historia/regindicaciones';
+		let rs = indic.rows().data().toArray(), filas = [];
+		if(rs.length){
+			$.each(rs, function(i,e){
+				filas[i] = { idatencion: $('#idatencion').val(),idarticulo: e.idarticulo,cantidad: e.cantidad,indicaciones: e.indicaciones };
+			});
+		}else valida = false;
+		data = JSON.stringify(filas);
+	}
+	
+	/* Envío de datos por ajax de cada uno de los tab */
+	if(valida){
+		$.ajax({
+			data: data,
+			url: url,
+			method: 'POST',
+			dataType: 'JSON',
+			beforeSend: function(){
+				$('.rspatencion').html('<span class="spinner-border spinner-border-sm"></span>&nbsp;&nbsp;Cargando...');
+				$('.rspatencion').addClass('pt-2');
+				$('.rspatencion').show();
+			},
+			success: function(data){
+				console.log(data);
+				$('.rspatencion').html(data.msg);
+				if(id === 'atenciones'){
+					if(parseInt(data.status) === 200){ $('.nav-link.disabled').removeClass('disabled'); $('#idatencion').val(data.idatencion); }
+				}
+				setTimeout(function(){ $('.rspatencion').hide('slow'); }, 1500);
+			}
+		});
+	}
+});
+$('#tipoproc').bind('change', function(){ tablaPROC.ajax.reload(); });

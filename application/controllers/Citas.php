@@ -31,14 +31,22 @@ class Citas extends CI_Controller
 	}
 	public function listaturnos()
 	{
+		$data = array(
+			't.idconsultorio' => $this->input->post('idconsultorio'),
+			't.iddepartamento' => $this->input->post('iddepartamento'),
+			't.idprofesional' => $this->input->post('idprofesional'),
+			't.anio' => $this->input->post('anio'),
+			't.idmes' => $this->input->post('mes'),
+			't.activo' => 1,
+		);
 		$this->load->model('Citas_model');
-		$turnos = $this->Citas_model->listaturnos();
+		$turnos = $this->Citas_model->listaturnos($data);
 		echo json_encode(['data' => $turnos]);
 	}
 	public function listaconsultorios()
 	{
 		$this->load->model('Citas_model');
-		$cons = $this->Citas_model->listaconsultorios();
+		$cons = $this->Citas_model->listaconsultorios(['c.idempresa' => $this->input->post('idempresa'),'c.activo' => 1]);
 		echo json_encode(['data' => $cons]);
 	}
 	public function listaPacServer()
@@ -57,7 +65,30 @@ class Citas extends CI_Controller
 			'table' => 'cie10',
 			'primary_key' => 'idcie10',
 			'columns' => array('cie10','descripcion_cie10','idcie10'),
+			'order_by' => 'ASC',
 			//'where' => array('activo' => 1,'idpaciente >' => 1),
+		));
+		$this->datatables_server_side->process();
+	}
+	public function listaprocserver()
+	{
+		$this->load->library('datatables_server_side', array(
+			'table' => 'procedimiento',
+			'primary_key' => 'idprocedimiento',
+			'columns' => array('idprocedimiento','procedimiento','tarifa_base'),
+			'order_by' => 'ASC',
+			'where' => array('idtipoprocedimiento' => $this->input->get('idtipo')),
+		));
+		$this->datatables_server_side->process();
+	}
+	public function listaartserver()
+	{
+		$this->load->library('datatables_server_side', array(
+			'table' => 'articulos',
+			'primary_key' => 'idarticulo',
+			'columns' => array('idarticulo','descripcion'),
+			'order_by' => 'ASC',
+			'where' => array('activo' => 1, 'disponible_venta' => 1),
 		));
 		$this->datatables_server_side->process();
 	}
@@ -81,6 +112,24 @@ class Citas extends CI_Controller
 		$this->load->model('Citas_model');
 		$hist = $this->Citas_model->listahistorias();
 		echo json_encode(['data' => $hist]);
+	}
+	public function listadiagnostico()
+	{
+		$this->load->model('Citas_model');
+		$diag = $this->Citas_model->listardiag(['idatencion' => $this->input->post('idatencion')]);
+		echo json_encode(['data' => $diag]);
+	}
+	public function listaprocedimientos()
+	{
+		$this->load->model('Citas_model');
+		$proc = $this->Citas_model->listarproc(['idatencion' => $this->input->post('idatencion')]);
+		echo json_encode(['data' => $proc]);
+	}
+	public function listaindicaciones()
+	{
+		$this->load->model('Citas_model');
+		$indic = $this->Citas_model->listarindic(['idatencion' => $this->input->post('idatencion')]);
+		echo json_encode(['data' => $indic]);
 	}
 	
 	public function pacientes()
@@ -143,7 +192,9 @@ class Citas extends CI_Controller
 	}
 	public function consultorios()
 	{
-		return $this->load->view('main');
+		$this->load->model('Citas_model');
+		$empresa = $tipo = $this->Citas_model->querysqlwhere('*','empresa',['activo' => 1]);
+		return $this->load->view('main',['empresa' => $empresa]);
 	}
 	public function formconsultorio()
 	{
@@ -236,7 +287,29 @@ class Citas extends CI_Controller
 	}
 	public function turnos()
 	{
-		return $this->load->view('main');
+		$this->load->model('Citas_model');
+		$estab = $this->Citas_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
+		$dep = $this->Citas_model->querysqlwhere('iddepartamento,departamento','departamento',['activo' => 1]);
+		$cons = null; $i = 1;
+		foreach($estab as $row):
+			if($i === 1){
+				$cons = $this->Citas_model->querysqlwhere('idconsultorio,consultorio','consultorio',['idempresa' => $row->idempresa,'activo' => 1]);
+				$i++;
+			}
+		endforeach;
+		$prof = $this->Citas_model->querysqlwhere('idprofesional,nombres,apellidos','profesional',['activo' => 1]);
+		$mes = $this->Citas_model->querysqlwhere('idmes,mes','mes',['activo' => 1]);
+		$anio = $this->Citas_model->querysqlwhere('anio','anio',['activo' => 1]);
+		
+		$data = array(
+			'dep' => $dep,
+			'estab' => $estab,
+			'cons' => $cons,
+			'prof' => $prof,
+			'mes' => $mes,
+			'anio' => $anio,
+		);
+		return $this->load->view('main',$data);
 	}
 	public function formturnos()
 	{
@@ -489,15 +562,137 @@ class Citas extends CI_Controller
 		$estab = $this->Citas_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
 		$dep = $this->Citas_model->querysqlwhere('iddepartamento,departamento','departamento',['activo' => 1]);
 		$prof = $this->Citas_model->querysqlwhere('idprofesional,nombres,apellidos','profesional',['activo' => 1]);
+		$cons = null; $i = 1;
+		foreach($estab as $row):
+			if($i === 1){
+				$cons = $this->Citas_model->querysqlwhere('idconsultorio,consultorio','consultorio',['idempresa' => $row->idempresa,'activo' => 1]);
+				$i++;
+			}
+		endforeach;
+		$v = $this->Citas_model->querysqlwhere('*','historia_clinica_atenciones',['idhistoria' => $this->input->get('id')]);
+		$proc = $this->Citas_model->querysqlwhere('idtipoprocedimiento,tipo_procedimiento','tipo_procedimiento',['activo' => 1]);
 		
 		$data = array(
 			'pac' => $paciente,
 			'hist' => $historia,
 			'estab' => $estab,
 			'dep' => $dep,
-			'prof' => $prof
+			'prof' => $prof,
+			'cons' => $cons,
+			'valida' => $v,
+			'proc' => $proc
 		);
 		
 		return $this->load->view('main', $data);
+	}
+	public function regatencion()
+	{
+		$this->load->model('Citas_model');
+		$msg = 'Error al registrar'; $status = 500; $g = $this->input->post('gestante')? 1 : 0; $idatencion = 0;
+		
+		$data = array(
+			'idconsultorio' => $this->input->post('idcons'),
+			'iddepartamento' => $this->input->post('iddep'),
+			'idprofesional' => $this->input->post('idprof'),
+			'idhistoria' => $this->input->post('idhistoria'),
+			'fecha_atencion' => date('Y-m-d'),
+			'hora_atencion' => $this->input->post('hora'),
+			'tipo_atencion' => $this->input->post('tipoatencion'),
+			'prioridad' => $this->input->post('prioridad'),
+			'gestante' => $g,
+			'presion01' => $this->input->post('p1'),
+			'presion02' => $this->input->post('p2'),
+			'presion_venosa' => $this->input->post('pvenosa'),
+			'temperatura' => $this->input->post('temp'),
+			'saturacion' => $this->input->post('saturacion'),
+			'frecuencia_cardiaca' => $this->input->post('fcardiaca'),
+			'frecuencia_respiratoria' => $this->input->post('frespiratoria'),
+			'peso' => $this->input->post('peso'),
+			'talla' => $this->input->post('talla'),
+			'imc' => $this->input->post('imc'),
+			'AO' => $this->input->post('ao'),
+			'RV' => $this->input->post('rv'),
+			'RM' => $this->input->post('rm'),
+			'glasgow' => $this->input->post('glasgow'),
+			'observaciones' => $this->input->post('obs'),
+		);
+		
+		if($g) $data['tiempo_gestacion'] =  $this->input->post('semanas');
+		
+		if($this->input->post('idatencion') !== ''){
+			unset($data['fecha_atencion']); unset($data['hora_atencion']);
+			if($this->Citas_model->actualizar('historia_clinica_atenciones',$data,['idatencion' => $this->input->post('idatencion')])){
+				$msg = 'Actualizado'; $status = 200;
+			}
+		}else{
+			if($idatencion = $this->Citas_model->registrar('historia_clinica_atenciones',$data)){
+				$msg = 'Registrado'; $status = 200;
+			}
+		}
+		
+		$data = array(
+			'status' => $status,
+			'msg' => $msg,
+			'idatencion' => ($idatencion? $idatencion : $this->input->post('idatencion')),
+		);
+		echo json_encode($data);
+	}
+	public function regdiagnostico()
+	{
+		$this->load->model('Citas_model');
+		$msg = 'Error al registrar'; $data = null; $dh = null;
+		$json = json_decode(file_get_contents('php://input'));
+		
+		if($this->Citas_model->borrar('historia_clinica_atenciones_diagnostico',['idatencion' => $json[0]->idatencion])){
+			if($this->Citas_model->registrarbatch('historia_clinica_atenciones_diagnostico', $json)) $msg = 'Diagn&oacute;stico Registrado';
+		}
+		$data = array(
+			'msg' => $msg,
+			'diag' => $dh,
+		);
+		echo json_encode($data);
+	}
+	public function regprocedimiento()
+	{
+		$this->load->model('Citas_model');
+		$msg = 'Error al registrar'; $data = null; $dh = null;
+		$json = json_decode(file_get_contents('php://input'));
+		
+		if($this->Citas_model->borrar('historia_clinica_atenciones_procedimientos',['idatencion' => $json[0]->idatencion])){
+			if($this->Citas_model->registrarbatch('historia_clinica_atenciones_procedimientos', $json)) $msg = 'Procedimiento Registrado';
+		}
+		$data = array(
+			'msg' => $msg,
+		);
+		echo json_encode($data);
+	}
+	public function regindicaciones()
+	{
+		$this->load->model('Citas_model');
+		$msg = 'Error al registrar'; $data = null; $dh = null;
+		$json = json_decode(file_get_contents('php://input'));
+		
+		if($this->Citas_model->borrar('historia_clinica_atenciones_indicaciones',['idatencion' => $json[0]->idatencion])){
+			if($this->Citas_model->registrarbatch('historia_clinica_atenciones_indicaciones', $json)) $msg = 'Indicaciones Registradas';
+		}
+		$data = array(
+			'msg' => $msg,
+		);
+		echo json_encode($data);
+	}
+	public function verhistoria()
+	{
+		$this->load->model('Citas_model');
+		$versionphp = 7; $id = $this->input->get('id'); $html = null; $a5 = 'A4'; $direccion = 'portrait';
+		
+		$html = $this->load->view('citas/historia-pdf', null, true);
+		
+		if(floatval(phpversion()) < $versionphp){
+			$this->load->library('dom');
+			$this->dom->generate($direccion, $a5, $html, 'Informe');
+		}else{
+			$this->load->library('dom1');
+			$this->dom1->generate($direccion, $a5, $html, 'Informe');
+		}
 	}
 }

@@ -16,7 +16,7 @@ class Citas_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
-	public function listaturnos()
+	public function listaturnos($where)
 	{
 		$this->db->select('t.*,c.consultorio,d.departamento,CONCAT(p.nombres," ",p.apellidos) as nprof,m.mes');
 		$this->db->from('turnos t');
@@ -24,8 +24,8 @@ class Citas_model extends CI_Model
 		$this->db->join('departamento d','t.iddepartamento=d.iddepartamento');
 		$this->db->join('profesional p','t.idprofesional=p.idprofesional');
 		$this->db->join('mes m','t.idmes=m.idmes');
-		$this->db->where(['t.activo' => 1]);
-		$this->db->order_by('t.idturno','DESC');
+		$this->db->where($where);
+		$this->db->order_by('t.idturno','ASC');
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
@@ -41,12 +41,12 @@ class Citas_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
-	public function listaconsultorios()
+	public function listaconsultorios($where)
 	{
 		$this->db->select('c.*,e.nombre_comercial');
 		$this->db->from('consultorio c');
 		$this->db->join('empresa e','c.idempresa=e.idempresa');
-		$this->db->where(['c.activo' => 1]);
+		$this->db->where($where);
 		$this->db->order_by('c.idconsultorio','DESC');
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
@@ -79,7 +79,7 @@ class Citas_model extends CI_Model
 	}
 	public function listahistorias()
 	{
-		$this->db->select('h.*,CONCAT(p.apellidos," ",p.nombres) as nombres,p.numero_documento,ec.estado_civil,t.tipo_documento');
+		$this->db->select('h.*,DATE_FORMAT(h.fecha_registro,"%d/%m/%Y") as freg,CONCAT(p.apellidos," ",p.nombres) as nombres,p.numero_documento,ec.estado_civil,t.tipo_documento');
 		$this->db->from('historia_clinica h');
 		$this->db->join('paciente p','p.idpaciente=h.idpaciente');
 		$this->db->join('tipo_documento t','p.idtipodocumento=t.idtipodocumento');
@@ -105,6 +105,7 @@ class Citas_model extends CI_Model
 	}
 	public function registrar($t, $data)
 	{
+		$this->db->db_debug = TRUE;
 		if ($this->db->insert($t, $data)) return $this->db->insert_id();
 		else return 0;
 	}
@@ -123,5 +124,35 @@ class Citas_model extends CI_Model
 		$this->db->where($where);
 		if($this->db->update($t, $data)) return true;
         else return false;
+	}
+	public function listardiag($where)
+	{
+		//$this->db->db_debug = TRUE;
+		$this->db->select('hd.idcie10,hd.tipo,c.cie10,c.descripcion_cie10');
+		$this->db->from('historia_clinica_atenciones_diagnostico hd');
+		$this->db->join('cie10 c','c.idcie10=hd.idcie10');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function listarproc($where)
+	{
+		//$this->db->db_debug = TRUE;
+		$this->db->select('hp.idprocedimiento,hp.indicaciones,hp.estado,hp.avatar,p.procedimiento,tp.tipo_procedimiento');
+		$this->db->from('historia_clinica_atenciones_procedimientos hp');
+		$this->db->join('procedimiento p','p.idprocedimiento=hp.idprocedimiento');
+		$this->db->join('tipo_procedimiento tp','p.idtipoprocedimiento=tp.idtipoprocedimiento');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function listarindic($where)
+	{
+		$this->db->select('hi.idarticulo,hi.cantidad,hi.indicaciones,a.descripcion');
+		$this->db->from('historia_clinica_atenciones_indicaciones hi');
+		$this->db->join('articulos a','a.idarticulo=hi.idarticulo');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
 	}
 }

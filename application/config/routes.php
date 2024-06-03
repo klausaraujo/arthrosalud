@@ -146,6 +146,16 @@ $route['citas/historia/nuevo'] = 'citas/formhistoria';
 $route['citas/historia/reghistoria'] = 'citas/reghistoria';
 $route['citas/historia/regdetalle'] = 'citas/reghistdetalle';
 $route['citas/historia/listacie'] = 'citas/listaCIE';
+$route['citas/historia/regatencion'] = 'citas/regatencion';
+$route['citas/historia/listadiagnostico'] = 'citas/listadiagnostico';
+$route['citas/historia/regdiagnostico'] = 'citas/regdiagnostico';
+$route['citas/historia/listaprocedimientos'] = 'citas/listaprocedimientos';
+$route['citas/historia/listaproc'] = 'citas/listaprocserver';
+$route['citas/historia/regprocedimiento'] = 'citas/regprocedimiento';
+$route['citas/historia/listaindicaciones'] = 'citas/listaindicaciones';
+$route['citas/historia/listaart'] = 'citas/listaartserver';
+$route['citas/historia/regindicaciones'] = 'citas/regindicaciones';
+$route['citas/historia/ver'] = 'citas/verhistoria';
 
 /**/
 $route['404_override'] = '';

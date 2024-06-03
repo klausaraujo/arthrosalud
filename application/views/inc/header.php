@@ -69,7 +69,7 @@ a.disabled{ pointer-events: none; color: grey }
 .cabecera >div, .fila { border: 1px solid #d5845b; border-radius: 7px; color:#5550d7  }
 .hora { border:1px solid #dcdcdc; border-radius:7px }
 .nav-tabs .nav-link.active{ border-bottom: 2px solid #bd7519; color: #bd7519; }
-/*div.tab-content{ background: #f9f0d4 }*/
+.nav-tabs .nav-link.disabled { color: #c7c9cb }
 </style>
 <? if(($this->uri->segment(1) === 'citas' && $this->uri->segment(2) == '') || $this->uri->segment(2) === 'citas'){ ?>
 	<link rel="stylesheet" href="<?=base_url()?>/public/js/calendario/style.css">

@@ -90,8 +90,8 @@
 											<div class="row">
 												<select class="form-control form-control-sm" name="sexo" id="sexo" required="" >
 													<option value="">-- Seleccione --</option>
-													<option value="f">Femenino</option>
-													<option value="m">Masculino</option>
+													<option value="2">Masculino</option>
+													<option value="1">Femenino</option>
 												</select>
 												<div class="invalid-feedback">Campo Requerido</div>
 											</div>
