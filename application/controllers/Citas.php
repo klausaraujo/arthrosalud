@@ -32,13 +32,17 @@ class Citas extends CI_Controller
 	public function listaturnos()
 	{
 		$data = array(
-			't.idconsultorio' => $this->input->post('idconsultorio'),
+			//'t.idconsultorio' => $this->input->post('idconsultorio'),
 			't.iddepartamento' => $this->input->post('iddepartamento'),
-			't.idprofesional' => $this->input->post('idprofesional'),
+			//'t.idprofesional' => $this->input->post('idprofesional'),
 			't.anio' => $this->input->post('anio'),
 			't.idmes' => $this->input->post('mes'),
 			't.activo' => 1,
 		);
+		
+		if($this->input->post('idprofesional') !== '') $data['t.idprofesional'] = $this->input->post('idprofesional');
+		if($this->input->post('idconsultorio') !== '') $data['t.idconsultorio'] = $this->input->post('idconsultorio');
+		
 		$this->load->model('Citas_model');
 		$turnos = $this->Citas_model->listaturnos($data);
 		echo json_encode(['data' => $turnos]);
