@@ -439,8 +439,8 @@
 							</div>
 							<div class="container-fluid row"><hr class="col-sm-12"></div>
 							<div class="col-12 mx-auto pb-2">
-								<button class="btn btn-sabogal ml-1 mr-4" id="btnRegistrar">Guardar</button>
-								<button type="reset" class="btn btn-light btn-cancelar">Cerrar Historia</button>
+								<button class="btn btn-sabogal ml-1 mr-4" id="btnRegistrar">Guardar Cambios</button>
+								<button type="reset" class="btn btn-light btn-cancelar">Cerrar Acto Medico</button>
 							</div>
 						</div>
 					</div>
