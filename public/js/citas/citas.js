@@ -777,4 +777,4 @@ $('#btnRegistrar').bind('click', function(){
 		});
 	}
 });
-$('#tipoproc').bind('change', function(){ tablaPROC.ajax.reload(); });
+$('#tipoproc').bind('change', function(){ tablaPROC.ajax.reload(); $('#procedimiento').val('') });
