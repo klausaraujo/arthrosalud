@@ -684,8 +684,14 @@ class Citas extends CI_Controller
 	{
 		$this->load->model('Citas_model');
 		$versionphp = 7; $id = $this->input->get('id'); $html = null; $a5 = 'A4'; $direccion = 'portrait';
+		$historia = $this->Citas_model->historia(['idhistoria' => $this->input->get('id')]);
+		$atencion = $this->Citas_model->atenciones(['idhistoria' => $this->input->get('id')]);
+		$data = array(
+			'historia' => $historia,
+			'atencion' => $atencion
+		);
 		
-		$html = $this->load->view('citas/historia-pdf', null, true);
+		$html = $this->load->view('citas/historia-pdf', $data, true);
 		
 		if(floatval(phpversion()) < $versionphp){
 			$this->load->library('dom');

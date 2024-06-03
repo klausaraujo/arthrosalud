@@ -88,6 +88,59 @@ class Citas_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
+	public function listardiag($where)
+	{
+		//$this->db->db_debug = TRUE;
+		$this->db->select('hd.idcie10,hd.tipo,c.cie10,c.descripcion_cie10');
+		$this->db->from('historia_clinica_atenciones_diagnostico hd');
+		$this->db->join('cie10 c','c.idcie10=hd.idcie10');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function listarproc($where)
+	{
+		//$this->db->db_debug = TRUE;
+		$this->db->select('hp.idprocedimiento,hp.indicaciones,hp.estado,hp.avatar,p.procedimiento,tp.tipo_procedimiento');
+		$this->db->from('historia_clinica_atenciones_procedimientos hp');
+		$this->db->join('procedimiento p','p.idprocedimiento=hp.idprocedimiento');
+		$this->db->join('tipo_procedimiento tp','p.idtipoprocedimiento=tp.idtipoprocedimiento');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function listarindic($where)
+	{
+		$this->db->select('hi.idarticulo,hi.cantidad,hi.indicaciones,a.descripcion');
+		$this->db->from('historia_clinica_atenciones_indicaciones hi');
+		$this->db->join('articulos a','a.idarticulo=hi.idarticulo');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function historia($where)
+	{
+		$this->db->select('h.*,DATE_FORMAT(h.fecha_registro,"%d/%m/%Y") as fecha,p.*,DATE_FORMAT(p.fecnac,"%d/%m/%Y") as fecnac,tp.tipo_documento,estado_civil');
+		$this->db->from('historia_clinica h');
+		$this->db->join('paciente p','h.idpaciente=p.idpaciente');
+		$this->db->join('tipo_documento tp','p.idtipodocumento=tp.idtipodocumento');
+		$this->db->join('estado_civil ec','p.idestadocivil=ec.idestadocivil');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->row() : array();
+	}
+	public function atenciones($where)
+	{
+		$this->db->db_debug = TRUE;
+		$this->db->select('h.*,DATE_FORMAT(fecha_atencion,"%d/%m/%Y") as fecha,CONCAT(p.apellidos," ",p.nombres) as nombres,e.razon_social');
+		$this->db->from('historia_clinica_atenciones h');
+		$this->db->join('profesional p','h.idprofesional=p.idprofesional');
+		$this->db->join('consultorio c','h.idconsultorio=c.idconsultorio');
+		$this->db->join('empresa e','c.idempresa=e.idempresa');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->row() : array();
+	}
 	public function querysqlwhere($q,$t,$where)
 	{
 		$query = $this->db->select($q)->from($t)->where($where)->get();
@@ -124,35 +177,5 @@ class Citas_model extends CI_Model
 		$this->db->where($where);
 		if($this->db->update($t, $data)) return true;
         else return false;
-	}
-	public function listardiag($where)
-	{
-		//$this->db->db_debug = TRUE;
-		$this->db->select('hd.idcie10,hd.tipo,c.cie10,c.descripcion_cie10');
-		$this->db->from('historia_clinica_atenciones_diagnostico hd');
-		$this->db->join('cie10 c','c.idcie10=hd.idcie10');
-		$this->db->where($where);
-		$result = $this->db->get();
-		return ($result->num_rows() > 0)? $result->result() : array();
-	}
-	public function listarproc($where)
-	{
-		//$this->db->db_debug = TRUE;
-		$this->db->select('hp.idprocedimiento,hp.indicaciones,hp.estado,hp.avatar,p.procedimiento,tp.tipo_procedimiento');
-		$this->db->from('historia_clinica_atenciones_procedimientos hp');
-		$this->db->join('procedimiento p','p.idprocedimiento=hp.idprocedimiento');
-		$this->db->join('tipo_procedimiento tp','p.idtipoprocedimiento=tp.idtipoprocedimiento');
-		$this->db->where($where);
-		$result = $this->db->get();
-		return ($result->num_rows() > 0)? $result->result() : array();
-	}
-	public function listarindic($where)
-	{
-		$this->db->select('hi.idarticulo,hi.cantidad,hi.indicaciones,a.descripcion');
-		$this->db->from('historia_clinica_atenciones_indicaciones hi');
-		$this->db->join('articulos a','a.idarticulo=hi.idarticulo');
-		$this->db->where($where);
-		$result = $this->db->get();
-		return ($result->num_rows() > 0)? $result->result() : array();
 	}
 }
