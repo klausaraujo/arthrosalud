@@ -156,6 +156,12 @@ $route['citas/historia/listaindicaciones'] = 'citas/listaindicaciones';
 $route['citas/historia/listaart'] = 'citas/listaartserver';
 $route['citas/historia/regindicaciones'] = 'citas/regindicaciones';
 $route['citas/historia/ver'] = 'citas/verhistoria';
+$route['citas/adicional'] = 'citas/citaadicional';
+$route['citas/regadicional'] = 'citas/regadicional';
+$route['citas/procedimientos'] = 'citas/procedimientos';
+$route['citas/procedimientos/lista'] = 'citas/lprocedimientos';
+$route['citas/procedimientos/nuevo'] = 'citas/nuevoprocedimiento';
+$route['citas/procedimientos/regprocedimiento'] = 'citas/rprocedimientos';
 
 /**/
 $route['404_override'] = '';

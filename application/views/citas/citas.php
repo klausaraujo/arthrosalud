@@ -2,9 +2,18 @@
 							<div class="card-body">
 								<div class="container-fluid px-0 mx-0">
 									<h4 class="float-left my-0">Citas</h4>
-									<a href="#" class="btn btn-sabogal float-right">Nueva Cita</a>
+									<form id="form_adicional" action="<?=base_url()?>citas/adicional" method="POST" >
+										<input type="hidden" id="json" name="json"  />
+									</form>
+									<a href="adicional" class="btn btn-sabogal float-right adicional">Nueva Cita Adicional</a>
 								</div>
 								<hr class="row mt-5 mx-1">
+								<div class="row justify-content-center py-2">
+									<?if($this->session->flashdata('claseMsg')){?><div class="alert <?=$this->session->flashdata('claseMsg')?> py-1 px-5 fade show" role="alert">
+										<div class="iq-alert-text"><?=$this->session->flashdata('flashMessage')?></div>
+									</div><?}?>
+									<div class="msg"></div>
+								</div>
 								<div class="row">
 									<div class="float-left col-md-5 col-lg-4 mt-sm-2">
 										<div class="wrapper-c">
@@ -140,7 +149,7 @@
 											<div class="row mb-4">
 												<label class="control-label col-lg-2 align-self-center mb-0" for="paciente">Paciente:</label>
 												<div class="col-lg-3">
-													<input type="text" id="paciente" class="form-control form-control-sm" readonly />
+													<input type="text" id="paciente" class="form-control form-control-sm paciente" readonly />
 												</div>
 												<label class="control-label col-lg-2 align-self-center mb-0" for="obs">Observaciones:</label>
 												<div class="col-lg-3">

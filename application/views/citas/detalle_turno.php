@@ -38,7 +38,9 @@
 													<tbody>
 												
 											<?
+												//Nro de días del mes
 												$n = cal_days_in_month(CAL_GREGORIAN, $turno->idmes, $turno->anio);
+												//Se recorre la cantidad de días del mes para crear la tabla
 												for($i = 1;$i <= $n;$i++){
 													$d = date('N',strtotime($turno->anio.'-'.$turno->idmes.'-'.$i));
 													$dia = '';

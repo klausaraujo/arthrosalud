@@ -2,9 +2,7 @@
 						<div class="iq-card-header d-flex justify-content-between">
 							<div class="iq-header-title"><h4>Registro de Atenci&oacute;n</h4></div>
 						</div>
-						<?	$c = count($valida); ?>
 						<div class="iq-card-body">
-							<input type="hidden" name="tiporegistro" value="registrar" />
 							<div class="form-row">
 								<div class="col-12">
 									<div class="row">
@@ -113,20 +111,20 @@
 											aria-selected="true">Atenciones</a>
 								  </li>
 								  <li class="nav-item">
-									 <a class="nav-link <?=!$c? 'disabled':'';?>" id="diagnosticos-tab" data-toggle="tab" href="#diagnosticos" role="tab" aria-controls="diagnosticos" 
+									 <a class="nav-link disabled" id="diagnosticos-tab" data-toggle="tab" href="#diagnosticos" role="tab" aria-controls="diagnosticos" 
 											aria-selected="false">Diagn&oacute;sticos</a>
 								  </li>
 								  <li class="nav-item">
-									 <a class="nav-link <?=!$c? 'disabled':'';?>" id="procedimientos-tab" data-toggle="tab" href="#procedimientos" role="tab" aria-controls="procedimientos" 
+									 <a class="nav-link disabled" id="procedimientos-tab" data-toggle="tab" href="#procedimientos" role="tab" aria-controls="procedimientos" 
 											aria-selected="false">Procedimientos</a>
 								  </li>
 								  <li class="nav-item">
-									 <a class="nav-link <?=!$c? 'disabled':'';?>" id="indicaciones-tab" data-toggle="tab" href="#indicaciones" role="tab" aria-controls="indicaciones" 
+									 <a class="nav-link disabled" id="indicaciones-tab" data-toggle="tab" href="#indicaciones" role="tab" aria-controls="indicaciones" 
 											aria-selected="false">Indicaciones</a>
 								  </li>
 								</ul>
 								<div class="tab-content container-fluid" id="myTabContent-2">
-									<input type="hidden" name="idatencion" id="idatencion" value="<?=$c? $valida[0]->idatencion : ''?>" />
+									<input type="hidden" name="idatencion" id="idatencion" />
 									<input type="hidden" name="idhistoria" id="idhistoria" value="<?=$this->input->get('id');?>" />
 									<div class="tab-pane fade show active" id="atenciones" role="tabpanel" aria-labelledby="atenciones-tab">
 										<form method="post" id="form_atenciones" action="<?=base_url()?>citas/historia/regatencion"
@@ -137,8 +135,8 @@
 													<div class="row">
 														<select type="text" class="form-control form-control-sm" name="tipoatencion" id="tipoatencion" >
 															<option value="">-- Seleccione --</option>
-															<option value="1" <?if($c){if($valida[0]->tipo_atencion === '1'){?>selected<?}}?>>1 - M&eacute;dica</option>
-															<option value="2" <?if($c){if($valida[0]->tipo_atencion === '2'){?>selected<?}}?>>2 - No M&eacute;dica</option>
+															<option value="1">1 - M&eacute;dica</option>
+															<option value="2">2 - No M&eacute;dica</option>
 														</select>
 													</div>
 												</div>
@@ -147,10 +145,10 @@
 													<div class="row">
 														<select type="text" class="form-control form-control-sm" name="prioridad" id="prioridad" >
 															<option value="">-- Seleccione --</option>
-															<option value="1" <?if($c){if($valida[0]->prioridad === '1'){?>selected<?}}?>>Prioridad I</option>
-															<option value="2" <?if($c){if($valida[0]->prioridad === '2'){?>selected<?}}?>>Prioridad II</option>
-															<option value="3" <?if($c){if($valida[0]->prioridad === '3'){?>selected<?}}?>>Prioridad III</option>
-															<option value="4" <?if(!$c || ($c && $valida[0]->prioridad === '4')){?>selected<?}?>>Prioridad IV</option>
+															<option value="1">Prioridad I</option>
+															<option value="2">Prioridad II</option>
+															<option value="3">Prioridad III</option>
+															<option value="4" selected>Prioridad IV</option>
 														</select>
 													</div>
 												</div>
@@ -158,8 +156,7 @@
 												<div class="col-md-1 col-lg-2">
 													<div class="row">
 														<div class="custom-control custom-switch col-12 ml-3 pl-md-5">
-															<input type="checkbox" class="custom-control-input" name="gestante" id="gestante"
-																<?if($c){if($valida[0]->gestante === '1'){?>checked<?}}?> />
+															<input type="checkbox" class="custom-control-input" name="gestante" id="gestante" />
 															<label class="custom-control-label" for="gestante">Gestante:</label>
 														</div>
 												</div>
@@ -168,9 +165,7 @@
 														&nbsp;&nbsp;&nbsp;Semanas:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="semanas" id="semanas"
-															value="<?if($c){if($valida[0]->gestante === '1'){ echo $valida[0]->tiempo_gestacion;}}?>"
-															<?if($c){if($valida[0]->gestante === '0'){?>disabled<?}}?>  />
+														<input type="text" class="form-control form-control-sm" name="semanas" id="semanas" disabled />
 													</div>
 												</div>
 												<?}?>
@@ -179,31 +174,26 @@
 												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="p1">Presi&oacute;n Arterial:</label>
 												<div class="col-md-2 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm col-5" name="p1" id="p1"
-															value="<?if($c){ echo $valida[0]->presion01; }?>" />&nbsp;/&nbsp;
-														<input type="text" class="form-control form-control-sm col-5" name="p2" id="p2"
-															value="<?if($c){ echo $valida[0]->presion02; }?>"/>
+														<input type="text" class="form-control form-control-sm col-5" name="p1" id="p1"/>&nbsp;/&nbsp;
+														<input type="text" class="form-control form-control-sm col-5" name="p2" id="p2"/>
 													</div>
 												</div>
 												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0 pl-lg-5" for="pvenosa">Presi&oacute;n Venosa:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="pvenosa" id="pvenosa"
-															value="<?if($c){ echo $valida[0]->presion_venosa; }?>" />
+														<input type="text" class="form-control form-control-sm" name="pvenosa" id="pvenosa" />
 													</div>
 												</div>
 												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0" for="saturacion">Saturaci&oacute;n:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="saturacion" id="saturacion"
-															value="<?if($c){ echo $valida[0]->saturacion; }?>" />
+														<input type="text" class="form-control form-control-sm" name="saturacion" id="saturacion" />
 													</div>
 												</div>
 												<label class="control-label col-md-1 col-lg-2 align-self-center mb-0 pl-lg-5" for="temp">Temperatura:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="temp" id="temp"
-															value="<?if($c){ echo $valida[0]->temperatura; }?>" />
+														<input type="text" class="form-control form-control-sm" name="temp" id="temp" />
 													</div>
 												</div>
 											</div>
@@ -211,29 +201,25 @@
 												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="fcardiaca">F. Card&iacute;aca:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="fcardiaca" id="fcardiaca"
-															value="<?if($c){ echo $valida[0]->frecuencia_cardiaca; }?>" />
+														<input type="text" class="form-control form-control-sm" name="fcardiaca" id="fcardiaca" />
 													</div>
 												</div>
 												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="frespiratoria">F. Respiratoria:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="frespiratoria" id="frespiratoria"
-															value="<?if($c){ echo $valida[0]->frecuencia_respiratoria; }?>" />
+														<input type="text" class="form-control form-control-sm" name="frespiratoria" id="frespiratoria" />
 													</div>
 												</div>
 												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="peso">Peso:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="peso" id="peso"
-															value="<?if($c){ echo $valida[0]->peso; }?>" />
+														<input type="text" class="form-control form-control-sm" name="peso" id="peso" />
 													</div>
 												</div>
 												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="talla">Talla:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="talla" id="talla"
-															value="<?if($c){ echo $valida[0]->talla; }?>" />
+														<input type="text" class="form-control form-control-sm" name="talla" id="talla" />
 													</div>
 												</div>
 											</div>
@@ -241,63 +227,60 @@
 												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="imc">IMC:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="imc" id="imc"
-															value="<?if($c){ echo $valida[0]->imc; }?>" />
+														<input type="text" class="form-control form-control-sm" name="imc" id="imc" />
 													</div>
 												</div>
 												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="ao">AO:</label>
 												<div class="col-md-2 col-lg-2">
 													<div class="row">
-														<select type="text" class="form-control form-control-sm" name="ao" id="ao" >
+														<select type="text" class="form-control form-control-sm selectblur" name="ao" id="ao" >
 															<option value="">-- Seleccione --</option>
-															<option value="1" <?if($c){if($valida[0]->AO === '1'){?>selected<?}}?>>1 - No Responde</option>
-															<option value="2" <?if($c){if($valida[0]->AO === '2'){?>selected<?}}?>>2 - Ante el Dolor</option>
-															<option value="3" <?if($c){if($valida[0]->AO === '3'){?>selected<?}}?>>3 - Ante una Orden Verbal</option>
-															<option value="4" <?if($c){if($valida[0]->AO === '4'){?>selected<?}}?>>4 - Espont&aacute;neamente</option>
+															<option value="1">1 - No Responde</option>
+															<option value="2">2 - Ante el Dolor</option>
+															<option value="3">3 - Ante una Orden Verbal</option>
+															<option value="4">4 - Espont&aacute;neamente</option>
 														</select>
 													</div>
 												</div>
 												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="rv">RV:</label>
 												<div class="col-md-2 col-lg-2">
 													<div class="row">
-														<select type="text" class="form-control form-control-sm" name="rv" id="rv" >
+														<select type="text" class="form-control form-control-sm selectblur" name="rv" id="rv" >
 															<option value="">-- Seleccione --</option>
-															<option value="1" <?if($c){if($valida[0]->RV === '1'){?>selected<?}}?>>1 - Ninguna Respuesta</option>
-															<option value="2" <?if($c){if($valida[0]->RV === '2'){?>selected<?}}?>>2 - Sonidos Incomprensibles</option>
-															<option value="3" <?if($c){if($valida[0]->RV === '3'){?>selected<?}}?>>3 - Palabras Inapropiadas</option>
-															<option value="4" <?if($c){if($valida[0]->RV === '4'){?>selected<?}}?>>4 - Confusa y desorientada</option>
-															<option value="5" <?if($c){if($valida[0]->RV === '5'){?>selected<?}}?>>5 - Orientada y Conversando</option>
+															<option value="1">1 - Ninguna Respuesta</option>
+															<option value="2">2 - Sonidos Incomprensibles</option>
+															<option value="3">3 - Palabras Inapropiadas</option>
+															<option value="4">4 - Confusa y desorientada</option>
+															<option value="5">5 - Orientada y Conversando</option>
 														</select>
 													</div>
 												</div>
 												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="rm">RM:</label>
 												<div class="col-md-2 col-lg-2">
 													<div class="row">
-														<select type="text" class="form-control form-control-sm" name="rm" id="rm" >
+														<select type="text" class="form-control form-control-sm selectblur" name="rm" id="rm" >
 															<option value="">-- Seleccione --</option>
-															<option value="1" <?if($c){if($valida[0]->RM === '1'){?>selected<?}}?>>1 - Ninguna Respuesta</option>
-															<option value="2" <?if($c){if($valida[0]->RM === '2'){?>selected<?}}?>>2 - Extensi&oacute;n Hipertonica (Postura en extensi&oacute;n) Descerebraci&oacute;n</option>
-															<option value="3" <?if($c){if($valida[0]->RM === '3'){?>selected<?}}?>>3 - Flexi&oacute;n Hipertonica (Postura de flexi&oacute;n) / Decorticaci&oacute;n</option>
-															<option value="4" <?if($c){if($valida[0]->RM === '4'){?>selected<?}}?>>4 - Movimiento de Retirada (Flexi&oacute;n inespec&iacute;fico)</option>
-															<option value="5" <?if($c){if($valida[0]->RM === '5'){?>selected<?}}?>>5 - Localiza el Dolor</option>
-															<option value="6" <?if($c){if($valida[0]->RM === '6'){?>selected<?}}?>>6 - Obedece Comandos</option>
+															<option value="1">1 - Ninguna Respuesta</option>
+															<option value="2">2 - Extensi&oacute;n Hipertonica (Postura en extensi&oacute;n) Descerebraci&oacute;n</option>
+															<option value="3">3 - Flexi&oacute;n Hipertonica (Postura de flexi&oacute;n) / Decorticaci&oacute;n</option>
+															<option value="4">4 - Movimiento de Retirada (Flexi&oacute;n inespec&iacute;fico)</option>
+															<option value="5">5 - Localiza el Dolor</option>
+															<option value="6">6 - Obedece Comandos</option>
 														</select>
 													</div>
 												</div>
 											</div>
 											<div class="row mt-md-4">
 												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0" for="glasgow">Glasgow:</label>
-												<div class="col-md-3 col-lg-3">
+												<div class="col-md-2 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm mayusc" name="glasgow" id="glasgow"
-															value="<?if($c){ echo $valida[0]->glasgow; }?>" />
+														<input type="text" class="form-control form-control-sm mayusc" name="glasgow" id="glasgow" readonly />
 													</div>
 												</div>
 												<label class="control-label col-md-3 col-lg-2 align-self-center mb-0 pl-md-5" for="atencion">Observaciones:</label>
 												<div class="col-md-4 col-lg-5">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm mayusc" name="obs"
-															value="<?if($c){ echo $valida[0]->observaciones; }?>" />
+														<input type="text" class="form-control form-control-sm mayusc" name="obs" />
 													</div>
 												</div>
 											</div>

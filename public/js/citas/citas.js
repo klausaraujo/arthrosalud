@@ -169,7 +169,7 @@ $(document).ready(function (){
 				{
 					data: null,
 					orderable: false,
-					render: function(data){
+					render: function(data,m,r){
 						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
 						let hrefEdit = 'href="'+base_url+'citas/citas/editar?id='+data.idcita+'"';
 						let hrefConfirmar = 'href="'+base_url+'citas/citas/cerrar?id='+data.idcita+'"';
@@ -205,26 +205,13 @@ $(document).ready(function (){
 					}
 				},
 			],
+			createdRow: function (row, data, dataIndex) {
+				if(data.tipo === '1') $(row).css('background','RGB(240 222 141)');
+			},
 			columnDefs:[
 				{title:'Acciones',targets: 0},{title:'Consultorio',targets: 1},{title:'Area',targets: 2},{title:'Profesional',targets: 3},{title:'Paciente',targets: 4},
 				{title:'H.Entrada',targets: 5},{title:'H.Salida',targets: 6},{title:'Status',targets: 7},//{title:'Status',targets: 8},
 			], order: [],
-		});
-		tablaPacientes = $('#tablaPacientes').DataTable({
-			processing: true,
-			serverSide: true,
-			ajax:{
-				url: base_url + 'citas/citas/buscarpacientes',
-				type: 'GET',
-				error: function(){
-					$("#post_list_processing").css('display','none');
-				}
-			},
-			columns:[
-				{ data: 0 },{ data: 1 },{ data: 2 },{ data: 3 },{ data: 4, visible: false },
-			],
-			dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
-			colReorder: { order: [ 4, 3, 2, 1, 0 ] }, language: lngDataTable,
 		});
 	}else if(segmento2 === 'historia'){
 		grillappal = $('#tablaHistoria').DataTable({
@@ -269,31 +256,9 @@ $(document).ready(function (){
 				{title:'Tipo Doc',targets: 4},{title:'Nro. Doc.',targets: 5},{title:'Edo.Civil',targets: 6},{title:'Fecha Registro',targets: 7},{title:'Avatar',targets: 8},
 			], order: [],
 		});
-		tablaPacientes = $('#tablaPacientes').DataTable({
-			processing: true,
-			serverSide: true,
-			ajax:{
-				url: base_url + 'citas/citas/buscarpacientes',
-				type: 'GET',
-				error: function(){
-					$("#post_list_processing").css('display','none');
-				}
-			},
-			columns:[
-				{ data: 0, visible: false },{ data: 1, render: function(d,m,r){ return r[1]+' '+r[0] } },{ data: 2 },{ data: 3 },{ data: 4, visible: false },
-			],
-			dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
-			colReorder: { order: [ 4, 3, 2, 1, 0 ] }, language: lngDataTable,
-		});
 		if(segmento3 === 'regdetalle'){
 			cie = $('#tablacie').DataTable({
-				ajax: {
-					url: base_url + 'citas/historia/listadiagnostico',
-					type: 'POST',
-					data: function(d){
-						d.idatencion = $('#idatencion').val();
-					}
-				},
+				data: [],
 				bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
 				columns:[
 					{
@@ -336,13 +301,7 @@ $(document).ready(function (){
 				colReorder: { order: [ 2, 1, 0 ] }, language: lngDataTable,
 			});
 			proc = $('#tablaproc').DataTable({
-				ajax: {
-					url: base_url + 'citas/historia/listaprocedimientos',
-					type: 'POST',
-					data: function(d){
-						d.idatencion = $('#idatencion').val();
-					}
-				},
+				data: [],
 				bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
 				columns:[
 				{
@@ -384,13 +343,7 @@ $(document).ready(function (){
 				colReorder: { order: [ 0, 1, 2 ] }, language: lngDataTable,
 			});
 			indic = $('#tablaindicaciones').DataTable({
-				ajax: {
-					url: base_url + 'citas/historia/listaindicaciones',
-					type: 'POST',
-					data: function(d){
-						d.idatencion = $('#idatencion').val();
-					}
-				},
+				data: [],
 				bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
 				columns:[
 				{
@@ -432,6 +385,58 @@ $(document).ready(function (){
 				colReorder: { order: [ 0, 1 ] }, language: lngDataTable,
 			});
 		}
+	}else if(segmento2 === 'procedimientos'){
+		grillappal = $('#tablaProcedimientos').DataTable({
+			ajax: {
+				url: base_url + 'citas/procedimientos/lista',
+			},
+			bAutoWidth:false, bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+			columns:[
+				{
+					data: null,
+					orderable: false,
+					render: function(data){
+						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
+						let hrefAtencion = 'href="'+base_url+'citas/procedimientos/regdetalle?id='+data.idprocedimiento+'"';
+						let hrefAnular = 'href="'+base_url+'citas/procedimientos/anular?id='+data.idprocedimiento+'"';
+						let btnAccion =
+						'<div class="btn-group">'+
+						/* Boton de Registro de detalle */
+						'<a title="Registrar Atención" '+(btnRegAtencion? hrefAtencion:'')+' class="bg-light btnTable '+(!btnRegAtencion?'disabled':'')+
+							' atencion" '+style+'><img src="'+base_url+'public/images/iconos/result_ico.png" width="18" style="max-height:20px"></a>'+
+						/* Boton anular Historia */
+						'<a title="Desasignar" '+(btnAnulaHistoria? hrefAnular:'')+' class="bg-light btnTable '+(!btnAnulaHistoria?'disabled':'')+
+							' desasignar" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
+						return btnAccion;
+					}
+				},
+				{ data: 'tipo_procedimiento' },{ data: 'correlativo' },{ data: 'procedimiento' },{ data: 'tarifa_base' },
+			],
+			columnDefs:[
+				{title:'Acciones',targets: 0},{title:'Tipo Procedimiento',targets: 1},{title:'Correlativo',targets: 2},{title:'Procedimiento',targets: 3},
+				{title:'Precio Base',targets: 4},
+			], order: [],
+		});
+	}
+	if(segmento === 'citas' && (segmento2 == '' || segmento2 === 'citas' || segmento2 === 'historia' || segmento2 === 'adicional')){
+		tablaPacientes = $('#tablaPacientes').DataTable({
+			pageLength: 5,
+			processing: true,
+			serverSide: true,
+			lengthMenu:[[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, 'Todas']],
+			ajax:{
+				url: base_url + 'citas/citas/buscarpacientes',
+			type: 'GET',
+				error: function(){
+					$("#post_list_processing").css('display','none');
+				}
+			},
+			columns:[
+				{ data: 0 },{ data: 1 },{ data: 2 },{ data: 3 },{ data: 4, visible: false },
+			],
+			dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
+			colReorder: { order: [ 4, 3, 2, 1, 0 ] }, language: lngDataTable,
+		});
 	}
 });
 $('.iddep').bind('change', function(){
@@ -579,11 +584,11 @@ $('#tablaCitas').on('click', function(e){
 		}
 	}
 });
-$('#tablaPacientes').on('dblclick','tr',function(){
+$('#tablaPacientes').on('click','tr',function(){
 	let data = tablaPacientes.row( this ).data();
 	$('#idpaciente').val(data[4]);
-	$('#paciente').val(data[1]+' '+data[0]);
-	if(segmento2 === 'historia'){
+	$('#paciente').val(data[1]+''+data[0]);
+	if(segmento2 === 'historia' || segmento2 === 'adicional'){
 		$('#modalAsigna').modal('hide');
 		$('.msg').html('');
 	}
@@ -591,8 +596,7 @@ $('#tablaPacientes').on('dblclick','tr',function(){
 $('#modalAsigna').on('hidden.bs.modal',function(e){
 	tablaPacientes.ajax.reload();
 	grillappal.ajax.reload();
-	if(segmento2 !== 'historia')
-		$('#paciente').val('');
+	$('.paciente').val('');
 	$('#obs').val('');
 });
 $('#asigna').bind('click',function(){
@@ -615,21 +619,21 @@ $('#asigna').bind('click',function(){
 		});
 	}
 });
-$('#tablaCIE10').on('dblclick','tr',function(){
+$('#tablaCIE10').on('click','tr',function(){
 	let data = tablaCIE.row( this ).data();
 	$('#idcie').val(data[2]);
 	$('#cie10').val(data[1]);
 	$('#codcie').val(data[0]);
 	$('#modalCie10').modal('hide');
 });
-$('#tablaPROC').on('dblclick','tr',function(){
+$('#tablaPROC').on('click','tr',function(){
 	let data = tablaPROC.row( this ).data();
 	$('#idproc').val(data[0]);
 	$('#procedimiento').val(data[1]);
 	$('#tarifa').val(data[2]);
 	$('#modalProcedimiento').modal('hide');
 });
-$('#tablaART').on('dblclick','tr',function(){
+$('#tablaART').on('click','tr',function(){
 	let data = tablaART.row( this ).data();
 	$('#idarticulo').val(data[0]);
 	$('#articulo').val(data[1]);
@@ -778,3 +782,39 @@ $('#btnRegistrar').bind('click', function(){
 	}
 });
 $('#tipoproc').bind('change', function(){ tablaPROC.ajax.reload(); $('#procedimiento').val('') });
+/*$('.citaadicional').bind('click', function(){
+	event.preventDefault();
+	
+});*/
+$('.adicional').bind('click', function(event){
+	event.preventDefault();
+	if(grillappal.data().length){
+		let d = grillappal.data().toArray(), ultimo = [], hay = false;//, t1 = new Date(), t2 = new Date();
+		/*console.log(d);*/
+		$.each(d, function(i,e){
+			/*if(i === 1){
+				let hora1 = e.salida.split(":"), hora2 = e.entrada.split(":");
+				t1.setHours(hora1[0], hora1[1], '00');
+				t2.setHours(hora2[0], hora2[1], '00');
+				t1.setHours(t1.getHours() - t2.getHours(), t1.getMinutes() - t2.getMinutes(), t1.getSeconds() - t2.getSeconds());
+			}*/
+			ultimo = e;
+			if(e.idpaciente === '1'){ hay = true; return 0;}
+		});
+		//ultimo.duracion = t1.getMinutes();
+		ultimo.cons = $('.cons :selected').text();
+		ultimo.dep = $('.cdep :selected').text();
+		
+		$('#json').val(JSON.stringify(ultimo));
+		if(hay) alert('Todavía quedan citas disponibles');
+		else $('#form_adicional').submit();
+	}
+});
+$('.selectblur').on('change', function(){
+	let g = 0, val = false;
+	$.each($('.selectblur'),function(i,e){
+		g += $(e).val() !== ''? parseInt($(e).val()) : 0;
+		if($(e).val() === '') val = true;
+	});
+	if(!val) $('#glasgow').val(g);
+});
