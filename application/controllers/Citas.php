@@ -383,6 +383,14 @@ class Citas extends CI_Controller
 		$this->load->model('Citas_model');
 		$turno = $this->Citas_model->listaturno(['idturno' => $this->input->get('id'),'t.activo' => 1]);
 		$horas = $this->Citas_model->querysqlwhere('*','turnos_detalle',['idturno' => $this->input->get('id')]);
+		foreach($horas as $row):
+			$det = $this->Citas_model->querysqlwhere('*','citas','idpaciente <> 1 AND fecha="'.$row->fecha.'" AND entrada BETWEEN "'.$row->entrada1.'" AND "'.$row->salida1.'"');
+			$row->valida1 = count($det)? 1 : 0;
+			$det = $this->Citas_model->querysqlwhere('*','citas','idpaciente <> 1 AND fecha="'.$row->fecha.'" AND entrada BETWEEN "'.$row->entrada2.'" AND "'.$row->salida2.'"');
+			$row->valida2 = count($det)? 1 : 0;
+			$det = $this->Citas_model->querysqlwhere('*','citas','idpaciente <> 1 AND fecha="'.$row->fecha.'" AND entrada BETWEEN "'.$row->entrada3.'" AND "'.$row->salida3.'"');
+			$row->valida3 = count($det)? 1 : 0;
+		endforeach;
 		return $this->load->view('main',['turno' => $turno, 'horas' => $horas]);
 	}
 	public function regdetalle()

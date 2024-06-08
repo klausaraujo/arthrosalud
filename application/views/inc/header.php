@@ -56,7 +56,7 @@ div.dataTables_wrapper div.dataTables_length .form-control-sm{
 	line-height: 1.5;
 	background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.75rem center/8px 10px;
 }
-a.disabled{ pointer-events: none; color: grey }
+a.disabled, .disabled{ pointer-events: none; color: grey }
 .content-page { padding-top: 95px }
 .inputfile-2 { display:none }
 .inputfile-2 + label { color: #aa5826;border: 2px solid #b25e1c; }
