@@ -38,7 +38,9 @@
 													<tbody>
 												
 											<?
+												//Nro de días del mes
 												$n = cal_days_in_month(CAL_GREGORIAN, $turno->idmes, $turno->anio);
+												//Se recorre la cantidad de días del mes para crear la tabla
 												for($i = 1;$i <= $n;$i++){
 													$d = date('N',strtotime($turno->anio.'-'.$turno->idmes.'-'.$i));
 													$dia = '';
@@ -66,6 +68,9 @@
 															$cs = intval($part[0]) || intval($part[1])? 'bg-primary' : '';
 															$cs1 = intval($part1[0]) || intval($part1[1])? 'bg-primary' : '';
 															$cs2 = intval($part2[0]) || intval($part2[1])? 'bg-primary' : '';
+															$ce = $cs = $row->valida1? $ce.' disabled' : $ce;
+															$ce1 = $cs1 = $row->valida2? $ce1.' disabled' : $ce1;
+															$ce2 = $cs2= $row->valida3? $ce2.' disabled' : $ce2;
 														}
 													endforeach;
 											?>

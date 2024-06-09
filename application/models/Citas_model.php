@@ -18,7 +18,7 @@ class Citas_model extends CI_Model
 	}
 	public function listaturnos($where)
 	{
-		$this->db->select('t.*,c.consultorio,d.departamento,CONCAT(p.nombres," ",p.apellidos) as nprof,m.mes');
+		$this->db->select('t.*,c.consultorio,d.departamento,CONCAT(p.apellidos," ",p.nombres) as nprof,m.mes');
 		$this->db->from('turnos t');
 		$this->db->join('consultorio c','t.idconsultorio=c.idconsultorio');
 		$this->db->join('departamento d','t.iddepartamento=d.iddepartamento');
@@ -54,7 +54,7 @@ class Citas_model extends CI_Model
 	public function listacitas($where)
 	{
 		$this->db->select('t.*,DATE_FORMAT(t.entrada,"%H:%i") as entrada,DATE_FORMAT(t.salida,"%H:%i") as salida,c.consultorio,d.departamento,
-			CONCAT(p.nombres," ",p.apellidos) as nprof,CONCAT(pa.nombres," ",pa.apellidos) as npac');
+			CONCAT(p.apellidos," ",p.nombres) as nprof,CONCAT(pa.apellidos," ",pa.nombres) as npac');
 		$this->db->from('citas t');
 		$this->db->join('consultorio c','t.idconsultorio=c.idconsultorio');
 		$this->db->join('departamento d','t.iddepartamento=d.iddepartamento');
@@ -109,7 +109,16 @@ class Citas_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
-	public function listarindic($where)
+	public function lprocedimientos()
+	{
+		$this->db->select('p.*,tp.tipo_procedimiento');
+		$this->db->from('procedimiento p');
+		$this->db->join('tipo_procedimiento tp','p.idtipoprocedimiento=tp.idtipoprocedimiento');
+		$this->db->where('p.activo',1);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function listarprocedimientos($where)
 	{
 		$this->db->select('hi.idarticulo,hi.cantidad,hi.indicaciones,a.descripcion');
 		$this->db->from('historia_clinica_atenciones_indicaciones hi');
@@ -139,7 +148,7 @@ class Citas_model extends CI_Model
 		$this->db->join('empresa e','c.idempresa=e.idempresa');
 		$this->db->where($where);
 		$result = $this->db->get();
-		return ($result->num_rows() > 0)? $result->row() : array();
+		return ($result->num_rows() > 0)? $result->result() : array();
 	}
 	public function querysqlwhere($q,$t,$where)
 	{

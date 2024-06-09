@@ -29,7 +29,6 @@
 												<div class="row">
 													<input type="hidden" id="idpaciente" name="idpaciente" />
 													<input type="text" class="form-control form-control-sm mayusc col-10" id="paciente" required="" readonly />
-													<div class="invalid-feedback" id="error-doc">Documento opcional</div>
 													<a href="<?=base_url()?>/citas/historia/buscarpaciente" data-target="#modalAsigna" data-toggle="modal" title="Buscar">
 														<i class="fa fa-search col-2 mt-2" aria-hidden="true" style="font-size:1.3em"></i>
 													</a>

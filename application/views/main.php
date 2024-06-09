@@ -80,6 +80,11 @@
 								if(!strlen($this->uri->segment(3))) $this->load->view('citas/historia');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-historia');
 								elseif($this->uri->segment(3) === 'regdetalle') $this->load->view('citas/form-detalle-historia');
+							}elseif($this->uri->segment(2) === 'adicional'){
+								$this->load->view('citas/form-adicional');
+							}elseif($this->uri->segment(2) === 'procedimientos'){
+								if(!strlen($this->uri->segment(3))) $this->load->view('citas/procedimientos');
+								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-procedimientos');
 							}
 						}
 					?>

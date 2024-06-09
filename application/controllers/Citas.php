@@ -135,6 +135,12 @@ class Citas extends CI_Controller
 		$indic = $this->Citas_model->listarindic(['idatencion' => $this->input->post('idatencion')]);
 		echo json_encode(['data' => $indic]);
 	}
+	public function lprocedimientos()
+	{
+		$this->load->model('Citas_model');
+		$proc = $this->Citas_model->lprocedimientos();
+		echo json_encode(['data' => $proc]);
+	}
 	
 	public function pacientes()
 	{
@@ -377,6 +383,14 @@ class Citas extends CI_Controller
 		$this->load->model('Citas_model');
 		$turno = $this->Citas_model->listaturno(['idturno' => $this->input->get('id'),'t.activo' => 1]);
 		$horas = $this->Citas_model->querysqlwhere('*','turnos_detalle',['idturno' => $this->input->get('id')]);
+		foreach($horas as $row):
+			$det = $this->Citas_model->querysqlwhere('*','citas','idpaciente <> 1 AND fecha="'.$row->fecha.'" AND entrada BETWEEN "'.$row->entrada1.'" AND "'.$row->salida1.'"');
+			$row->valida1 = count($det)? 1 : 0;
+			$det = $this->Citas_model->querysqlwhere('*','citas','idpaciente <> 1 AND fecha="'.$row->fecha.'" AND entrada BETWEEN "'.$row->entrada2.'" AND "'.$row->salida2.'"');
+			$row->valida2 = count($det)? 1 : 0;
+			$det = $this->Citas_model->querysqlwhere('*','citas','idpaciente <> 1 AND fecha="'.$row->fecha.'" AND entrada BETWEEN "'.$row->entrada3.'" AND "'.$row->salida3.'"');
+			$row->valida3 = count($det)? 1 : 0;
+		endforeach;
 		return $this->load->view('main',['turno' => $turno, 'horas' => $horas]);
 	}
 	public function regdetalle()
@@ -483,6 +497,46 @@ class Citas extends CI_Controller
 		}
 		
 		echo json_encode(['msg' => $msg,'id' => $detalle[0]->idturno]);
+	}
+	public function citaadicional()
+	{
+		$this->load->model('Citas_model');
+		// Diferencia entre las horas
+		$json = json_decode($this->input->post('json'));
+		$hi = new DateTime($json->entrada);
+		$hf = new DateTime($json->salida);
+		$dif = $hi->diff($hf);
+		$horanueva = $hf->add($dif);
+		//$horanueva->format('H:i');
+		$json->entrada = $json->salida;
+		$json->salida = $horanueva->format('H:i');
+		$json->duracion = (intval($dif->format('%H')) * 60) + intval($dif->format('%i'));
+		$this->load->view('main', ['data' => $json]);
+	}
+	public function regadicional()
+	{
+		$this->load->model('Citas_model');
+		$this->session->set_flashdata('flashMessage', 'No se pudo registrar la <b>Cita Adicional</b>');
+		$this->session->set_flashdata('claseMsg', 'alert-danger');
+		
+		$data = array(
+			'idconsultorio' => $this->input->post('idcons'),
+			'iddepartamento' => $this->input->post('iddep'),
+			'idprofesional' => $this->input->post('idprof'),
+			'idpaciente' => $this->input->post('idpaciente'),
+			'idturno' => $this->input->post('idturno'),
+			'tipo' => 1,
+			'fecha' => $this->input->post('fecha'),
+			'entrada' => $this->input->post('entrada'),
+			'salida' => $this->input->post('salida'),
+			'observaciones' => $this->input->post('obs')
+		);
+		
+		if($this->Citas_model->registrar('citas', $data)){
+			$this->session->set_flashdata('flashMessage', '<b>Cita Adicional</b> Registrada');
+			$this->session->set_flashdata('claseMsg', 'alert-success');
+		}
+		header('location:'.base_url().'citas');
 	}
 	public function asignarpaciente()
 	{
@@ -695,7 +749,11 @@ class Citas extends CI_Controller
 			'atencion' => $atencion
 		);
 		
-		$html = $this->load->view('citas/historia-pdf', $data, true);
+		var_dump($atencion);
+		
+		
+		
+		/*$html = $this->load->view('citas/historia-pdf', $data, true);
 		
 		if(floatval(phpversion()) < $versionphp){
 			$this->load->library('dom');
@@ -703,6 +761,35 @@ class Citas extends CI_Controller
 		}else{
 			$this->load->library('dom1');
 			$this->dom1->generate($direccion, $a5, $html, 'Informe');
+		}*/
+	}
+	public function procedimientos()
+	{
+		return $this->load->view('main');
+	}
+	public function nuevoprocedimiento()
+	{
+		$this->load->model('Citas_model');
+		$tpproc = $this->Citas_model->querysqlwhere('idtipoprocedimiento,tipo_procedimiento','tipo_procedimiento',['activo' => 1]);
+		$this->load->view('main',['tipo' => $tpproc]);
+	}
+	public function rprocedimientos()
+	{
+		$this->load->model('Citas_model');
+		$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>Procedimiento</b>');
+		$this->session->set_flashdata('claseMsg', 'alert-danger');
+		
+		$data = array(
+			'idtipoprocedimiento' => $this->input->post('tipo'),
+			'procedimiento' => $this->input->post('procedimiento'),
+			'tarifa_base' => $this->input->post('tarifa'),
+		);
+		
+		if($id = $this->Citas_model->registrar('procedimiento', $data)){
+			$this->Citas_model->actualizar('procedimiento',['correlativo' => sprintf('%08s',$id)],['idprocedimiento' => $id]);
+			$this->session->set_flashdata('flashMessage', '<b>Procedimiento</b> Registrado');
+			$this->session->set_flashdata('claseMsg', 'alert-success');
 		}
+		header('location:'.base_url().'citas/procedimientos');
 	}
 }
