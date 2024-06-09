@@ -140,12 +140,42 @@ class Citas_model extends CI_Model
 	}
 	public function atenciones($where)
 	{
-		$this->db->db_debug = TRUE;
+		//$this->db->db_debug = TRUE;
 		$this->db->select('h.*,DATE_FORMAT(fecha_atencion,"%d/%m/%Y") as fecha,CONCAT(p.apellidos," ",p.nombres) as nombres,e.razon_social');
 		$this->db->from('historia_clinica_atenciones h');
 		$this->db->join('profesional p','h.idprofesional=p.idprofesional');
 		$this->db->join('consultorio c','h.idconsultorio=c.idconsultorio');
 		$this->db->join('empresa e','c.idempresa=e.idempresa');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function diagnosticos($where)
+	{
+		//$this->db->db_debug = TRUE;
+		$this->db->select('hd.*,c.cie10,c.descripcion_cie10');
+		$this->db->from('historia_clinica_atenciones_diagnostico hd');
+		$this->db->join('cie10 c','c.idcie10=hd.idcie10');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function proc($where)
+	{
+		//$this->db->db_debug = TRUE;
+		$this->db->select('hd.*,c.correlativo,c.procedimiento');
+		$this->db->from('historia_clinica_atenciones_procedimientos hd');
+		$this->db->join('procedimiento c','c.idprocedimiento=hd.idprocedimiento');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function indic($where)
+	{
+		//$this->db->db_debug = TRUE;
+		$this->db->select('hd.*,c.*');
+		$this->db->from('historia_clinica_atenciones_indicaciones hd');
+		$this->db->join('articulos c','c.idarticulo=hd.idarticulo');
 		$this->db->where($where);
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
