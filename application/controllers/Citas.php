@@ -58,10 +58,12 @@ class Citas extends CI_Controller
 		$this->load->library('datatables_server_side', array(
 			'table' => 'paciente',
 			'primary_key' => 'idpaciente',
-			'columns' => array('nombres','apellidos','numero_documento','correo','idpaciente'),
+			'columns' => array('idtipodocumento','numero_documento','apellidos','nombres','idpaciente','fecnac',
+						'idestadocivil','celular','correo'),
 			'where' => array('activo' => 1,'idpaciente >' => 1),
 		));
-		$this->datatables_server_side->process();
+		//$this->datatables_server_side->process();
+		$this->datatables_server_side->process('data','','fecnac','DATE_FORMAT(fecnac,"%d/%m/%Y") as fecnac');
 	}
 	public function listaCIE()
 	{

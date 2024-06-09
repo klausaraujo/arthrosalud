@@ -77,7 +77,11 @@
 										<div class="row">
 											<div class="col-12 mx-auto" style="overflow-x:auto">
 												<table id="tablaPacientes" class="table table-striped dt-responsive table-bordered display nowrap table-hover mb-0 mx-0" style="width:100%">
-													<thead><tr><th>Nombres</th><th>Apellidos y Nombres</th><th>Nro. Doc</th><th>Correo</th></tr></thead>
+													<thead>
+														<tr><th>Tipo Doc.</th><th>Nro. Doc.</th><th>Apellidos</th><th>Nombres</th><th>item</th>
+															<th>Fecha Nac.</th><th>Edo. Civil</th><th>Celular</th><th>Correo</th>
+														</tr>
+													</thead>
 												</table>
 											</div>
 										</div>
