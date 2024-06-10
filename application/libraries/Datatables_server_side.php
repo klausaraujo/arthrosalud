@@ -302,7 +302,7 @@ class Datatables_server_side {
 	 * @param	string	$row_class = ''
 	 * @return	void
 	 */
-	public function process($row_id = 'data', $row_class = '', $col, $format)
+	public function process($row_id = 'data', $row_class = '', $col = '', $format = '')
 	{
 		if (in_array($row_id, array('id', 'data', 'none'), TRUE) === FALSE)
 		{
