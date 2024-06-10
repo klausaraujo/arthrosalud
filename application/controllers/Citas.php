@@ -750,27 +750,18 @@ class Citas extends CI_Controller
 		
 		foreach($atencion as $row):
 			$d = $this->Citas_model->diagnosticos(['idatencion' => $row->idatencion]);
-			if(count($d)){
-				$diag[$i] = $d[0];
-				$i++;
-			}
+			if(count($d)) $diag[] = $d;
 			$p = $this->Citas_model->proc(['idatencion' => $row->idatencion]);
-			if(count($p)){
-				$proc[$j] = $p[0];
-				$j++;
-			}
+			if(count($p)) $proc[] = $p;
 			$in = $this->Citas_model->indic(['idatencion' => $row->idatencion]);
-			if(count($indic)){
-				$indic[$k] = $in[0];
-				$k++;
-			}
+			if(count($in)) $indic[] = $in;
 		endforeach;
 		$data = array(
 			'historia' => $historia,
 			'atencion' => $atencion,
-			'diagnostico' => $diag,
-			'procedimiento' => $proc,
-			'indicaciones' => $indic
+			'diagnostico' => count($diag)? $diag[0] : array(),
+			'procedimiento' =>  count($proc)? $proc[0] : array(),
+			'indicaciones' =>  count($indic)? $indic[0] : array(),
 		);
 		
 		$html = $this->load->view('citas/historia-pdf', $data, true);
