@@ -432,10 +432,28 @@ $(document).ready(function (){
 				}
 			},
 			columns:[
-				{ data: 0 },{ data: 1 },{ data: 2 },{ data: 3 },{ data: 4, visible: false },
+				{
+					data: 0,
+					render: function(data){
+						let a = {'1':'D.N.I.','2':'CARNET ETX.','3':'R.U.C.','4':'PASAPORTE','5':'OTROS'};
+						let valor = '-';
+						for(let k in a){ if(data === k) valor = a[k]; }
+						return valor; 
+					}
+				},{ data: 1 },{ data: 2 },{ data: 3 },{ data: 4, visible: false },{ data: 5 },
+				{
+					data: 6,
+					render: function(data){
+						let a = {'1':'Soltero(a)','2':'Casado(a)','3':'Conviviente','4':'Viudo(a)','5':'Divorciado(a)','6':'No especifica'};
+						let valor = '-';
+						for(let k in a){ if(data === k) valor = a[k]; }
+						return valor; 
+					}
+				},
+				{ data: 7 },{ data: 8 },
 			],
 			dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
-			colReorder: { order: [ 4, 3, 2, 1, 0 ] }, language: lngDataTable,
+			colReorder: { order: [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ] }, language: lngDataTable,
 		});
 	}
 });
@@ -587,7 +605,7 @@ $('#tablaCitas').on('click', function(e){
 $('#tablaPacientes').on('click','tr',function(){
 	let data = tablaPacientes.row( this ).data();
 	$('#idpaciente').val(data[4]);
-	$('#paciente').val(data[1]+''+data[0]);
+	$('#paciente').val(data[2]+' '+data[3]);
 	if(segmento2 === 'historia' || segmento2 === 'adicional'){
 		$('#modalAsigna').modal('hide');
 		$('.msg').html('');

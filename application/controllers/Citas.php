@@ -58,10 +58,12 @@ class Citas extends CI_Controller
 		$this->load->library('datatables_server_side', array(
 			'table' => 'paciente',
 			'primary_key' => 'idpaciente',
-			'columns' => array('nombres','apellidos','numero_documento','correo','idpaciente'),
+			'columns' => array('idtipodocumento','numero_documento','apellidos','nombres','idpaciente','fecnac',
+						'idestadocivil','celular','correo'),
 			'where' => array('activo' => 1,'idpaciente >' => 1),
 		));
-		$this->datatables_server_side->process();
+		//$this->datatables_server_side->process();
+		$this->datatables_server_side->process('data','','fecnac','DATE_FORMAT(fecnac,"%d/%m/%Y") as fecnac');
 	}
 	public function listaCIE()
 	{
@@ -742,18 +744,36 @@ class Citas extends CI_Controller
 	{
 		$this->load->model('Citas_model');
 		$versionphp = 7; $id = $this->input->get('id'); $html = null; $a5 = 'A4'; $direccion = 'portrait';
+		$diag = []; $proc = []; $indic = []; $i = 0; $j = 0; $k = 0;
 		$historia = $this->Citas_model->historia(['idhistoria' => $this->input->get('id')]);
 		$atencion = $this->Citas_model->atenciones(['idhistoria' => $this->input->get('id')]);
+		
+		foreach($atencion as $row):
+			$d = $this->Citas_model->diagnosticos(['idatencion' => $row->idatencion]);
+			if(count($d)){
+				$diag[$i] = $d[0];
+				$i++;
+			}
+			$p = $this->Citas_model->proc(['idatencion' => $row->idatencion]);
+			if(count($p)){
+				$proc[$j] = $p[0];
+				$j++;
+			}
+			$in = $this->Citas_model->indic(['idatencion' => $row->idatencion]);
+			if(count($indic)){
+				$indic[$k] = $in[0];
+				$k++;
+			}
+		endforeach;
 		$data = array(
 			'historia' => $historia,
-			'atencion' => $atencion
+			'atencion' => $atencion,
+			'diagnostico' => $diag,
+			'procedimiento' => $proc,
+			'indicaciones' => $indic
 		);
 		
-		var_dump($atencion);
-		
-		
-		
-		/*$html = $this->load->view('citas/historia-pdf', $data, true);
+		$html = $this->load->view('citas/historia-pdf', $data, true);
 		
 		if(floatval(phpversion()) < $versionphp){
 			$this->load->library('dom');
@@ -761,7 +781,7 @@ class Citas extends CI_Controller
 		}else{
 			$this->load->library('dom1');
 			$this->dom1->generate($direccion, $a5, $html, 'Informe');
-		}*/
+		}
 	}
 	public function procedimientos()
 	{

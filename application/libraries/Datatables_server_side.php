@@ -302,7 +302,7 @@ class Datatables_server_side {
 	 * @param	string	$row_class = ''
 	 * @return	void
 	 */
-	public function process($row_id = 'data', $row_class = '')
+	public function process($row_id = 'data', $row_class = '', $col, $format)
 	{
 		if (in_array($row_id, array('id', 'data', 'none'), TRUE) === FALSE)
 		{
@@ -324,7 +324,8 @@ class Datatables_server_side {
 
 		foreach ($this->columns as $column)
 		{
-			$columns[] = $column;
+			if($column === $col) $columns[] = $format;
+			else $columns[] = $column;
 
 			if ($column === $this->primary_key)
 			{
