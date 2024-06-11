@@ -58,7 +58,7 @@
 </table>
 
 <table class="atenciones" style="margin-top:5mm" cellspacing="0">
-	<tr><td colspan="11"><strong>REGISTRO DE ATENCIONES DEL PACIENTE</strong></td></tr>
+	<tr class="even_row"><td colspan="12"><strong>REGISTRO DE ATENCIONES DEL PACIENTE</strong></td></tr>
 	<tbody>
 		<tr><td><strong>Fecha Atenci&oacute;n</strong></td><td colspan="2"></td><td colspan="2"><strong>M&eacute;dico Tratante</strong></td><td colspan="7"></td></tr>
 		<tr>
