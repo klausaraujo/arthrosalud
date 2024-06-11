@@ -46,6 +46,7 @@
 		  border-right: 1px solid black;
 		  padding: 0.5em;
 		}
+		.acciones td {border:1px solid #4B4B4B; border-collapse: collapse; padding-left: 5px}
 	</style>
 </head>
 
@@ -63,20 +64,20 @@
 	</tr>
 </table>
 
-<table style="width: 100%; font-size: 8pt;border-collapse: collapse;border-bottom: 1px solid #878282;border-top: 1px solid #878282;">
-	<tr class="even_row"><td><strong>N&uacute;mero:</strong></td><td>123456</td><td><strong>H. F&iacute;sica:</strong></td>
+<table cellspacing="0" cellpadding="1" class="acciones" style="width: 100%">
+	<tr><td><strong>N&uacute;mero:</strong></td><td>123456</td><td><strong>H. F&iacute;sica:</strong></td>
 		<td>123456</td><td><strong>Fecha Registro:</strong></td><td>123456</td>
 	</tr>
-	<tr class="odd_row"><td><strong>Paciente:</strong></td><td colspan="3">123456</td><td><strong>Tipo Documento:</strong></td>
+	<tr><td><strong>Paciente:</strong></td><td colspan="3">123456</td><td><strong>Tipo Documento:</strong></td>
 		<td>123456</td>
 	</tr>
-	<tr class="even_row"><td><strong>Documento Nro.:</strong></td><td>123456</td><td><strong>Sexo:</strong></td>
+	<tr><td><strong>Documento Nro.:</strong></td><td>123456</td><td><strong>Sexo:</strong></td>
 		<td>123456</td><td><strong>Fecha de Nacimiento:</strong></td><td>123456</td>
 	</tr>
-	<tr class="odd_row"><td><strong>Edad:</strong></td><td>123456</td><td><strong>Estado Civil:</strong></td>
+	<tr><td><strong>Edad:</strong></td><td>123456</td><td><strong>Estado Civil:</strong></td>
 		<td>123456</td><td><strong>Lugar de Nacimiento:</strong></td><td>123456</td>
 	</tr>
-	<tr class="even_row"><td><strong>Domicilio:</strong></td><td colspan="2">123456</td><td><strong>Lugar de Domicilio:</strong></td>
+	<tr><td><strong>Domicilio:</strong></td><td colspan="2">123456</td><td><strong>Lugar de Domicilio:</strong></td>
 		<td colspan="2">123456</td>
 	</tr>
 </table>
