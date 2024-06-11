@@ -244,6 +244,7 @@ class Citas extends CI_Controller
 		$dep = $this->General_model->departamentos();
 		$tipop = $this->Citas_model->querysqlwhere('idtipoprofesional,tipo_profesional','tipo_profesional',['activo' => 1]);
 		$esp = $this->Citas_model->querysqlwhere('idespecialidad,especialidad','especialidad',['activo' => 1]);
+		$user = $this->Citas_model->querysqlwhere('idusuario,usuario,CONCAT(apellidos," ",nombres) as prof','usuarios',['activo' => 1]);
 		
 		$data = array(
 			'tipo' => $tipo,
@@ -251,6 +252,7 @@ class Citas extends CI_Controller
 			'dep' => $dep,
 			'tipop' => $tipop,
 			'esp' => $esp,
+			'user' => $user,
 		);
 		return $this->load->view('main', $data);
 	}

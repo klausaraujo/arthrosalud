@@ -244,7 +244,6 @@
 											<div class="row">
 												<input type="text" class="form-control form-control-sm mayusc" name="colegiatura"
 													placeholder="Colegiatura" value="" />
-												<label class="invalid-feedback">Campo requerido</label>
 											</div>
 										</div>
 									</div>
@@ -269,7 +268,6 @@
 											<div class="row">
 												<input type="text" class="form-control form-control-sm mayusc" name="rne"
 													placeholder="RNE" value="" />
-												<label class="invalid-feedback">Campo requerido</label>
 											</div>
 										</div>
 									</div>
@@ -289,7 +287,6 @@
 											<div class="row">
 												<input type="text" class="form-control form-control-sm num" name="celular"
 													placeholder="Celular" value="" />
-												<label class="invalid-feedback">Campo requerido</label>
 											</div>
 										</div>
 									</div>
@@ -299,7 +296,21 @@
 											<div class="row">
 												<input type="text" class="form-control form-control-sm" name="correo"
 													placeholder="Correo" value="" />
-												<label class="invalid-feedback">Campo requerido</label>
+											</div>
+										</div>
+									</div>
+									<div class="row mt-3">
+										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="usuario">Asignar Usuario:</label>
+										<div class="col-md-6 col-lg-3">
+											<div class="row">
+												<select class="form-control form-control-sm" name="idusuario" id="idusuario" required="" >
+													<option value="">-- Seleccione --</option>
+												<?
+														foreach($user as $row):	?>
+															<option value="<?=$row->idusuario;?>"><?=$row->usuario;?></option>
+												<?		endforeach;	?>
+												</select>
+												<div class="invalid-feedback">Campo Requerido</div>
 											</div>
 										</div>
 									</div>
@@ -309,7 +320,6 @@
 											<div class="row">
 												<input type="text" class="form-control form-control-sm mayusc" name="obs"
 													placeholder="Observaciones" value="" />
-												<label class="invalid-feedback">Campo requerido</label>
 											</div>
 										</div>
 									</div>
