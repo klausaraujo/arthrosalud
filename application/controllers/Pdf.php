@@ -33,8 +33,12 @@ class Pdf extends CI_Controller
 	
 	public function verhistoria()
 	{
-		$html = $this->load->view('citas/nuevo-pdf', null, true);
-		$this->viewbrowser($html);
+		$this->load->model('Citas_model');
+		$historia = $this->Citas_model->historia(['idhistoria' => $this->input->get('id')]);
+		$atencion = $this->Citas_model->atenciones(['idhistoria' => $this->input->get('id')]);
+		
+		/*$html = $this->load->view('citas/nuevo-pdf', null, true);
+		$this->viewbrowser($html);*/
 		//$html = $this->load->view('citas/nuevo-pdf');
 	}
 	private function viewbrowser($page)
