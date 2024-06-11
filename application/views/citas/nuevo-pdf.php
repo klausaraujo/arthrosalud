@@ -10,43 +10,18 @@
 		  padding: 0.2em 1% 0.2em 1%;
 		  min-height: 15em;
 		}
-		/*.page table.header {
-			padding-bottom: 3mm;
-			border-bottom: 1px solid #878282;
-		}*/
 		.odd_row td {
-		/*  background-color: #EDF2F7;
-		  border-top: 2px solid #FFFFff;*/
 		  background-color: transparent;
 		  border-bottom: 0.9px solid #ddd; /* 0.9 so table borders take precedence */
 		}
 		.even_row td {
-		/*  background-color: #F8EEE4;
-		  border-top: 3px solid #FFFFff;*/
 		  background-color: #f6f6f6;
 		  border-bottom: 0.9px solid #ddd;
 		}
-		table.change_order_items { 
-		  font-size: 8pt;
-		  width: 100%;
-		  border-collapse: collapse;
-		  margin-top: 2em;
-		  margin-bottom: 2em;
-		}
-
-		table.change_order_items>tbody { 
-		  border: 1px solid black;
-		}
-
-		table.change_order_items>tbody>tr>th { 
-		  border-bottom: 1px solid black;
-		}
-
-		table.change_order_items>tbody>tr>td { 
-		  border-right: 1px solid black;
-		  padding: 0.5em;
-		}
-		.acciones td {border:1px solid #4B4B4B; border-collapse: collapse; padding-left: 5px}
+		table.datos{ width:100%;font-size:8pt;border-collapse:collapse;border-bottom:1px solid #878282;border-top:1px solid #878282; }
+		table.datos td{ padding:0.4em 0 0.4em 0.6em; vertical-align:middle; }
+		.atenciones{ width:100%; font-size: 10px }
+		.atenciones td {border:1px solid #878282; border-collapse: collapse; padding:0.4em 0 0.4em 0.6em; vertical-align:middle;}
 	</style>
 </head>
 
@@ -64,27 +39,48 @@
 	</tr>
 </table>
 
-<table cellspacing="0" cellpadding="1" class="acciones" style="width: 100%">
-	<tr><td><strong>N&uacute;mero:</strong></td><td>123456</td><td><strong>H. F&iacute;sica:</strong></td>
-		<td>123456</td><td><strong>Fecha Registro:</strong></td><td>123456</td>
+<table class="datos">
+	<tr class="even_row"><td><strong>N&uacute;mero:</strong></td><td><?=sprintf("%'07s",$historia->numero);?></td><td><strong>H. F&iacute;sica:</strong></td>
+		<td><?=$historia->numerofisico?></td><td><strong>Fecha Registro:</strong></td><td><?=$historia->fecha?></td>
 	</tr>
-	<tr><td><strong>Paciente:</strong></td><td colspan="3">123456</td><td><strong>Tipo Documento:</strong></td>
-		<td>123456</td>
+	<tr class="odd_row"><td><strong>Paciente:</strong></td><td colspan="3"><?=$historia->apellidos.' '.$historia->nombres?></td><td><strong>Tipo Documento:</strong></td>
+		<td><?=$historia->tipo_documento?></td>
 	</tr>
-	<tr><td><strong>Documento Nro.:</strong></td><td>123456</td><td><strong>Sexo:</strong></td>
-		<td>123456</td><td><strong>Fecha de Nacimiento:</strong></td><td>123456</td>
+	<tr class="even_row"><td><strong>Documento Nro.:</strong></td><td><?=$historia->numero_documento?></td><td><strong>Sexo:</strong></td>
+		<td><?=$historia->sexo === '1'? 'Femenino' : 'Masculino';?></td><td><strong>Fecha de Nacimiento:</strong></td><td><?=$historia->fecnac?></td>
 	</tr>
-	<tr><td><strong>Edad:</strong></td><td>123456</td><td><strong>Estado Civil:</strong></td>
-		<td>123456</td><td><strong>Lugar de Nacimiento:</strong></td><td>123456</td>
+	<tr class="odd_row"><td><strong>Edad:</strong></td><td></td><td><strong>Estado Civil:</strong></td>
+		<td><?=$historia->estado_civil?></td><td><strong>Lugar de Nacimiento:</strong></td><td></td>
 	</tr>
-	<tr><td><strong>Domicilio:</strong></td><td colspan="2">123456</td><td><strong>Lugar de Domicilio:</strong></td>
-		<td colspan="2">123456</td>
+	<tr class="even_row"><td><strong>Domicilio:</strong></td><td colspan="2"></td><td><strong>Lugar de Domicilio:</strong></td>
+		<td colspan="2"></td>
 	</tr>
 </table>
-<!--
-<table class="change_order_items"><tr><td colspan="6"><h2>Standard Items:</h2></td></tr><tbody><tr><th>Item</th><th>Description</th><th>Quantity</th><th colspan="2">Unit Cost</th><th>Total</th></tr><tr class="even_row"><td style="text-align: center">1</td><td>Sprockets (13 tooth)</td><td style="text-align: center">50</td><td style="text-align: right; border-right-style: none;">$10.00</td><td class="change_order_unit_col" style="border-left-style: none;">Ea.</td><td class="change_order_total_col">$5,000.00</td></tr><tr class="odd_row"><td style="text-align: center">2</td><td>Cogs (Cylindrical)</td><td style="text-align: center">45</td><td style="text-align: right; border-right-style: none;">$25.00</td><td class="change_order_unit_col" style="border-left-style: none;">Ea.</td><td class="change_order_total_col">$1125.00</td></tr><tr class="even_row"><td style="text-align: center">3</td><td>Gears (15 tooth)</td><td style="text-align: center">32</td><td style="text-align: right; border-right-style: none;">$19.00</td><td class="change_order_unit_col" style="border-left-style: none;">Ea.</td><td class="change_order_total_col">$608.00</td></tr><tr class="odd_row"><td style="text-align: center">4</td><td>Leaf springs (13 N/m)</td><td style="text-align: center">6</td><td style="text-align: right; border-right-style: none;">$125.00</td><td class="change_order_unit_col" style="border-left-style: none;">Ea.</td><td class="change_order_total_col">$750.00</td></tr><tr class="even_row"><td style="text-align: center">5</td><td>Coil springs (6 N/deg)</td><td style="text-align: center">7</td><td style="text-align: right; border-right-style: none;">$11.00</td><td class="change_order_unit_col" style="border-left-style: none;">Ea.</td><td class="change_order_total_col">$77.00</td></tr></tbody><tr><td colspan="3" style="text-align: right;">(Tax is not included; it will be collected on closing.)</td><td colspan="2" style="text-align: right;"><strong>GRAND TOTAL:</strong></td><td class="change_order_total_col"><strong>$7560.00</strong></td></tr></table>
 
--->
+<table class="atenciones" style="margin-top:5mm" cellspacing="0">
+	<tr class="even_row"><td colspan="12"><strong>REGISTRO DE ATENCIONES DEL PACIENTE</strong></td></tr>
+	<tbody>
+		<tr><td><strong>Fecha Atenci&oacute;n</strong></td><td colspan="2"></td><td colspan="2"><strong>M&eacute;dico Tratante</strong></td><td colspan="7"></td></tr>
+		<tr>
+			<td><strong>Establecimiento</strong></td><td colspan="4"></td><td><strong>Tipo Atenci&oacute;n</strong></td>
+			<td colspan="3"></td><td><strong>Prioridad</strong></td><td colspan="2"></td>
+		</tr>
+		<tr>
+			<td><strong>Gestante</strong></td><td></td><td><strong>Semanas</strong></td><td></td><td><strong>Presi&oacute;n Arterial</strong></td><td></td><td></td>
+			<td colspan="2"><strong>Presi&oacute;n Venosa</strong></td><td></td><td><strong>Saturaci&oacute;n</strong></td><td></td>
+		</tr>
+		<tr>
+			<td><strong>Temperatura</strong></td><td></td><td><strong>F. Card&iacute;aca</strong></td><td></td><td colspan="2"><strong>F. Respiratoria</strong></td>
+			<td></td><td><strong>Peso</strong></td><td></td><td></td><td><strong>Talla</strong></td><td></td>
+		</tr>
+		<tr>
+			<td><strong>IMC</strong></td><td></td><td><strong>AO</strong></td><td colspan="2"></td><td><strong>RV</strong></td><td></td>
+			<td><strong>RM</strong></td><td></td><td></td><td><strong>Glasgow</strong></td><td></td>
+		</tr>
+	</tbody>
+</table>
+
+
 </div>
 
 </div>
