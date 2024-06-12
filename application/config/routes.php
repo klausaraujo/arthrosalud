@@ -161,7 +161,7 @@ $route['citas/procedimientos'] = 'citas/procedimientos';
 $route['citas/procedimientos/lista'] = 'citas/lprocedimientos';
 $route['citas/procedimientos/nuevo'] = 'citas/nuevoprocedimiento';
 $route['citas/procedimientos/regprocedimiento'] = 'citas/rprocedimientos';
-$route['citas/historia/ver'] = 'citas/verhistoria';
+$route['citas/historia/ver'] = 'pdf/verhistoria';
 
 /**/
 $route['404_override'] = '';

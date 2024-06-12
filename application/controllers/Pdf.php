@@ -34,7 +34,7 @@ class Pdf extends CI_Controller
 	public function verhistoria()
 	{
 		$this->load->model('Citas_model');
-		$diag = []; $proc = []; $indic = [];
+		$diag = []; $proc = []; $indic = []; $d = null;
 		$historia = $this->Citas_model->historia(['idhistoria' => $this->input->get('id')]);
 		$atencion = $this->Citas_model->atenciones(['idhistoria' => $this->input->get('id')]);
 		foreach($atencion as $row):
@@ -49,12 +49,12 @@ class Pdf extends CI_Controller
 		$data = array(
 			'historia' => $historia,
 			'atencion' => $atencion,
-			'diagnostico' => count($diag)? $diag[0] : array(),
-			'procedimiento' =>  count($proc)? $proc[0] : array(),
-			'indicaciones' =>  count($indic)? $indic[0] : array(),
+			'diagnostico' => count($diag)? $diag : array(),
+			'procedimiento' =>  count($proc)? $proc : array(),
+			'indicaciones' =>  count($indic)? $indic : array(),
 		);
 		
-		$html = $this->load->view('citas/nuevo-pdf', $data, true);
+		$html = $this->load->view('citas/historia-pdf', $data, true);
 		$this->viewbrowser($html);
 		//$html = $this->load->view('citas/nuevo-pdf');
 	}

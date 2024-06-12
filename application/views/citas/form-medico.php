@@ -310,7 +310,7 @@
 															<option value="<?=$row->idusuario;?>"><?=$row->usuario;?></option>
 												<?		endforeach;	?>
 												</select>
-												<div class="invalid-feedback">Campo Requerido</div>
+												<div class="invalid-feedback">Usuario Requerido</div>
 											</div>
 										</div>
 									</div>

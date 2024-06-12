@@ -282,6 +282,7 @@ class Citas extends CI_Controller
 				'colegiatura' => $this->input->post('colegiatura'),
 				'idespecialidad' => $this->input->post('especialidad'),
 				'rne' => $this->input->post('rne'),
+				'idusuario_sistema' => $this->input->post('idusuario'),
 				'idusuario_registro' => $this->usuario->idusuario,
 				'fecha_registro' => date('Y-m-d H:i:s'),
 				'celular' => $this->input->post('celular'),
@@ -799,7 +800,7 @@ class Citas extends CI_Controller
 		);
 		
 		if($id = $this->Citas_model->registrar('procedimiento', $data)){
-			$this->Citas_model->actualizar('procedimiento',['correlativo' => sprintf('%08s',$id)],['idprocedimiento' => $id]);
+			$this->Citas_model->actualizar('procedimiento',['correlativo' => 'PROC'.sprintf('%04s',$id)],['idprocedimiento' => $id]);
 			$this->session->set_flashdata('flashMessage', '<b>Procedimiento</b> Registrado');
 			$this->session->set_flashdata('claseMsg', 'alert-success');
 		}

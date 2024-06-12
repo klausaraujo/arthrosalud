@@ -73,7 +73,7 @@ $(document).ready(function (){
 						return btnAccion;
 					}
 				},
-				{ data: 'tipo_articulo' },{ data: 'descripcion' },{ data: 'unidad_medida' },
+				{ data: 'tipo_articulo' },{ data: 'correlativo' },{ data: 'descripcion' },{ data: 'unidad_medida' },
 				{ 
 					data: 'fotografia',
 					createdCell: function(td,cellData,rowData,row,col){
@@ -96,8 +96,8 @@ $(document).ready(function (){
 				},
 			],
 			columnDefs:[
-				{title:'Acciones',targets: 0},{title:'Tipo',targets: 1},{title:'Descripci&oacute;n',targets: 2},{title:'U.M',targets: 3},
-				{title:'Fotograf&iacute;a',targets: 4},{title:'Status',targets: 5},
+				{title:'Acciones',targets: 0},{title:'Tipo',targets: 1},{title:'C&oacute;digo',targets: 2},{title:'Descripci&oacute;n',targets: 3},
+				{title:'U.M',targets: 4},{title:'Fotograf&iacute;a',targets: 5},{title:'Status',targets: 6},
 			], order: [],
 		});
 	}else if(segmento2 === 'servicios' && segmento3 == ''){

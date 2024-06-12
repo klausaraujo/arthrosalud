@@ -177,7 +177,8 @@ class Logistica extends CI_Controller
 		if($this->input->post('tiporegistro') === 'registrar'){
 			$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>Art&iacute;culo</b>');
 			$data['fotografia'] = ($ext? $nombre : 'img_default.png');
-			if($this->Logistica_model->registrar('articulos', $data)){
+			if($id = $this->Logistica_model->registrar('articulos', $data)){
+				$this->Logistica_model->actualizar('articulos', ['correlativo' => 'ART'.sprintf("%'05s",$id)],['idarticulo' => $id]);
 				$this->session->set_flashdata('flashMessage', '<b>Art&iacute;culo</b> Registrado Exitosamente');
 				$this->session->set_flashdata('claseMsg', 'alert-primary');
 			}
