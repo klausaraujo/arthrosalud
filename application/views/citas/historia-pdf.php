@@ -197,7 +197,7 @@
 					?>
 				<table class="atenciones" cellspacing="0">
 					<tr style="text-align:center">
-						<td colspan="3"><strong>REGISTRO DE PRODUCTOS Y/O MEDICAMENTOS RECETADOS</strong></td>
+						<td colspan="4"><strong>REGISTRO DE PRODUCTOS Y/O MEDICAMENTOS RECETADOS</strong></td>
 					</tr>
 					<tbody>
 						<tr class="even_row" style="text-align:center;font-weight:bold;line-height:1">
