@@ -119,6 +119,10 @@
 											aria-selected="false">Procedimientos</a>
 								  </li>
 								  <li class="nav-item">
+									 <a class="nav-link disabled" id="examenes-tab" data-toggle="tab" href="#examenes" role="tab" aria-controls="examenes" 
+											aria-selected="false">Ex&aacute;menes Auxiliares</a>
+								  </li>
+								  <li class="nav-item">
 									 <a class="nav-link disabled" id="indicaciones-tab" data-toggle="tab" href="#indicaciones" role="tab" aria-controls="indicaciones" 
 											aria-selected="false">Indicaciones</a>
 								  </li>
@@ -380,6 +384,43 @@
 											</div>
 										</div>
 									</div>
+									<div class="tab-pane fade" id="examenes" role="tabpanel" aria-labelledby="examenes-tab">
+										<input type="hidden" id="idexamen" />
+										<div class="row mt-3">
+											<label class="control-label col-md-3 col-lg-2 align-self-center mb-0" for="examen">Ex&aacute;men Auxiliar:</label>
+											<div class="col-md-4 col-lg-3">
+												<div class="row">
+													<input type="text" class="form-control form-control-sm" name="examen" id="examen" readonly />
+												</div>
+											</div>
+											<div class="col-md-1 col-lg-1">
+												<a href="<?=base_url()?>citas/historia/buscarexamenes" class="btn btn-primary" data-target="#modalExamenes" 
+													data-toggle="modal">Buscar</a>
+											</div>
+											<label class="control-label col-md-2 col-lg-1 align-self-center mb-0 pl-md-5 pl-lg-3" for="tarifaexamen">Tarifa:</label>
+											<div class="col-md-1 col-lg-1">
+												<div class="row">
+													<input type="text" class="form-control form-control-sm" name="tarifaexamen" id="tarifaexamen" readonly />
+												</div>
+											</div>
+										</div>
+										<div class="row mt-3">
+											<label class="control-label col-md-3 col-lg-2 align-self-center mb-0" for="indicaexamen">Indicaciones:</label>
+											<div class="col-md-7 col-lg-5">
+												<div class="row">
+													<input type="text" class="form-control form-control-sm mayusc" id="indicaexamen" name="indicaexamen" />
+												</div>
+											</div>
+											<div class="col-md-2 col-lg-1"><a class="btn btn-sabogal" id="addexamen">Agregar</a></div>
+										</div>
+										<div class="container-fluid">
+											<div class="row mt-3">
+												<div class="col-12" style="overflow-x:auto">
+													<table id="tablaexamen" class="table table-striped table-hover table-bordered mb-0 mx-auto" style="width:100%"></table>
+												</div>
+											</div>
+										</div>
+									</div>
 									<div class="tab-pane fade" id="indicaciones" role="tabpanel" aria-labelledby="indicaciones-tab">
 										<input type="hidden" id="idarticulo" />
 										<div class="row mt-3">
@@ -463,6 +504,28 @@
 											<div class="col-12 mx-auto" style="overflow-x:auto">
 												<table id="tablaPROC" class="table table-striped dt-responsive table-bordered display nowrap table-hover mb-0 mx-0" style="width:100%">
 													<thead><tr><th>Item</th><th>Procedimiento</th><th>Tarifa</th></tr></thead>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Modal Examenes -->
+					<div class="modal fade" id="modalExamenes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="myModalLabel">Elegir Ex&aacute;menes Auxiliares</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								</div>
+								<div class="modal-body" style="overflow: hidden;">
+									<div class="container-fluid">
+										<div class="row">
+											<div class="col-12 mx-auto" style="overflow-x:auto">
+												<table id="tablaEXAMEN" class="table table-striped dt-responsive table-bordered display nowrap table-hover mb-0 mx-0" style="width:100%">
+													<thead><tr><th>Item</th><th>Correlativo</th><th>Examen</th><th>Tarifa</th></tr></thead>
 												</table>
 											</div>
 										</div>

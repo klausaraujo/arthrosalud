@@ -83,7 +83,7 @@ class Citas extends CI_Controller
 			'primary_key' => 'idprocedimiento',
 			'columns' => array('idprocedimiento','procedimiento','tarifa_base'),
 			'order_by' => 'ASC',
-			'where' => array('idtipoprocedimiento' => $this->input->get('idtipo')),
+			'where' => array('idtipoprocedimiento' => $this->input->get('idtipo'),'activo' => 1),
 		));
 		$this->datatables_server_side->process();
 	}
@@ -95,6 +95,17 @@ class Citas extends CI_Controller
 			'columns' => array('idarticulo','descripcion'),
 			'order_by' => 'ASC',
 			'where' => array('activo' => 1, 'disponible_venta' => 1),
+		));
+		$this->datatables_server_side->process();
+	}
+	public function listaauxserver()
+	{
+		$this->load->library('datatables_server_side', array(
+			'table' => 'examenes_auxiliares',
+			'primary_key' => 'idexamenauxiliar',
+			'columns' => array('idexamenauxiliar','correlativo','examen_auxiliar','tarifa_base'),
+			'order_by' => 'ASC',
+			'where' => array('activo' => 1),
 		));
 		$this->datatables_server_side->process();
 	}
@@ -729,6 +740,20 @@ class Citas extends CI_Controller
 		);
 		echo json_encode($data);
 	}
+	public function regexamenes()
+	{
+		$this->load->model('Citas_model');
+		$msg = 'Error al registrar'; $data = null; $dh = null;
+		$json = json_decode(file_get_contents('php://input'));
+		
+		if($this->Citas_model->borrar('historia_clinica_atenciones_examenes',['idatencion' => $json[0]->idatencion])){
+			if($this->Citas_model->registrarbatch('historia_clinica_atenciones_examenes', $json)) $msg = 'Ex&aacute;menes Auxiliares Registrados';
+		}
+		$data = array(
+			'msg' => $msg,
+		);
+		echo json_encode($data);
+	}
 	public function regindicaciones()
 	{
 		$this->load->model('Citas_model');
@@ -743,7 +768,36 @@ class Citas extends CI_Controller
 		);
 		echo json_encode($data);
 	}
-	public function verhistoria()
+	public function procedimientos()
+	{
+		return $this->load->view('main');
+	}
+	public function nuevoprocedimiento()
+	{
+		$this->load->model('Citas_model');
+		$tpproc = $this->Citas_model->querysqlwhere('idtipoprocedimiento,tipo_procedimiento','tipo_procedimiento',['activo' => 1]);
+		$this->load->view('main',['tipo' => $tpproc]);
+	}
+	public function rprocedimientos()
+	{
+		$this->load->model('Citas_model');
+		$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>Procedimiento</b>');
+		$this->session->set_flashdata('claseMsg', 'alert-danger');
+		
+		$data = array(
+			'idtipoprocedimiento' => $this->input->post('tipo'),
+			'procedimiento' => $this->input->post('procedimiento'),
+			'tarifa_base' => $this->input->post('tarifa'),
+		);
+		
+		if($id = $this->Citas_model->registrar('procedimiento', $data)){
+			$this->Citas_model->actualizar('procedimiento',['correlativo' => 'PROC'.sprintf('%04s',$id)],['idprocedimiento' => $id]);
+			$this->session->set_flashdata('flashMessage', '<b>Procedimiento</b> Registrado');
+			$this->session->set_flashdata('claseMsg', 'alert-success');
+		}
+		header('location:'.base_url().'citas/procedimientos');
+	}
+	/*public function verhistoria()
 	{
 		$this->load->model('Citas_model');
 		$versionphp = 7; $id = $this->input->get('id'); $html = null; $a5 = 'A4'; $direccion = 'portrait';
@@ -776,34 +830,5 @@ class Citas extends CI_Controller
 			$this->load->library('dom1');
 			$this->dom1->generate($direccion, $a5, $html, 'Informe');
 		}
-	}
-	public function procedimientos()
-	{
-		return $this->load->view('main');
-	}
-	public function nuevoprocedimiento()
-	{
-		$this->load->model('Citas_model');
-		$tpproc = $this->Citas_model->querysqlwhere('idtipoprocedimiento,tipo_procedimiento','tipo_procedimiento',['activo' => 1]);
-		$this->load->view('main',['tipo' => $tpproc]);
-	}
-	public function rprocedimientos()
-	{
-		$this->load->model('Citas_model');
-		$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>Procedimiento</b>');
-		$this->session->set_flashdata('claseMsg', 'alert-danger');
-		
-		$data = array(
-			'idtipoprocedimiento' => $this->input->post('tipo'),
-			'procedimiento' => $this->input->post('procedimiento'),
-			'tarifa_base' => $this->input->post('tarifa'),
-		);
-		
-		if($id = $this->Citas_model->registrar('procedimiento', $data)){
-			$this->Citas_model->actualizar('procedimiento',['correlativo' => 'PROC'.sprintf('%04s',$id)],['idprocedimiento' => $id]);
-			$this->session->set_flashdata('flashMessage', '<b>Procedimiento</b> Registrado');
-			$this->session->set_flashdata('claseMsg', 'alert-success');
-		}
-		header('location:'.base_url().'citas/procedimientos');
-	}
+	}*/
 }

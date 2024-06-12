@@ -34,7 +34,7 @@ class Pdf extends CI_Controller
 	public function verhistoria()
 	{
 		$this->load->model('Citas_model');
-		$diag = []; $proc = []; $indic = []; $d = null;
+		$diag = []; $proc = []; $exam = []; $indic = []; $d = null;
 		$historia = $this->Citas_model->historia(['idhistoria' => $this->input->get('id')]);
 		$atencion = $this->Citas_model->atenciones(['idhistoria' => $this->input->get('id')]);
 		foreach($atencion as $row):
@@ -42,6 +42,8 @@ class Pdf extends CI_Controller
 			if(count($d)) $diag[] = $d;
 			$p = $this->Citas_model->proc(['idatencion' => $row->idatencion]);
 			if(count($p)) $proc[] = $p;
+			$e = $this->Citas_model->examenes(['idatencion' => $row->idatencion]);
+			if(count($e)) $exam[] = $e;
 			$in = $this->Citas_model->indic(['idatencion' => $row->idatencion]);
 			if(count($in)) $indic[] = $in;
 		endforeach;
@@ -51,30 +53,22 @@ class Pdf extends CI_Controller
 			'atencion' => $atencion,
 			'diagnostico' => count($diag)? $diag : array(),
 			'procedimiento' =>  count($proc)? $proc : array(),
+			'examenes' =>  count($exam)? $exam : array(),
 			'indicaciones' =>  count($indic)? $indic : array(),
 		);
 		
 		$html = $this->load->view('citas/historia-pdf', $data, true);
-		$this->viewbrowser($html);
+		$this->viewpdf($html, 0);
 		//$html = $this->load->view('citas/nuevo-pdf');
 	}
-	private function viewbrowser($page)
+	private function viewpdf($page, $attach)
 	{
 		$this->pdf->loadHtml($page);
 		// Render the HTML as PDF
 		$this->pdf->render();
 		
 		// Output the generated PDF to Browser
-		$this->pdf->stream('PDF', array('Attachment' => 0));
-	}
-	private function attach($page)
-	{
-		$this->pdf->loadHtml($page);
-		// Render the HTML as PDF
-		$this->pdf->render();
-		
-		// Output the generated PDF to Browser
-		$this->pdf->stream('PDF', array('Attachment' => 1));
+		$this->pdf->stream('PDF', array('Attachment' => $attach));
 	}
 	public function marcadeagua($pdf,$options)
 	{

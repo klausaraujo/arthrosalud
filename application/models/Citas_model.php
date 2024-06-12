@@ -171,6 +171,16 @@ class Citas_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
+	public function examenes($where)
+	{
+		//$this->db->db_debug = TRUE;
+		$this->db->select('hd.*,c.correlativo,c.examen_auxiliar');
+		$this->db->from('historia_clinica_atenciones_examenes hd');
+		$this->db->join('examenes_auxiliares c','c.idexamenauxiliar=hd.idexamenauxiliar');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
 	public function indic($where)
 	{
 		//$this->db->db_debug = TRUE;

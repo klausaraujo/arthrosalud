@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="UTF-8">
+	<title>Historia Cl&iacute;nica Nro. <?=sprintf("%'07s",$historia->numero);?></title>
 	<style>
 		@page { margin: 0.25in; }
 		#content {
@@ -25,7 +25,7 @@
 </head>
 
 <body>
-
+	<?	date_default_timezone_set('America/Lima'); ?>
 	<div id="body">
 		<div id="content">
 			<div class="page" style="font-size: 7pt">
@@ -48,13 +48,13 @@
 						<td><?=$historia->sexo === '1'? 'Femenino' : 'Masculino';?></td><td><strong>Fecha de Nacimiento:</strong></td><td><?=$historia->fecnac?></td>
 					</tr>
 					<?
-						$fec = new DateTime(strtotime($historia->fecnac));
+						$fArray = explode('/',$historia->fecnac);
+						$fec = new DateTime($fArray[2].'-'.$fArray[1].'-'.$fArray[0]);
 						$hoy = new DateTime();
 						$edad = $hoy->diff($fec);
 						//$edad->y.' a&ntilde;os, '.$edad->m.' mes(es), '.$edad->d.' d&iacute;a(s)'
-						//echo $edad->y.'  '.$edad->m.'  '.$edad->d;
 					?>
-					<tr class="odd_row"><td><strong>Edad:</strong></td><td style="width:4cm"><?='Edad'?></td>
+					<tr class="odd_row"><td><strong>Edad:</strong></td><td style="width:4cm"><?=$edad->y.' a&ntilde;os, '.$edad->m.' mes(es), '.$edad->d.' d&iacute;a(s)'?></td>
 						<td><strong>Estado Civil:</strong></td><td><?=$historia->estado_civil?></td><td><strong>Lugar de Nacimiento:</strong></td><td></td>
 					</tr>
 					<tr class="even_row"><td><strong>Domicilio:</strong></td><td colspan="2"></td><td><strong>Lugar de Domicilio:</strong></td>
@@ -179,6 +179,34 @@
 							foreach($p as $proc):
 						?>
 						<tr><td><?=$proc->correlativo?></td><td><?=$proc->procedimiento?></td><td><?=$proc->indicaciones?></td></tr>
+						<?
+							endforeach;
+						}
+						?>
+					</tbody>
+				</table>
+				<!-- Examenes Auxiliares -->
+					<?
+						$e = [];
+						foreach($examenes as $fil):
+							foreach($fil as $exam):
+								if($exam->idatencion === $row->idatencion) $e[] = $exam;
+							endforeach;
+						endforeach;
+						if(count($e)){
+					?>
+				<table class="atenciones" cellspacing="0">
+					<tr style="text-align:center">
+						<td colspan="3"><strong>EX&Aacute;MENES AUXILIARES RECOMENDADOS</strong></td>
+					</tr>
+					<tbody>
+						<tr class="even_row" style="text-align:center;font-weight:bold;line-height:1">
+							<td>C&oacute;digo</td><td>Ex&aacute;men Auxiliar</td><td>Indicaciones</td>
+						</tr>
+						<?
+							foreach($e as $exam):
+						?>
+						<tr><td><?=$exam->correlativo?></td><td><?=$exam->examen_auxiliar?></td><td><?=$exam->indicaciones?></td></tr>
 						<?
 							endforeach;
 						}

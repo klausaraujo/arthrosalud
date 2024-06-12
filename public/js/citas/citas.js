@@ -1,4 +1,4 @@
-let grillappal = null, tablaPacientes = null, cie = null, tablaCIE = null, proc = null, indic = null, tablaPROC = null, tablaART = null;
+let grillappal = null, tablaPacientes = null, cie = null, tablaCIE = null, proc = null, examen = null, indic = null, tablaPROC = null, tablaART = null, tablaEXAMEN = null;
 
 $(document).ready(function (){
 	if(segmento2 === 'turnos'){
@@ -342,6 +342,44 @@ $(document).ready(function (){
 				dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
 				colReorder: { order: [ 0, 1, 2 ] }, language: lngDataTable,
 			});
+			examen = $('#tablaexamen').DataTable({
+				data: [],
+				bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+				columns:[
+				{
+					data: null, orderable: false,
+					render: function(data){
+						let btnAccion =
+						'<div class="btn-group">'+
+							'<a title="Remover" href="borrar" class="bg-danger btnTable remover">'+
+							'<i class="fa fa-trash-o" aria-hidden="true" style="padding:5px"></i></a>'+
+						'</div>';
+						return btnAccion;
+					}
+				},
+				{ data: 'idexamenauxiliar' },{ data: 'examen' },{ data: 'indicaciones' }
+				],
+				columnDefs:[
+					{ title: 'Acciones', targets: 0 },{ title: 'ID', targets: 1, visible: false },{ title: 'Ex&aacute;men Auxiliar', targets: 2 },
+					{ title: 'Indicaciones', targets: 3 }
+				],order: [],dom: 'tp',
+				
+			});
+			tablaEXAMEN = $('#tablaEXAMEN').DataTable({
+				processing: true,
+				serverSide: true,
+				ajax:{
+					url: base_url + 'citas/historia/listaauxiliares',
+					error: function(){
+						$("#post_list_processing").css('display','none');
+					}
+				},
+				columns:[
+					{ data: 0 },{ data: 1 },{ data: 2 },{ data: 3 }
+				],
+				dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
+				colReorder: { order: [ 0, 1, 2, 3 ] }, language: lngDataTable,
+			});
 			indic = $('#tablaindicaciones').DataTable({
 				data: [],
 				bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
@@ -651,6 +689,13 @@ $('#tablaPROC').on('click','tr',function(){
 	$('#tarifa').val(data[2]);
 	$('#modalProcedimiento').modal('hide');
 });
+$('#tablaEXAMEN').on('click','tr',function(){
+	let data = tablaEXAMEN.row( this ).data();
+	$('#idexamen').val(data[0]);
+	$('#examen').val(data[2]);
+	$('#tarifaexamen').val(data[3]);
+	$('#modalExamenes').modal('hide');
+});
 $('#tablaART').on('click','tr',function(){
 	let data = tablaART.row( this ).data();
 	$('#idarticulo').val(data[0]);
@@ -691,6 +736,22 @@ $('#addproc').bind('click',function(){
 		if(!valida) proc.rows.add(json).draw();
 	}
 });
+$('#addexamen').bind('click',function(){
+	let valida = false;
+	if($('#examen').val()){
+		let json = [{'idexamenauxiliar':$('#idexamen').val(),'examen':$('#examen').val(),'indicaciones':$('#indicaexamen').val()}];
+		console.log(json);
+		if(examen.rows().count()){
+			examen.rows().data().each(function(e){
+				if($('#idexamen').val() === e['idexamenauxiliar']){
+					alert('El item ya está agregado');
+					valida = true;
+				}
+			});
+		}
+		if(!valida) examen.rows.add(json).draw();
+	}
+});
 $('#addindic').bind('click',function(){
 	let valida = false;
 	if($('#articulo').val() && $('#cantidad').val()){
@@ -720,6 +781,13 @@ $('#tablaproc').bind('click','a',function(e){
 	if(a.hasClass('remover')){
 		event.preventDefault();
 		proc.row($(a).parents('tr')).remove().draw();
+	}
+});
+$('#tablaexamen').bind('click','a',function(e){
+	let t = e.target, a = $(t).parents('a');
+	if(a.hasClass('remover')){
+		event.preventDefault();
+		examen.row($(a).parents('tr')).remove().draw();
 	}
 });
 $('#tablaindicaciones').bind('click','a',function(e){
@@ -765,6 +833,16 @@ $('#btnRegistrar').bind('click', function(){
 			});
 		}else valida = false;
 		data = JSON.stringify(filas);
+	}else if(id === 'examenes'){
+		url = base_url + 'citas/historia/regexamenes';
+		let rs = examen.rows().data().toArray(), filas = [];
+		if(rs.length){
+			$.each(rs, function(i,e){
+				filas[i] = { idatencion: $('#idatencion').val(),idexamenauxiliar: e.idexamenauxiliar,indicaciones: e.indicaciones };
+			});
+		}else valida = false;
+		data = JSON.stringify(filas);
+		console.log(data);
 	}else if(id === 'indicaciones'){
 		url = base_url + 'citas/historia/regindicaciones';
 		let rs = indic.rows().data().toArray(), filas = [];
@@ -789,7 +867,6 @@ $('#btnRegistrar').bind('click', function(){
 				$('.rspatencion').show();
 			},
 			success: function(data){
-				console.log(data);
 				$('.rspatencion').html(data.msg);
 				if(id === 'atenciones'){
 					if(parseInt(data.status) === 200){ $('.nav-link.disabled').removeClass('disabled'); $('#idatencion').val(data.idatencion); }
