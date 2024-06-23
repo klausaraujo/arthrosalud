@@ -41,6 +41,18 @@ class Citas_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
+	public function listaprofdash()
+	{
+		$this->db->select('p.*,td.tipo_documento,tp.tipo_profesional,e.especialidad');
+		$this->db->from('profesional p');
+		$this->db->join('tipo_documento td','p.idtipodocumento=td.idtipodocumento');
+		$this->db->join('tipo_profesional tp','p.idtipoprofesional=tp.idtipoprofesional');
+		$this->db->join('especialidad e','p.idespecialidad=e.idespecialidad');
+		$this->db->where(['p.activo' => 1]);
+		$this->db->order_by('p.apellidos','ASC');
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
 	public function listaconsultorios($where)
 	{
 		$this->db->select('c.*,e.nombre_comercial');

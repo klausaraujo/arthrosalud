@@ -132,6 +132,7 @@ $route['citas/turnos/lista'] = 'citas/listaturnos';
 $route['citas/turnos/consultorios'] = 'citas/findconsultorios';
 $route['citas/turnos/regturno'] = 'citas/regturno';
 $route['citas/citas'] = 'main/citas';
+$route['citas/citasprof'] = 'citas/citasprof';
 $route['citas/citas/nuevo'] = 'citas/calendario';
 $route['citas/citas/lista'] = 'citas/listacitas';
 $route['citas/citas/buscarpacientes'] = 'citas/listaPacServer';

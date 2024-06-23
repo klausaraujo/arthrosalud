@@ -101,8 +101,4 @@ class Pdf extends CI_Controller
 		
 		$canvas->text($x, $y, $text, $font, 75);
 	}
-	public function prueba($pdf,$options)
-	{
-		
-	}
 }

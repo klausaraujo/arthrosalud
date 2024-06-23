@@ -98,27 +98,9 @@ class Main extends CI_Controller
 		$this->session->set_userdata('perCitas', json_encode($bot));
 
 		$this->load->model('Citas_model');
-		$estab = $this->Citas_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
-		$dep = $this->Citas_model->querysqlwhere('iddepartamento,departamento','departamento',['activo' => 1]);
-		$cons = null; $i = 1;
-		foreach($estab as $row):
-			if($i === 1){
-				$cons = $this->Citas_model->querysqlwhere('idconsultorio,consultorio','consultorio',['idempresa' => $row->idempresa,'activo' => 1]);
-				$i++;
-			}
-		endforeach;
-		$prof = $this->Citas_model->querysqlwhere('idprofesional,nombres,apellidos','profesional',['activo' => 1]);
-		$mes = $this->Citas_model->querysqlwhere('idmes,mes','mes',['activo' => 1]);
-		$anio = $this->Citas_model->querysqlwhere('anio','anio',['activo' => 1]);
+		$prof = $this->Citas_model->listaprofdash();
 
-		$data = array(
-			'dep' => $dep,
-			'estab' => $estab,
-			'cons' => $cons,
-			'prof' => $prof,
-			'mes' => $mes,
-			'anio' => $anio,
-		);
+		$data = array('prof' => $prof);
 		
 		$this->load->view('main', $data);
 	}

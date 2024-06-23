@@ -59,7 +59,8 @@
 							}
 						}
 						elseif($this->uri->segment(1) === 'citas'){
-							if(!strlen($this->uri->segment(2))) $this->load->view('citas/citas');
+							if(!strlen($this->uri->segment(2))) $this->load->view('citas/citasdash');
+							elseif($this->uri->segment(2) === 'citasprof') $this->load->view('citas/citas');
 							elseif($this->uri->segment(2) === 'pacientes'){
 								if(!strlen($this->uri->segment(3))) $this->load->view('citas/pacientes');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-paciente');
@@ -67,7 +68,7 @@
 								if(!strlen($this->uri->segment(3))) $this->load->view('citas/consultorios');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-consultorio');
 							}elseif($this->uri->segment(2) === 'citas'){
-								if(!strlen($this->uri->segment(3))) $this->load->view('citas/citas');
+								if(!strlen($this->uri->segment(3))) $this->load->view('citas/citasdash');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/calendario');
 							}elseif($this->uri->segment(2) === 'medicos'){
 								if(!strlen($this->uri->segment(3))) $this->load->view('citas/medicos');

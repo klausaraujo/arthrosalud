@@ -149,7 +149,7 @@ $(document).ready(function (){
 				{title:'Fecha Nac.',targets: 5},{title:'Estado Civil',targets: 6},{title:'Celular',targets: 7},{title:'Correo',targets: 8},
 			], order: [],
 		});
-	}else if((segmento === 'citas' && segmento2 == '') || segmento2 === 'citas'){
+	}else if(segmento2 === 'citasprof'){
 		grillappal = $('#tablaCitas').DataTable({
 			ajax: {
 				url: base_url + 'citas/citas/lista',
@@ -158,9 +158,9 @@ $(document).ready(function (){
 					d.idconsultorio = $('.cons').val();
 					d.iddepartamento = $('.cdep').val();
 					d.idprofesional = $('.cprof').val();
-					d.anio = $('.canio').val();
-					d.mes = $('.m').val();
-					d.dia = $('.d').val();
+					d.anio = $('.anio').val();
+					d.mes = $('.mes').val();
+					d.dia = $('.dia').val();
 					d.activo = 1;
 				}
 			},
@@ -592,8 +592,7 @@ $('.wrapper-c').bind('click',function(e){
 	if($(evt).prop('class') === 'regular' || $(evt).prop('class') === 'inactive' || $(evt).prop('class') === 'active'){
 		$(this).find('.active').removeClass('active');
 		$(evt).addClass('active');
-		$('.d').val($(evt).text());
-		$('.m').val($('.mes').val());
+		$('.dia').val($(evt).text());
 		grillappal.ajax.reload();
 	}
 });
