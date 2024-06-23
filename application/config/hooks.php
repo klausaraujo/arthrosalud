@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-include APPPATH.'libraries\Dotenv.php';
+//include APPPATH.'libraries\Dotenv.php';
 /*
 | -------------------------------------------------------------------------
 | Hooks
@@ -14,6 +14,6 @@ include APPPATH.'libraries\Dotenv.php';
 */
 
 $hook['pre_system'] = function() {
-    $dotenv = new Dotenv(FCPATH);
-    $dotenv->loadFile();
+    //$dotenv = new Dotenv(FCPATH);
+    //$dotenv->loadFile();
 };
