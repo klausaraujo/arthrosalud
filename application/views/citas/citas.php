@@ -124,8 +124,8 @@
 										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-text="true">&times;</span></button>
 									</div>
 									<div class="modal-body" style="overflow:hidden;">
-										<input type="text" id="idcita" />
-										<input type="text" id="idpaciente" />
+										<input type="hidden" id="idcita" />
+										<input type="hidden" id="idpaciente" />
 										<div class="container-fluid">
 											<div class="row mb-4">
 												<label class="control-label col-lg-2 align-self-center mb-0" for="paciente">Paciente:</label>
