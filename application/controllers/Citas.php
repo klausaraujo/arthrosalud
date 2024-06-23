@@ -514,6 +514,32 @@ class Citas extends CI_Controller
 		
 		echo json_encode(['msg' => $msg,'id' => $detalle[0]->idturno]);
 	}
+	public function citasprof()
+	{
+		$this->load->model('Citas_model');
+		$estab = $this->Citas_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
+		$dep = $this->Citas_model->querysqlwhere('iddepartamento,departamento','departamento',['activo' => 1]);
+		$cons = null; $i = 1;
+		foreach($estab as $row):
+			if($i === 1){
+				$cons = $this->Citas_model->querysqlwhere('idconsultorio,consultorio','consultorio',['idempresa' => $row->idempresa,'activo' => 1]);
+				$i++;
+			}
+		endforeach;
+		$prof = ['idprofesional' => $this->input->get('i'), 'nombres' => $this->input->get('r')];
+		$mes = $this->Citas_model->querysqlwhere('idmes,mes','mes',['activo' => 1]);
+		$anio = $this->Citas_model->querysqlwhere('anio','anio',['activo' => 1]);
+		
+		$data = array(
+			'dep' => $dep,
+			'estab' => $estab,
+			'cons' => $cons,
+			'prof' => (object)$prof,
+			'mes' => $mes,
+			'anio' => $anio,
+		);
+		$this->load->view('main', $data);
+	}
 	public function citaadicional()
 	{
 		$this->load->model('Citas_model');

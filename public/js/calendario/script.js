@@ -2,11 +2,14 @@ const daysTag = document.querySelector('.days'),
 currentDate = document.querySelector('.current-date'),
 prevNextIcon = document.querySelectorAll('.icons span'),
 mes = document.querySelector('.mes');
+anio = document.querySelector('.anio');
+dia = document.querySelector('.dia');
 
 // getting new date, current year and month
 let date = new Date(),
 currYear = date.getFullYear(),
 currMonth = date.getMonth();
+day = date.getDate();
 
 // storing full name of all months in array
 const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
@@ -45,6 +48,8 @@ const renderCalendar = () => {
     }
     currentDate.innerText = `${months[currMonth]} ${currYear}`; // passing current mon and yr as currentDate text
 	mes.value = `${currMonth+1}`;
+	anio.value = `${currYear}`;
+	dia.value = date.getDate();
     daysTag.innerHTML = liTag;
 }
 renderCalendar();
@@ -59,6 +64,7 @@ prevNextIcon.forEach(icon => { // getting prev and next icons
             date = new Date(currYear, currMonth, new Date().getDate());
             currYear = date.getFullYear(); // updating current year with new date year
             currMonth = date.getMonth(); // updating current month with new date month
+			day = date.getDate();
         } else {
             date = new Date(); // pass the current date as date value
         }

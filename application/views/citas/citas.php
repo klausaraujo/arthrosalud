@@ -19,6 +19,10 @@
 										<div class="wrapper-c">
 											<header>
 												<input type="hidden" class="mes" />
+												<input type="hidden" class="anio" />
+												<input type="hidden" class="dia" />
+												<!--<input type="text" class="m" value="<?=date('n')?>" />
+												<input type="text" class="d" value="<?=date('j')?>" />-->
 												<p class="current-date"></p>
 												<div class="icons" style="font-size:0.6em">
 													<span id="prev"><i class="fas fa-less-than"></i></span>
@@ -41,8 +45,6 @@
 										</div>
 									</div>
 									<div class="float-right col-md-7 col-lg-6 mt-md-5">
-										<input type="hidden" class="m" value="<?=date('n')?>" />
-										<input type="hidden" class="d" value="<?=date('j')?>" />
 										<div class="row">
 											<label class="control-label col-md-6 col-lg-4 align-self-center mb-0" for="idestablecimiento">Establecimiento:</label>
 											<div class="col-md-6 col-lg-6">
@@ -90,28 +92,7 @@
 											<div class="col-md-6 col-lg-6">
 												<div class="row">
 													<select class="form-control form-control-sm cprof" name="idprofesional" id="idprofesional" required="" >
-												<?
-													foreach($prof as $row):	?>
-														<option value="<?=$row->idprofesional;?>"><?=$row->apellidos.' '.$row->nombres;?></option>
-												<?	endforeach;	?>
-													</select>
-													<div class="invalid-feedback">Campo Requerido</div>
-												</div>
-											</div>
-										</div>
-										<div class="row mt-3">
-											<label class="control-label col-md-6 col-lg-4 align-self-center mb-0" for="anio">A&ntilde;o:</label>
-											<div class="col-md-6 col-lg-2">
-												<div class="row">
-													<select class="form-control form-control-sm canio" name="anio" id="anio" required="" >
-												<?
-													foreach($anio as $row):
-														if(intval($row->anio) >= date('Y')){
-												?>
-														<option value="<?=$row->anio;?>"><?=$row->anio;?></option>
-												<?	
-														}
-													endforeach;	?>
+														<option value="<?=$prof->idprofesional;?>"><?=$prof->nombres;?></option>
 													</select>
 													<div class="invalid-feedback">Campo Requerido</div>
 												</div>
@@ -135,14 +116,14 @@
 							</div>
 						</div>
 						
-						<div class="modal fade" id="modalAsigna" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal fade" id="modalAsigna" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-text="true">
 							<div class="modal-dialog modal-lg" role="document">
 								<div class="modal-content">
 									<div class="modal-header">
 										<h5 class="modal-title" id="myModalLabel">Asignar Paciente</h5>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-text="true">&times;</span></button>
 									</div>
-									<div class="modal-body" style="overflow: hidden;">
+									<div class="modal-body" style="overflow:hidden;">
 										<input type="hidden" id="idcita" />
 										<input type="hidden" id="idpaciente" />
 										<div class="container-fluid">

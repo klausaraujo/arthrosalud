@@ -149,7 +149,7 @@ $(document).ready(function (){
 				{title:'Fecha Nac.',targets: 5},{title:'Estado Civil',targets: 6},{title:'Celular',targets: 7},{title:'Correo',targets: 8},
 			], order: [],
 		});
-	}else if((segmento === 'citas' && segmento2 == '') || segmento2 === 'citas'){
+	}else if(segmento2 === 'citasprof'){
 		grillappal = $('#tablaCitas').DataTable({
 			ajax: {
 				url: base_url + 'citas/citas/lista',
@@ -158,9 +158,9 @@ $(document).ready(function (){
 					d.idconsultorio = $('.cons').val();
 					d.iddepartamento = $('.cdep').val();
 					d.idprofesional = $('.cprof').val();
-					d.anio = $('.canio').val();
-					d.mes = $('.m').val();
-					d.dia = $('.d').val();
+					d.anio = $('.anio').val();
+					d.mes = $('.mes').val();
+					d.dia = $('.dia').val();
 					d.activo = 1;
 				}
 			},
@@ -170,6 +170,12 @@ $(document).ready(function (){
 					data: null,
 					orderable: false,
 					render: function(data,m,r){
+						/* Obtener la fecha en milisegundos y compararla con la fecha traida de la bd */
+						let f = new Date(data.fecha), hoy = new Date();
+						let fUTC = new Date(f.getUTCFullYear()+'-'+f.getUTCMonth()+'-'+f.getUTCDate());
+						let hoyUTC = new Date(hoy.getUTCFullYear()+'-'+hoy.getUTCMonth()+'-'+hoy.getUTCDate());
+						let activar = fUTC.getTime() >= hoyUTC.getTime();
+						
 						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
 						let hrefEdit = 'href="'+base_url+'citas/citas/editar?id='+data.idcita+'"';
 						let hrefConfirmar = 'href="'+base_url+'citas/citas/cerrar?id='+data.idcita+'"';
@@ -178,16 +184,16 @@ $(document).ready(function (){
 						'<div class="btn-group">' +
 						/* Boton de edicion */
 						'<a title="Asignar Paciente" '+(data.atendido === '0' && data.idpaciente === '1' && btnAsignaCita? hrefEdit:'')+' class="bg-light btnTable '+
-							((data.idpaciente !== '1' || !btnAsignaCita || data.atendido === '1')?
+							((data.idpaciente !== '1' || !btnAsignaCita || data.atendido === '1' || !activar)?
 							'disabled':'')+' asigna" '+style+' data-target="#modalAsigna" data-toggle="modal"><img src="'+base_url+'public/images/iconos/edit_ico.png"'+
 							' width="20"></a>'+
 						/* Boton de confirmacion */
 						'<a title="Confirmación de Cita" '+(data.atendido === '0' && data.idpaciente !== '1' && btnConfirmaCita? hrefConfirmar:'')+
-							' class="bg-light btnTable '+((data.idpaciente === '1' || !btnConfirmaCita || data.atendido === '1')? 'disabled':'')+
+							' class="bg-light btnTable '+((data.idpaciente === '1' || !btnConfirmaCita || data.atendido === '1' || !activar)? 'disabled':'')+
 							' cerrar" '+style+'><img src="'+base_url+'public/images/iconos/evaluar_ico.png" width="18" style="max-height:23px"></a>'+
 						/* Boton anular cita */
 						'<a title="Desasignar" '+(data.atendido === '0' || data.idpaciente !== '1' && btnAnulaCita? hrefAnular:'')+' class="bg-light btnTable '+
-							((data.idpaciente === '1' || !btnAnulaCita || data.atendido === '1')
+							((data.idpaciente === '1' || !btnAnulaCita || data.atendido === '1' || !activar)
 							?'disabled':'')+' desasignar" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
 						return btnAccion;
 					}
@@ -456,7 +462,7 @@ $(document).ready(function (){
 			], order: [],
 		});
 	}
-	if(segmento === 'citas' && (segmento2 == '' || segmento2 === 'citas' || segmento2 === 'historia' || segmento2 === 'adicional')){
+	if(segmento === 'citas' && (segmento2 == '' || segmento2 === 'citasprof' || segmento2 === 'historia' || segmento2 === 'adicional')){
 		tablaPacientes = $('#tablaPacientes').DataTable({
 			pageLength: 5,
 			processing: true,
@@ -592,8 +598,7 @@ $('.wrapper-c').bind('click',function(e){
 	if($(evt).prop('class') === 'regular' || $(evt).prop('class') === 'inactive' || $(evt).prop('class') === 'active'){
 		$(this).find('.active').removeClass('active');
 		$(evt).addClass('active');
-		$('.d').val($(evt).text());
-		$('.m').val($('.mes').val());
+		$('.dia').val($(evt).text());
 		grillappal.ajax.reload();
 	}
 });

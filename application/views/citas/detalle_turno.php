@@ -38,11 +38,16 @@
 													<tbody>
 												
 											<?
+												$disabled = '';
 												//Nro de días del mes
 												$n = cal_days_in_month(CAL_GREGORIAN, $turno->idmes, $turno->anio);
 												//Se recorre la cantidad de días del mes para crear la tabla
 												for($i = 1;$i <= $n;$i++){
 													$d = date('N',strtotime($turno->anio.'-'.$turno->idmes.'-'.$i));
+													if(date('d/m/Y',strtotime($turno->anio.'-'.$turno->idmes.'-'.$i)) < date('d/m/Y'))
+														$disabled = 'horadisabled';
+													else $disabled = '';
+													
 													$dia = '';
 													switch($d){
 														case 1: $dia = 'Lunes'; break; case 2: $dia = 'Martes'; break; case 3: $dia = 'Mi&eacute;rcoles'; break;
@@ -79,12 +84,12 @@
 																<input type="hidden" name="fecha" class="fecha" value="<?=$f?>" /><?=$dia;?>
 															</td>
 															<td style="background-color: rgba(0, 0, 0, 0.06);"><?=$i;?></td>
-															<td><input type="time" class="hora e <?=$ce?>" value="<?=$e?>"/></td>
-															<td><input type="time" class="hora s <?=$cs?>" value="<?=$s?>"/></td>
-															<td><input type="time" class="hora e1 <?=$ce1?>" value="<?=$e1?>"/></td>
-															<td><input type="time" class="hora s1 <?=$cs1?>" value="<?=$s1?>"/></td>
-															<td><input type="time" class="hora e2 <?=$ce2?>" value="<?=$e2?>"/></td>
-															<td><input type="time" class="hora s2 <?=$cs2?>" value="<?=$s2?>"/></td>
+															<td><input type="time" class="hora e <?=$ce.' '.$disabled?>" value="<?=$e?>"/></td>
+															<td><input type="time" class="hora s <?=$cs.' '.$disabled?>" value="<?=$s?>"/></td>
+															<td><input type="time" class="hora e1 <?=$ce1.' '.$disabled?>" value="<?=$e1?>"/></td>
+															<td><input type="time" class="hora s1 <?=$cs1.' '.$disabled?>" value="<?=$s1?>"/></td>
+															<td><input type="time" class="hora e2 <?=$ce2.' '.$disabled?>" value="<?=$e2?>"/></td>
+															<td><input type="time" class="hora s2 <?=$cs2.' '.$disabled?>" value="<?=$s2?>"/></td>
 														</tr>
 											<?	}	?>
 													</tbody>

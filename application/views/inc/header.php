@@ -57,6 +57,7 @@ div.dataTables_wrapper div.dataTables_length .form-control-sm{
 	background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.75rem center/8px 10px;
 }
 a.disabled, .disabled{ pointer-events: none; color: grey }
+.horadisabled{ pointer-events: none; color: grey; background: #dcdcdc; }
 .content-page { padding-top: 95px }
 .inputfile-2 { display:none }
 .inputfile-2 + label { color: #aa5826;border: 2px solid #b25e1c; }
@@ -70,8 +71,17 @@ a.disabled, .disabled{ pointer-events: none; color: grey }
 .hora { border:1px solid #dcdcdc; border-radius:7px }
 .nav-tabs .nav-link.active{ border-bottom: 2px solid #bd7519; color: #bd7519; }
 .nav-tabs .nav-link.disabled { color: #c7c9cb }
+.iq-card-prof-elements {
+    border-radius: 20px;
+    padding: 7px 4px 7px 4px;
+    text-align: center !important;
+	//background: #d7e8fa;
+	-webkit-transition-duration: 0.4s;transition-duration: 0.4s;box-shadow:3px 3px 2px 0 rgb(101 96 90 / 50%);
+	border: 1px solid #e0dbd7;
+	background: linear-gradient(to right, rgb(208 132 47) 0%, rgb(237 182 121) 100%);
+}
 </style>
-<? if(($this->uri->segment(1) === 'citas' && $this->uri->segment(2) == '') || $this->uri->segment(2) === 'citas'){ ?>
+<? if($this->uri->segment(1) === 'citas' && $this->uri->segment(2) === 'citasprof'){ ?>
 	<link rel="stylesheet" href="<?=base_url()?>/public/js/calendario/style.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
 	<script src="<?=base_url()?>public/js/calendario/script.js" defer></script>
