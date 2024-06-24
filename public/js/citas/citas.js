@@ -911,10 +911,16 @@ $('.adicional').bind('click', function(event){
 	}
 });
 $('.selectblur').on('change', function(){
-	let g = 0, val = false;
+	let g = 0, val = false, glasgow;
 	$.each($('.selectblur'),function(i,e){
 		g += $(e).val() !== ''? parseInt($(e).val()) : 0;
 		if($(e).val() === '') val = true;
 	});
-	if(!val) $('#glasgow').val(g);
+	if(!val){
+		if(parseInt(g) > 12 && parseInt(g) < 16) glasgow = 'TRAUMA LEVE';
+		else if(parseInt(g) > 8 && parseInt(g) < 9) glasgow = 'TRAUMA MODERADO';
+		else glasgow = 'TRAUMA GRAVE';
+		$('#glasgow').val(g);
+		$('#gl').val(glasgow);
+	}
 });
