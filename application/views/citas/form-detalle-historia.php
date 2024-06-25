@@ -573,9 +573,9 @@
 								<div class="modal-body" style="overflow: hidden;">
 									<form method="post" id="detallereceta" >
 									<div class="container-fluid">
-										<input type="text" name="indicreceta" id="indicreceta" />
-										<input type="text" name="diagreceta" id="diagreceta" />
-										<input type="text" name="idrecetamedica" id="idrecetamedica" />
+										<input type="hidden" name="indicreceta" id="indicreceta" />
+										<input type="hidden" name="diagreceta" id="diagreceta" />
+										<input type="hidden" name="idrecetamedica" id="idrecetamedica" />
 										<div class="row mt-2">
 											<label class="control-label col-md-3 align-self-center mb-0" for="idalmacen">Almac&eacute;n:</label>
 											<div class="col-md-5">

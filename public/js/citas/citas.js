@@ -943,7 +943,7 @@ $('#receta').bind('click', function(){
 			beforeSend: function(){},
 			success: function(data){
 				if(parseInt(data.status) === 200){
-					$.each(data, function(i,e){
+					$.each(data.almacen, function(i,e){
 						opt += '<option value="'+e.idalmacen+'">'+e.nombre_almacen+'</option>';
 					});
 					$('#idalmacen').html(opt);

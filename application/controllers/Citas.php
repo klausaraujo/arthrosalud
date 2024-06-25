@@ -773,45 +773,45 @@ class Citas extends CI_Controller
 	public function regexamenes()
 	{
 		$this->load->model('Citas_model');
-		$msg = 'Error al registrar'; $data = null; $dh = null;
+		$msg = 'Error al registrar'; $data = null; $status = 500;
 		$json = json_decode(file_get_contents('php://input'));
 		
 		if($this->Citas_model->borrar('historia_clinica_atenciones_examenes',['idatencion' => $json[0]->idatencion])){
 			if($this->Citas_model->registrarbatch('historia_clinica_atenciones_examenes', $json)) $msg = 'Ex&aacute;menes Auxiliares Registrados';
 		}
-		$data = array(
-			'msg' => $msg,
-		);
+		
+		$data = array('msg' => $msg,);
 		echo json_encode($data);
 	}
 	public function regindicaciones()
 	{
 		$this->load->model('Citas_model');
-		$msg = 'Error al registrar'; $data = null; $dh = null;
+		$msg = 'Error al registrar'; $data = null; $status = 500;
 		$json = json_decode(file_get_contents('php://input'));
+		
+		$cta = $this->Citas_model->queryindividual('COUNT(iddiagnostico) as cta','historia_clinica_atenciones_diagnostico',
+				['idatencion' => $json[0]->idatencion]);
+		if($cta->cta) $status = 200;
 		
 		if($this->Citas_model->borrar('historia_clinica_atenciones_indicaciones',['idatencion' => $json[0]->idatencion])){
 			if($this->Citas_model->registrarbatch('historia_clinica_atenciones_indicaciones', $json)) $msg = 'Indicaciones Registradas';
 		}
 		
-		$data = array('msg' => $msg);
-		
+		$data = array('msg' => $msg,'status' => $status);
 		echo json_encode($data);
 	}
 	public function datosreceta()
 	{
 		$this->load->model('Citas_model');
-		$iddep = $this->input->post('iddep'); $alm = []; $status = 500; $msg = 'No hay Diagn&oacute;sticos registrados';
-		$cta = $this->Citas_model->queryindividual('COUNT(iddiagnostico) as cta','historia_clinica_atenciones_diagnostico',['idatencion' => $this->input->post('idatencion')]);
+		$iddep = $this->input->post('iddep'); $alm = []; $status = 500; $msg = '';
+		$cta = $this->Citas_model->queryindividual('COUNT(iddiagnostico) as cta','historia_clinica_atenciones_diagnostico',
+				['idatencion' => $this->input->post('idatencion')]);
 		if($cta->cta){
 			$almacen = $this->Citas_model->querysqlwhere('idalmacen,nombre_almacen','almacen',['idempresa' => $iddep,'tipo_almacen' => 2,'activo' => 1]);
-			foreach($almacen as $row):
-				$alm = $row;
-			endforeach;
 			$status = 200;
-		}
+		}else $msg = 'No hay Diagn&oacute;sticos registrados';
 		
-		echo json_encode(['almacen' => $alm,'status' => $status,'msg' => $msg]);
+		echo json_encode(['almacen' => $almacen,'status' => $status,'msg' => $msg]);
 	}
 	public function regreceta()
 	{
