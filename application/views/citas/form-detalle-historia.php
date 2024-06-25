@@ -594,7 +594,7 @@
 											</div>
 										</div>
 										<div class="row mt-3">
-											<a href="<?=base_url()?>citas/historia/regreceta" class="btn btn-sabogal" id="regreceta" >Registrar Receta</a>
+											<a href="<?=base_url()?>citas/historia/regreceta" class="btn btn-sabogal ml-md-2" id="regreceta" >Registrar Receta</a>
 										</div>
 									</div>
 									</form>
