@@ -167,5 +167,5 @@ $route['citas/procedimientos/regprocedimiento'] = 'citas/rprocedimientos';
 $route['citas/historia/ver'] = 'pdf/verhistoria';
 
 /**/
-$route['404_override'] = '';
+$route['404_override'] = 'main/error';
 $route['translate_uri_dashes'] = FALSE;

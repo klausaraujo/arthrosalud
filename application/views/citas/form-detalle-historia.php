@@ -1,8 +1,8 @@
+					<? $usuario = json_decode($this->session->userdata('user')); ?>
 					<div class="col-12 iq-card my-3">
 						<div class="iq-card-header d-flex justify-content-between">
 							<div class="iq-header-title"><h4>Registro de Atenci&oacute;n</h4></div>
 						</div>
-						<?var_dump($usuario)?>
 						<div class="iq-card-body">
 							<div class="form-row">
 								<div class="col-12">
@@ -79,10 +79,7 @@
 										<div class="col-md-4 col-lg-3">
 											<div class="row">
 												<select class="form-control form-control-sm" name="prof" id="prof" >
-											<?
-												foreach($prof as $row):	?>
-													<option value="<?=$row->idprofesional;?>"><?=$row->apellidos.' '.$row->nombres;?></option>
-											<?	endforeach;	?>
+													<option value="<?=$usuario->idusuario?>"><?=$usuario->apellidos.' '.$usuario->nombres?></option>
 												</select>
 											</div>
 										</div>

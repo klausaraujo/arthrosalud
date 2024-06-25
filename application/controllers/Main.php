@@ -104,6 +104,10 @@ class Main extends CI_Controller
 		
 		$this->load->view('main', $data);
 	}
+	public function error()
+	{
+		$this->load->view('main');
+	}
 	public function perfil(){ $this->load->view('main'); }
 	public function password()
     {

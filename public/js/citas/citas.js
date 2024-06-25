@@ -171,10 +171,12 @@ $(document).ready(function (){
 					orderable: false,
 					render: function(data,m,r){
 						/* Obtener la fecha en milisegundos y compararla con la fecha traida de la bd */
-						let f = new Date(data.fecha), hoy = new Date();
-						let fUTC = new Date(f.getUTCFullYear()+'-'+f.getUTCMonth()+'-'+f.getUTCDate());
-						let hoyUTC = new Date(hoy.getUTCFullYear()+'-'+hoy.getUTCMonth()+'-'+hoy.getUTCDate());
-						let activar = fUTC.getTime() >= hoyUTC.getTime();
+						let f = new Date(data.fecha), hoy = new Date(Date.now()), activar = false, hoydia = '', hoymes = '', hoyanio = '';
+						hoymes = String(hoy.getMonth()).length < 2? '0'+(hoy.getMonth()+1) : (hoy.getMonth()+1);
+						hoydia = String(hoy.getDate()).length < 2? '0'+hoy.getDate() : hoy.getDate();
+						hoyanio = hoy.getFullYear();
+						activar =  data.fecha >= hoyanio+'-'+hoymes+'-'+hoydia;
+						
 						
 						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
 						let hrefEdit = 'href="'+base_url+'citas/citas/editar?id='+data.idcita+'"';

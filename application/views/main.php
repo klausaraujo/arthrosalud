@@ -57,8 +57,7 @@
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('logistica/form-servicios');
 								elseif($this->uri->segment(3) === 'editar') $this->load->view('logistica/servicios-edit');
 							}
-						}
-						elseif($this->uri->segment(1) === 'citas'){
+						}elseif($this->uri->segment(1) === 'citas'){
 							if(!strlen($this->uri->segment(2))) $this->load->view('citas/citasdash');
 							elseif($this->uri->segment(2) === 'citasprof') $this->load->view('citas/citas');
 							elseif($this->uri->segment(2) === 'pacientes'){
@@ -77,17 +76,20 @@
 								if(!strlen($this->uri->segment(3))) $this->load->view('citas/turnos');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-turnos');
 								elseif($this->uri->segment(3) === 'detalle') $this->load->view('citas/detalle_turno');
+								else $this->load->view('mantenimiento');
 							}elseif($this->uri->segment(2) === 'historia'){
 								if(!strlen($this->uri->segment(3))) $this->load->view('citas/historia');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-historia');
 								elseif($this->uri->segment(3) === 'regdetalle') $this->load->view('citas/form-detalle-historia');
+								else $this->load->view('mantenimiento');
 							}elseif($this->uri->segment(2) === 'adicional'){
 								$this->load->view('citas/form-adicional');
 							}elseif($this->uri->segment(2) === 'procedimientos'){
 								if(!strlen($this->uri->segment(3))) $this->load->view('citas/procedimientos');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-procedimientos');
+								else $this->load->view('mantenimiento');
 							}
-						}
+						}else $this->load->view('mantenimiento');
 					?>
 					</div>
 					<!-- Footer -->
