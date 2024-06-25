@@ -717,7 +717,7 @@ $('#addtipo').bind('click',function(){
 		
 		if(cie.rows().count()){
 			cie.rows().data().each(function(e){
-				if($('#idcie').val() === e['idcie']){
+				if($('#idcie').val() === e['idcie10']){
 					alert('El item ya está agregado');
 					valida = true;
 				}
