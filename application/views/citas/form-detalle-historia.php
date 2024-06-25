@@ -10,8 +10,9 @@
 										<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="paciente">Paciente:</label>
 										<div class="col-md-3 col-lg-3">
 											<div class="row">
-												<input type="text" class="form-control form-control-sm" name="paciente" id="paciente" 
-														value="<?=$pac->nombres.' '.$pac->apellidos?>" readonly />
+												<select class="form-control form-control-sm" name="paciente" id="paciente" >
+													<option value="<?=$pac->idpaciente?>"><?=$pac->apellidos.' '.$pac->nombres?></option>
+												</select>
 											</div>
 										</div>
 										<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="sexo">Sexo:</label>
@@ -449,6 +450,12 @@
 												</div>
 											</div>
 											<div class="col-md-1 col-lg-1"><a class="btn btn-sabogal" id="addindic">Agregar</a></div>
+											<div class="col-md-4 col-lg-3 ml-sm-1 mt-sm-2 mt-lg-0 ">
+												<a class="btn btn-dark d-none" id="receta">Receta M&eacute;dica</a>
+												<a class="btn btn-danger px-1 d-none" id="pdfreceta">
+													<i class="fa fa-file-pdf-o mx-0" aria-hidden="true" style="font-size:1.4em"></i>
+												</a>
+											</div>
 										</div>
 										<div class="container-fluid">
 											<div class="row mt-3">
@@ -551,6 +558,46 @@
 											</div>
 										</div>
 									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Modal Receta -->
+					<div class="modal fade" id="modalReceta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="myModalLabel">Receta M&eacute;dica</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								</div>
+								<div class="modal-body" style="overflow: hidden;">
+									<form method="post" id="detallereceta" >
+									<div class="container-fluid">
+										<input type="text" name="indicreceta" id="indicreceta" />
+										<input type="text" name="diagreceta" id="diagreceta" />
+										<input type="text" name="idrecetamedica" id="idrecetamedica" />
+										<div class="row mt-2">
+											<label class="control-label col-md-3 align-self-center mb-0" for="idalmacen">Almac&eacute;n:</label>
+											<div class="col-md-5">
+												<div class="row">
+													<select type="text" class="form-control form-control-sm" name="idalmacen" id="idalmacen" >
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="row mt-2">
+											<label class="control-label col-md-3 align-self-center mb-0" for="obsreceta">Observaciones:</label>
+											<div class="col-md-7">
+												<div class="row">
+													<input type="text" class="form-control form-control-sm mayusc" id="obsreceta" name="obsreceta" />
+												</div>
+											</div>
+										</div>
+										<div class="row mt-3">
+											<a href="<?=base_url()?>citas/historia/regreceta" class="btn btn-sabogal" id="regreceta" >Registrar Receta</a>
+										</div>
+									</div>
+									</form>
 								</div>
 							</div>
 						</div>

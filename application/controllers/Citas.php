@@ -740,15 +740,19 @@ class Citas extends CI_Controller
 	public function regdiagnostico()
 	{
 		$this->load->model('Citas_model');
-		$msg = 'Error al registrar'; $data = null; $dh = null;
+		$msg = 'Error al registrar'; $data = null; $status = 500;
 		$json = json_decode(file_get_contents('php://input'));
+		
+		$cta = $this->Citas_model->queryindividual('COUNT(idindicacion) as cta','historia_clinica_atenciones_indicaciones',
+				['idatencion' => $json[0]->idatencion]);
+		if($cta->cta) $status = 200;
 		
 		if($this->Citas_model->borrar('historia_clinica_atenciones_diagnostico',['idatencion' => $json[0]->idatencion])){
 			if($this->Citas_model->registrarbatch('historia_clinica_atenciones_diagnostico', $json)) $msg = 'Diagn&oacute;stico Registrado';
 		}
 		$data = array(
 			'msg' => $msg,
-			'diag' => $dh,
+			'status' => $status,
 		);
 		echo json_encode($data);
 	}
@@ -789,10 +793,62 @@ class Citas extends CI_Controller
 		if($this->Citas_model->borrar('historia_clinica_atenciones_indicaciones',['idatencion' => $json[0]->idatencion])){
 			if($this->Citas_model->registrarbatch('historia_clinica_atenciones_indicaciones', $json)) $msg = 'Indicaciones Registradas';
 		}
-		$data = array(
-			'msg' => $msg,
-		);
+		
+		$data = array('msg' => $msg);
+		
 		echo json_encode($data);
+	}
+	public function datosreceta()
+	{
+		$this->load->model('Citas_model');
+		$iddep = $this->input->post('iddep'); $alm = []; $status = 500; $msg = 'No hay Diagn&oacute;sticos registrados';
+		$cta = $this->Citas_model->queryindividual('COUNT(iddiagnostico) as cta','historia_clinica_atenciones_diagnostico',['idatencion' => $this->input->post('idatencion')]);
+		if($cta->cta){
+			$almacen = $this->Citas_model->querysqlwhere('idalmacen,nombre_almacen','almacen',['idempresa' => $iddep,'tipo_almacen' => 2,'activo' => 1]);
+			foreach($almacen as $row):
+				$alm = $row;
+			endforeach;
+			$status = 200;
+		}
+		
+		echo json_encode(['almacen' => $alm,'status' => $status,'msg' => $msg]);
+	}
+	public function regreceta()
+	{
+		$this->load->model('Citas_model');
+		$cab = json_decode($this->input->post('cab')); $indic = json_decode($this->input->post('indic')); $diag = json_decode($this->input->post('diag'));
+		$msg = 'Error al registrar'; $id = $this->input->post('idreceta'); $numb = 1; $status = 500;
+		
+		if($id !== ''){
+			$this->Citas_model->borrar('receta_medica',['idrecetamedica' => $id]);
+			$this->Citas_model->borrar('receta_medica_detalle',['idrecetamedica' => $id]);
+			$this->Citas_model->borrar('receta_medica_dx',['idrecetamedica' => $id]);
+		}
+		
+		$nro = $this->Citas_model->queryindividual('MAX(numero) as nro','receta_medica',['idalmacen' => $cab->idalmacen]);
+		if($nro->nro) $numb = intval($nro->nro) + 1;
+		$cab->numero = $numb;
+		
+		if($id = $this->Citas_model->registrar('receta_medica',$cab)){
+			foreach($indic as $row):
+				unset($row->descripcion);
+				$row->idrecetamedica = $id;
+			endforeach;
+			foreach($diag as $row):
+				unset($row->cie10, $row->descripcion_cie10);
+				$row->idrecetamedica = $id;
+			endforeach;
+			if($this->Citas_model->registrarbatch('receta_medica_detalle',$indic)){
+				if($this->Citas_model->registrarbatch('receta_medica_dx',$diag)){
+					$status = 200; $msg = 'Receta Registrada';
+				}
+			}
+		}
+		
+		$data = array('msg' => $msg, 'idreceta' => $id, 'status' => $status);
+		
+		echo json_encode($data);
+		
 	}
 	public function procedimientos()
 	{

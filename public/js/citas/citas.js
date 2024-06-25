@@ -849,7 +849,6 @@ $('#btnRegistrar').bind('click', function(){
 			});
 		}else valida = false;
 		data = JSON.stringify(filas);
-		console.log(data);
 	}else if(id === 'indicaciones'){
 		url = base_url + 'citas/historia/regindicaciones';
 		let rs = indic.rows().data().toArray(), filas = [];
@@ -877,6 +876,10 @@ $('#btnRegistrar').bind('click', function(){
 				$('.rspatencion').html(data.msg);
 				if(id === 'atenciones'){
 					if(parseInt(data.status) === 200){ $('.nav-link.disabled').removeClass('disabled'); $('#idatencion').val(data.idatencion); }
+				}else if(id === 'indicaciones'){
+					if(parseInt(data.status) === 200){ $('#receta').removeClass('d-none'); }
+				}else if(id === 'diagnosticos'){
+					if(parseInt(data.status) === 200){ $('#receta').removeClass('d-none'); }
 				}
 				setTimeout(function(){ $('.rspatencion').hide('slow'); }, 1500);
 			}
@@ -924,5 +927,60 @@ $('.selectblur').on('change', function(){
 		else glasgow = 'TRAUMA GRAVE';
 		$('#glasgow').val(g);
 		$('#gl').val(glasgow);
+	}
+});
+$('#receta').bind('click', function(){
+	if(indic.rows().count() && cie.rows().count()){
+		let indicaciones = indic.rows().data().toArray(), opt = '';
+		let diagnosticos = cie.rows().data().toArray();
+		$('#indicreceta').val(JSON.stringify(indicaciones));
+		$('#diagreceta').val(JSON.stringify(diagnosticos));
+		$.ajax({
+			data: { iddep: $('.iddep').val(),idatencion: $('#idatencion').val() },
+			url: base_url + 'citas/historia/datosreceta',
+			method: 'POST',
+			dataType: 'JSON',
+			beforeSend: function(){},
+			success: function(data){
+				if(parseInt(data.status) === 200){
+					$.each(data, function(i,e){
+						opt += '<option value="'+e.idalmacen+'">'+e.nombre_almacen+'</option>';
+					});
+					$('#idalmacen').html(opt);
+					$('#modalReceta').modal('show');
+				}else{
+					$('.rspatencion').addClass('pt-2');
+					$('.rspatencion').show();
+					$('.rspatencion').html(data.msg);
+					setTimeout(function(){ $('.rspatencion').hide('slow'); }, 1500);
+				}
+			}
+		});
+	}
+});
+$('#regreceta').bind('click', function(){
+	event.preventDefault();
+	let i = $('#indicreceta').val(), d = $('#diagreceta').val(), c = null;
+	if($('#idalmacen').val()){
+		c = {'idalmacen': $('#idalmacen').val(),'idatencion': $('#idatencion').val(),'fecha': $('#fecha').val(),
+		'idprofesional': $('#prof').val(),'idpaciente': $('#paciente').val(),'observaciones': $('#obsreceta').val()};
+		$.ajax({
+			data: { indic: i,diag: d,cab: JSON.stringify(c),idreceta: $('#idrecetamedica').val() },
+			url: base_url + 'citas/historia/regreceta',
+			method: 'POST',
+			dataType: 'JSON',
+			beforeSend: function(){
+				$('.rspatencion').html('<span class="spinner-border spinner-border-sm"></span>&nbsp;&nbsp;Cargando...');
+				$('.rspatencion').addClass('pt-2');
+				$('.rspatencion').show();
+			},
+			success: function(data){
+				$('#modalReceta').modal('hide');
+				$('#idrecetamedica').val(data.idreceta);
+				$('.rspatencion').html(data.msg);
+				if(parseInt(data.status) === 200){ $('#pdfreceta').removeClass('d-none'); }
+				setTimeout(function(){ $('.rspatencion').hide('slow'); }, 1500);
+			}
+		});
 	}
 });
