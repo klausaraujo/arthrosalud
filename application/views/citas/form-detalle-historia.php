@@ -2,6 +2,7 @@
 						<div class="iq-card-header d-flex justify-content-between">
 							<div class="iq-header-title"><h4>Registro de Atenci&oacute;n</h4></div>
 						</div>
+						<?var_dump($usuario)?>
 						<div class="iq-card-body">
 							<div class="form-row">
 								<div class="col-12">
@@ -178,26 +179,26 @@
 												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="p1">Presi&oacute;n Arterial:</label>
 												<div class="col-md-2 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm col-5" name="p1" id="p1"/>&nbsp;/&nbsp;
-														<input type="text" class="form-control form-control-sm col-5" name="p2" id="p2"/>
+														<input type="text" class="form-control form-control-sm col-5" name="p1" id="p1" value="0"/>&nbsp;/&nbsp;
+														<input type="text" class="form-control form-control-sm col-5" name="p2" id="p2" value="0"/>
 													</div>
 												</div>
 												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0 pl-lg-5" for="pvenosa">Presi&oacute;n Venosa:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="pvenosa" id="pvenosa" />
+														<input type="text" class="form-control form-control-sm" name="pvenosa" id="pvenosa" value="0" />
 													</div>
 												</div>
 												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0" for="saturacion">Saturaci&oacute;n:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="saturacion" id="saturacion" />
+														<input type="text" class="form-control form-control-sm" name="saturacion" id="saturacion" value="0" />
 													</div>
 												</div>
 												<label class="control-label col-md-1 col-lg-2 align-self-center mb-0 pl-lg-5" for="temp">Temperatura:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="temp" id="temp" />
+														<input type="text" class="form-control form-control-sm" name="temp" id="temp" value="0" />
 													</div>
 												</div>
 											</div>
@@ -205,25 +206,25 @@
 												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="fcardiaca">F. Card&iacute;aca:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="fcardiaca" id="fcardiaca" />
+														<input type="text" class="form-control form-control-sm" name="fcardiaca" id="fcardiaca" value="0" />
 													</div>
 												</div>
 												<label class="control-label col-md-2 col-lg-2 align-self-center mb-0" for="frespiratoria">F. Respiratoria:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="frespiratoria" id="frespiratoria" />
+														<input type="text" class="form-control form-control-sm" name="frespiratoria" id="frespiratoria" value="0" />
 													</div>
 												</div>
 												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="peso">Peso:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="peso" id="peso" />
+														<input type="text" class="form-control form-control-sm" name="peso" id="peso" value="0" />
 													</div>
 												</div>
 												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="talla">Talla:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="talla" id="talla" />
+														<input type="text" class="form-control form-control-sm" name="talla" id="talla" value="0" />
 													</div>
 												</div>
 											</div>
@@ -231,7 +232,7 @@
 												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="imc">IMC:</label>
 												<div class="col-md-1 col-lg-1">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm" name="imc" id="imc" />
+														<input type="text" class="form-control form-control-sm" name="imc" id="imc" value="0"/>
 													</div>
 												</div>
 												<label class="control-label col-md-1 col-lg-1 align-self-center mb-0" for="ao">AO:</label>
@@ -276,13 +277,14 @@
 											</div>
 											<div class="row mt-md-4">
 												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0" for="glasgow">Glasgow:</label>
-												<div class="col-md-2 col-lg-1">
+												<div class="col-md-4 col-lg-3">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm mayusc" name="glasgow" id="glasgow" readonly />
+														<input type="text" class="form-control form-control-sm mayusc" name="gl" id="gl" readonly />
+														<input type="hidden" name="glasgow" id="glasgow" readonly />
 													</div>
 												</div>
 												<label class="control-label col-md-3 col-lg-2 align-self-center mb-0 pl-md-5" for="atencion">Observaciones:</label>
-												<div class="col-md-4 col-lg-5">
+												<div class="col-md-3 col-lg-5">
 													<div class="row">
 														<input type="text" class="form-control form-control-sm mayusc" name="obs" />
 													</div>
