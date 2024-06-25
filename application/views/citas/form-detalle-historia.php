@@ -444,15 +444,15 @@
 										</div>
 										<div class="row mt-3">
 											<label class="control-label col-md-3 col-lg-2 align-self-center mb-0" for="indica">Indicaciones:</label>
-											<div class="col-md-5 col-lg-5">
+											<div class="col-md-4 col-lg-5">
 												<div class="row">
 													<input type="text" class="form-control form-control-sm mayusc" id="indica" name="indica" />
 												</div>
 											</div>
-											<div class="col-md-1 col-lg-1"><a class="btn btn-sabogal" id="addindic">Agregar</a></div>
-											<div class="col-md-4 col-lg-3 ml-sm-1 mt-sm-2 mt-lg-0 ">
-												<a class="btn btn-dark d-none" id="receta">Receta M&eacute;dica</a>
-												<a class="btn btn-danger px-1 d-none" id="pdfreceta">
+											<div class="col-md-5 col-lg-4 ml-sm-1 mt-sm-2 mt-lg-0 ">
+												<a class="btn btn-sabogal" id="addindic">Agregar</a>
+												<a class="btn btn-dark " id="receta">Receta M&eacute;dica</a>
+												<a class="btn btn-danger px-1 " id="pdfreceta">
 													<i class="fa fa-file-pdf-o mx-0" aria-hidden="true" style="font-size:1.4em"></i>
 												</a>
 											</div>
