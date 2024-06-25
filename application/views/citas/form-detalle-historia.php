@@ -451,8 +451,8 @@
 											</div>
 											<div class="col-md-5 col-lg-4 ml-sm-1 mt-sm-2 mt-lg-0 ">
 												<a class="btn btn-sabogal" id="addindic">Agregar</a>
-												<a class="btn btn-dark " id="receta">Receta M&eacute;dica</a>
-												<a class="btn btn-danger px-1 " id="pdfreceta">
+												<a class="btn btn-dark d-none" id="receta">Receta M&eacute;dica</a>
+												<a class="btn btn-danger px-1 d-none" id="pdfreceta">
 													<i class="fa fa-file-pdf-o mx-0" aria-hidden="true" style="font-size:1.4em"></i>
 												</a>
 											</div>
