@@ -10,6 +10,7 @@ class Pdf extends CI_Controller
 {
 	private $usuario;
 	private $pdf;
+	private $options;
 	
 	public function __construct()
 	{
@@ -20,13 +21,11 @@ class Pdf extends CI_Controller
 		else header('location:' .base_url());
 		
 		//Setear las opciones
-		$options = new Options();
-		$options->set('defaultFont', 'helvetica');
-		$options->set('isPhpEnabled', 'true');
-		$options->set('defaultPaperOrientation', 'portrait');
-		$options->set('defaultPaperSize', 'A4');
-		//Inicializar la clase
-		$this->pdf = $pdf = new Dompdf($options);
+		$this->options = new Options();
+		$this->options->set('defaultFont', 'helvetica');
+		$this->options->set('isPhpEnabled', 'true');
+		$this->options->set('defaultPaperOrientation', 'portrait');
+		$this->options->set('defaultPaperSize', 'A4');
 	}
 
     public function index(){}
@@ -61,8 +60,17 @@ class Pdf extends CI_Controller
 		$this->viewpdf($html, 0);
 		//$html = $this->load->view('citas/nuevo-pdf');
 	}
+	public function recetapdf()
+	{
+		$this->load->model('Citas_model');
+		$html = $this->load->view('citas/receta-pdf', null, true);
+		$this->options->set('defaultPaperOrientation', 'landscape');
+		$this->viewpdf($html, 0);
+	}
 	private function viewpdf($page, $attach)
 	{
+		//Inicializar la clase
+		$this->pdf = $pdf = new Dompdf($this->options);
 		$this->pdf->loadHtml($page);
 		// Render the HTML as PDF
 		$this->pdf->render();

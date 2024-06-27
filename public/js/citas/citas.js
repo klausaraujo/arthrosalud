@@ -978,7 +978,10 @@ $('#regreceta').bind('click', function(){
 				$('#modalReceta').modal('hide');
 				$('#idrecetamedica').val(data.idreceta);
 				$('.rspatencion').html(data.msg);
-				if(parseInt(data.status) === 200){ $('#pdfreceta').removeClass('d-none'); }
+				if(parseInt(data.status) === 200){
+					$('#pdfreceta').attr('href', base_url + 'citas/historia/imprimereceta?receta' + data.idreceta);
+					$('#pdfreceta').removeClass('d-none');
+				}
 				setTimeout(function(){ $('.rspatencion').hide('slow'); }, 1500);
 			}
 		});

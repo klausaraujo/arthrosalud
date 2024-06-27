@@ -160,6 +160,7 @@ $route['citas/historia/listaart'] = 'citas/listaartserver';
 $route['citas/historia/regindicaciones'] = 'citas/regindicaciones';
 $route['citas/historia/datosreceta'] = 'citas/datosreceta';
 $route['citas/historia/regreceta'] = 'citas/regreceta';
+$route['citas/historia/imprimereceta'] = 'pdf/recetapdf';
 $route['citas/adicional'] = 'citas/citaadicional';
 $route['citas/regadicional'] = 'citas/regadicional';
 $route['citas/procedimientos'] = 'citas/procedimientos';
