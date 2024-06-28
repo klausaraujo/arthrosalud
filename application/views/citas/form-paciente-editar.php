@@ -1,6 +1,6 @@
 					<div class="col-12 iq-card my-3">
 						<div class="iq-card-header d-flex justify-content-between">
-							<div class="iq-header-title"><h4>Registro de Profesional</h4></div>
+							<div class="iq-header-title"><h4>Edici&oacute;n de Pacientes</h4></div>
 						</div>
 						<div class="iq-card-body">
 						<div class="row justify-content-center">
@@ -8,9 +8,10 @@
 							<div class="iq-alert-text"><?=$this->session->flashdata('flashMessage')?></div>
 							</div><?}?>
 						</div>
-						<form method="post" id="form_medico" action="<?=base_url()?>citas/medicos/regmedico" enctype="multipart/form-data"
+						<form method="post" id="form_paciente" action="<?=base_url()?>citas/pacientes/regpaciente" enctype="multipart/form-data"
 								class="needs-validation form-horizontal" novalidate="">
-							<input type="hidden" name="tiporegistro" value="registrar" />
+							<input type="hidden" name="tiporegistro" value="editar" />
+							<input type="hidden" name="idpaciente" value="<?=$this->input->get('id')?>" />
 							<div class="form-row">
 								<div class="col-12 my-1">
 									<div class="row">
@@ -19,12 +20,13 @@
 												<label class="control-label col-md-6 col-lg-6 align-self-center mb-0" for="tipo">Tipo Documento:</label>
 												<div class="col-md-4 col-lg-4">
 													<div class="row">
-														<select class="form-control form-control-sm tpdoc" name="tipo" id="tipo" required="" >
+														<select class="form-control form-control-sm tpdoc" name="tipo" id="tipo" required="" readonly >
 													<?
 														foreach($tipo as $row):	?>
 															<option value="<?=$row->idtipodocumento;?>"><?=$row->tipo_documento;?></option>
 													<?	endforeach;	?>
 														</select>
+														<div class="invalid-feedback">Campo Requerido</div>
 													</div>
 												</div>
 											</div>
@@ -33,7 +35,7 @@
 												<div class="col-md-4 col-lg-4">
 													<div class="row">
 														<input type="text" class="form-control form-control-sm num mayusc numerodoc" name="doc" id="doc" 
-															placeholder="Número Documento"  minlength="8" maxlength="8" required="" />
+															placeholder="Número Documento" minlength="8" maxlength="8" required="" />
 														<div class="invalid-feedback" id="error-doc">Campo Requerido</div>
 													</div>
 												</div>
@@ -52,7 +54,7 @@
 												<label class="control-label col-md-6 col-lg-6 align-self-center mb-0" for="nombres">Nombres:</label>
 												<div class="col-md-4 col-lg-4">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm mayusc" name="nombres" id="nombres" 
+														<input type="text" class="form-control form-control-sm borra mayusc" name="nombres" id="nombres" 
 															placeholder="Nombres" value="" required="" />
 														<div class="invalid-feedback" id="error-razon">Campo Requerido</div>
 													</div>
@@ -88,8 +90,8 @@
 											<div class="row">
 												<select class="form-control form-control-sm" name="sexo" id="sexo" required="" >
 													<option value="">-- Seleccione --</option>
-													<option value="1">Femenino</option>
 													<option value="2">Masculino</option>
+													<option value="1">Femenino</option>
 												</select>
 												<div class="invalid-feedback">Campo Requerido</div>
 											</div>
@@ -223,70 +225,13 @@
 											</div>
 										</div>
 									</div>-->
-									<div class="row mt-1">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="tipoprof">Tipo Profesional:</label>
-										<div class="col-md-6 col-lg-3">
-											<div class="row">
-												<select class="form-control form-control-sm" name="tipoprof" id="tipoprof" required="" >
-													<option value="">-- Seleccione --</option>
-												<?
-														foreach($tipop as $row):	?>
-															<option value="<?=$row->idtipoprofesional;?>"><?=$row->tipo_profesional;?></option>
-												<?		endforeach;	?>
-												</select>
-												<div class="invalid-feedback">Campo Requerido</div>
-											</div>
-										</div>
-									</div>
-									<div class="row mt-3">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="colegiatura">Colegiatura:</label>
-										<div class="col-md-6 col-lg-4">
-											<div class="row">
-												<input type="text" class="form-control form-control-sm mayusc" name="colegiatura"
-													placeholder="Colegiatura" value="" />
-											</div>
-										</div>
-									</div>
-									<div class="row mt-3">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="especialidad">Especialidad:</label>
-										<div class="col-md-6 col-lg-3">
-											<div class="row">
-												<select class="form-control form-control-sm" name="especialidad" id="especialidad" required="" >
-													<option value="">-- Seleccione --</option>
-												<?
-														foreach($esp as $row):	?>
-															<option value="<?=$row->idespecialidad;?>"><?=$row->especialidad;?></option>
-												<?		endforeach;	?>
-												</select>
-												<div class="invalid-feedback">Campo Requerido</div>
-											</div>
-										</div>
-									</div>
-									<div class="row mt-3">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="rne">RNE:</label>
-										<div class="col-md-6 col-lg-4">
-											<div class="row">
-												<input type="text" class="form-control form-control-sm mayusc" name="rne"
-													placeholder="RNE" value="" />
-											</div>
-										</div>
-									</div>
-									<!--<div class="row mt-3">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="contacto">Contacto:</label>
-										<div class="col-md-6 col-lg-4">
-											<div class="row">
-												<input type="text" class="form-control form-control-sm num" name="contacto"
-													placeholder="Contacto" value="" />
-												<label class="invalid-feedback">Campo requerido</label>
-											</div>
-										</div>
-									</div>-->
 									<div class="row mt-3">
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="celular">Celular:</label>
 										<div class="col-md-6 col-lg-4">
 											<div class="row">
 												<input type="text" class="form-control form-control-sm num" name="celular"
 													placeholder="Celular" value="" />
+												<label class="invalid-feedback">Campo requerido</label>
 											</div>
 										</div>
 									</div>
@@ -294,23 +239,9 @@
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="correo">Correo:</label>
 										<div class="col-md-6 col-lg-4">
 											<div class="row">
-												<input type="text" class="form-control form-control-sm" name="correo"
+												<input type="text" class="form-control form-control-sm borra" name="correo"
 													placeholder="Correo" value="" />
-											</div>
-										</div>
-									</div>
-									<div class="row mt-3">
-										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="usuario">Asignar Usuario:</label>
-										<div class="col-md-6 col-lg-3">
-											<div class="row">
-												<select class="form-control form-control-sm" name="idusuario" id="idusuario" >
-													<option value="">-- Seleccione --</option>
-												<?
-														foreach($user as $row):	?>
-															<option value="<?=$row->idusuario;?>"><?=$row->usuario;?></option>
-												<?		endforeach;	?>
-												</select>
-												<div class="invalid-feedback">Usuario Requerido</div>
+												<label class="invalid-feedback">Campo requerido</label>
 											</div>
 										</div>
 									</div>
@@ -318,8 +249,9 @@
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="obs">Observaciones:</label>
 										<div class="col-md-6 col-lg-4">
 											<div class="row">
-												<input type="text" class="form-control form-control-sm mayusc" name="obs"
+												<input type="text" class="form-control form-control-sm borra mayusc" name="obs"
 													placeholder="Observaciones" value="" />
+												<label class="invalid-feedback">Campo requerido</label>
 											</div>
 										</div>
 									</div>
@@ -327,7 +259,7 @@
 							</div>
 							<div class="container-fluid row"><hr class="col-sm-12"></div>
 							<div class="col-12 mx-auto pb-2">
-								<button type="submit" class="btn btn-sabogal ml-1 mr-4" id="btnEnviar">Guardar</button>
+								<button type="submit" class="btn btn-sabogal ml-1 mr-4" id="btnEnviar">Guardar Registro</button>
 								<button type="reset" class="btn btn-light btn-cancelar">Cancelar</button>
 							</div>
 						</form>

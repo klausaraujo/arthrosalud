@@ -56,7 +56,12 @@ $(document).ready(function (){
 						let var_perfil = '';
 						switch(data){
 							case '1': var_perfil = 'ADMINISTRADOR'; break;
-							case '2': var_perfil = 'LOG&Iacute;STICO'; break;
+							case '2': var_perfil = 'ADMISI&Oacute;N'; break;
+							case '3': var_perfil = 'LOG&Iacute;STICO'; break;
+							case '4': var_perfil = 'FACTURACI&Oacute;N'; break;
+							case '5': var_perfil = 'M&Eacute;DICO'; break;
+							case '6': var_perfil = 'LABORATORIO'; break;
+							case '7': var_perfil = 'FARMACIA'; break;
 						}
 						return var_perfil;
 					}

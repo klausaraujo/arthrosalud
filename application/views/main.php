@@ -63,6 +63,7 @@
 							elseif($this->uri->segment(2) === 'pacientes'){
 								if(!strlen($this->uri->segment(3))) $this->load->view('citas/pacientes');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-paciente');
+								elseif($this->uri->segment(3) === 'editar') $this->load->view('citas/form-paciente-editar');
 							}elseif($this->uri->segment(2) === 'consultorios'){
 								if(!strlen($this->uri->segment(3))) $this->load->view('citas/consultorios');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-consultorio');
@@ -72,6 +73,7 @@
 							}elseif($this->uri->segment(2) === 'medicos'){
 								if(!strlen($this->uri->segment(3))) $this->load->view('citas/medicos');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-medico');
+								elseif($this->uri->segment(3) === 'editar') $this->load->view('citas/form-medico-editar');
 							}elseif($this->uri->segment(2) === 'turnos'){
 								if(!strlen($this->uri->segment(3))) $this->load->view('citas/turnos');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('citas/form-turnos');

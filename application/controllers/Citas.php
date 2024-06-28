@@ -174,6 +174,20 @@ class Citas extends CI_Controller
 		);
 		return $this->load->view('main', $data);
 	}
+	public function editarpaciente()
+	{
+		$this->load->model('Citas_model');
+		$tipo = $this->Citas_model->querysqlwhere('idtipodocumento,tipo_documento','tipo_documento',['activo' => 1]);
+		$edo = $this->Citas_model->querysqlwhere('idestadocivil,estado_civil','estado_civil',['activo' => 1]);
+		$dep = $this->General_model->departamentos();
+		
+		$data = array(
+			'tipo' => $tipo,
+			'edo' => $edo,
+			'dep' => $dep,
+		);
+		return $this->load->view('main', $data);
+	}
 	public function regpaciente()
 	{
 		$this->load->model('Citas_model');
@@ -181,35 +195,43 @@ class Citas extends CI_Controller
 		$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>Paciente</b>');
 		$ubigeo = $this->input->post('dep').$this->input->post('pro').$this->input->post('dis');
 		$ubigeo1 = $this->input->post('dep1').$this->input->post('pro1').$this->input->post('dis1');
-		$paciente = $this->Citas_model->querysqlwhere('count(idpaciente) as qty','paciente',['numero_documento' => $this->input->post('doc')]);
 		
-		if(intval($paciente[0]->qty) === 0){
-			$data = array(
-				'idtipodocumento' => $this->input->post('tipo'),
-				'numero_documento' => $this->input->post('doc'),
-				//'avatar' => $this->input->post(''),
-				'apellidos' => $this->input->post('apellidos'),
-				'nombres' => $this->input->post('nombres'),
-				'fecnac' => $this->input->post('fechanac'),
-				'sexo' => $this->input->post('sexo'),
-				'idestadocivil' => $this->input->post('edo'),
-				'ubigeo_nacimiento' => $ubigeo,
-				'domicilio' => $this->input->post('direccion'),
-				'ubigeo_domicilio' => $ubigeo1,
-				'idusuario_registro' => $this->usuario->idusuario,
-				'fecha_registro' => date('Y-m-d H:i:s'),
-				'celular' => $this->input->post('celular'),
-				//'celuar_mensaje' => $this->input->post(''),
-				'correo' => $this->input->post('correo'),
-				'observaciones' => $this->input->post('obs'),
-			);
-			if($this->Citas_model->registrar('paciente', $data)){
-				$this->session->set_flashdata('claseMsg', 'alert-success');
-				$this->session->set_flashdata('flashMessage', '<b>Paciente</b> registrado exitosamente');
+		$data = array(
+			'idtipodocumento' => $this->input->post('tipo'),
+			'numero_documento' => $this->input->post('doc'),
+			//'avatar' => $this->input->post(''),
+			'apellidos' => $this->input->post('apellidos'),
+			'nombres' => $this->input->post('nombres'),
+			'fecnac' => $this->input->post('fechanac'),
+			'sexo' => $this->input->post('sexo'),
+			'idestadocivil' => $this->input->post('edo'),
+			'ubigeo_nacimiento' => $ubigeo,
+			'domicilio' => $this->input->post('direccion'),
+			'ubigeo_domicilio' => $ubigeo1,
+			'idusuario_registro' => $this->usuario->idusuario,
+			'fecha_registro' => date('Y-m-d H:i:s'),
+			'celular' => $this->input->post('celular'),
+			//'celuar_mensaje' => $this->input->post(''),
+			'correo' => $this->input->post('correo'),
+			'observaciones' => $this->input->post('obs'),
+		);
+		
+		$paciente = $this->Citas_model->querysqlwhere('count(idpaciente) as qty','paciente',['numero_documento' => $this->input->post('doc')]);
+		if($this->input->post('tipo_registro') === 'registrar'){
+			if(intval($paciente[0]->qty) === 0){
+				if($this->Citas_model->registrar('paciente', $data)){
+					$this->session->set_flashdata('claseMsg', 'alert-success');
+					$this->session->set_flashdata('flashMessage', '<b>Paciente</b> registrado exitosamente');
+				}
+			}else{
+				$this->session->set_flashdata('claseMsg', 'alert-warning');
+				$this->session->set_flashdata('flashMessage', 'El <b>Paciente</b> ya se encuentra registrado');
 			}
-		}else{
-			$this->session->set_flashdata('claseMsg', 'alert-warning');
-			$this->session->set_flashdata('flashMessage', 'El <b>Paciente</b> ya se encuentra registrado');
+		}elseif($this->input->post('tipo_registro') === 'editar'){
+			if($this->Citas_model->actualizar('paciente', $data, ['idpaciente' => $this->input->post('idpaciente')])){
+				$this->session->set_flashdata('claseMsg', 'alert-success');
+				$this->session->set_flashdata('flashMessage', '<b>Paciente</b> actualizado exitosamente');
+			}
 		}
 		header('location:'.base_url().'citas/pacientes');
 	}
@@ -247,6 +269,27 @@ class Citas extends CI_Controller
 		return $this->load->view('main');
 	}
 	public function formmedico()
+	{
+		$this->load->model('Citas_model');
+		$this->load->model('General_model');
+		$tipo = $this->Citas_model->querysqlwhere('idtipodocumento,tipo_documento','tipo_documento',['activo' => 1]);
+		$edo = $this->Citas_model->querysqlwhere('idestadocivil,estado_civil','estado_civil',['activo' => 1]);
+		$dep = $this->General_model->departamentos();
+		$tipop = $this->Citas_model->querysqlwhere('idtipoprofesional,tipo_profesional','tipo_profesional',['activo' => 1]);
+		$esp = $this->Citas_model->querysqlwhere('idespecialidad,especialidad','especialidad',['activo' => 1]);
+		$user = $this->Citas_model->querysqlwhere('idusuario,usuario,CONCAT(apellidos," ",nombres) as prof','usuarios',['activo' => 1]);
+		
+		$data = array(
+			'tipo' => $tipo,
+			'edo' => $edo,
+			'dep' => $dep,
+			'tipop' => $tipop,
+			'esp' => $esp,
+			'user' => $user,
+		);
+		return $this->load->view('main', $data);
+	}
+	public function editarmedico()
 	{
 		$this->load->model('Citas_model');
 		$this->load->model('General_model');

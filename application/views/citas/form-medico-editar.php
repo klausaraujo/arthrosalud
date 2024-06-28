@@ -1,6 +1,6 @@
 					<div class="col-12 iq-card my-3">
 						<div class="iq-card-header d-flex justify-content-between">
-							<div class="iq-header-title"><h4>Registro de Profesional</h4></div>
+							<div class="iq-header-title"><h4>Edici&oacute;n de Profesional</h4></div>
 						</div>
 						<div class="iq-card-body">
 						<div class="row justify-content-center">
@@ -10,7 +10,8 @@
 						</div>
 						<form method="post" id="form_medico" action="<?=base_url()?>citas/medicos/regmedico" enctype="multipart/form-data"
 								class="needs-validation form-horizontal" novalidate="">
-							<input type="hidden" name="tiporegistro" value="registrar" />
+							<input type="hidden" name="tiporegistro" value="editar" />
+							<input type="hidden" name="idprofesional" value="<?=$this->input->get('id')?>" />
 							<div class="form-row">
 								<div class="col-12 my-1">
 									<div class="row">
@@ -19,7 +20,7 @@
 												<label class="control-label col-md-6 col-lg-6 align-self-center mb-0" for="tipo">Tipo Documento:</label>
 												<div class="col-md-4 col-lg-4">
 													<div class="row">
-														<select class="form-control form-control-sm tpdoc" name="tipo" id="tipo" required="" >
+														<select class="form-control form-control-sm tpdoc" name="tipo" id="tipo" required="" readonly >
 													<?
 														foreach($tipo as $row):	?>
 															<option value="<?=$row->idtipodocumento;?>"><?=$row->tipo_documento;?></option>

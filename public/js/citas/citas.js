@@ -65,10 +65,10 @@ $(document).ready(function (){
 						let btnAccion =
 						'<div class="btn-group">' +
 						/* Boton de edicion */
-						'<a title="Editar Medico" '+(data.activo === '1' && btnEdit? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEdit)?
+						'<a title="Editar Medico" '+(data.activo === '1' && btnEditarMedico? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditarMedico)?
 							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
 						/* Boton anular proveedor */
-						'<a title="Anular Medico" '+(data.activo === '1' && btnAnular? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnular)
+						'<a title="Anular Medico" '+(data.activo === '1' && btnAnularMedico? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnularMedico)
 							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
 						return btnAccion;
 					}
@@ -128,15 +128,15 @@ $(document).ready(function (){
 					orderable: false,
 					render: function(data){
 						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
-						let hrefEdit = 'href="'+base_url+'citas/pacientes/editar?id='+data.idprofesional+'"';
-						let hrefAnular = 'href="'+base_url+'citas/pacientes/anular?id='+data.idprofesional+'"';
+						let hrefEdit = 'href="'+base_url+'citas/pacientes/editar?id='+data.idpaciente+'"';
+						let hrefAnular = 'href="'+base_url+'citas/pacientes/anular?id='+data.idpaciente+'"';
 						let btnAccion =
 						'<div class="btn-group">' +
 						/* Boton de edicion */
-						'<a title="Editar Medico" '+(data.activo === '1' && btnEdit? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEdit)?
+						'<a title="Editar Medico" '+(data.activo === '1' && btnEditPaciente? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditPaciente)?
 							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
 						/* Boton anular proveedor */
-						'<a title="Anular Medico" '+(data.activo === '1' && btnAnular? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnular)
+						'<a title="Anular Medico" '+(data.activo === '1' && btnAnularPaciente? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnularPaciente)
 							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
 						return btnAccion;
 					}
@@ -648,12 +648,14 @@ $('#tablaCitas').on('click', function(e){
 	}
 });
 $('#tablaPacientes').on('click','tr',function(){
-	let data = tablaPacientes.row( this ).data();
-	$('#idpaciente').val(data[4]);
-	$('#paciente').val(data[2]+' '+data[3]);
-	if(segmento2 === 'historia' || segmento2 === 'adicional'){
-		$('#modalAsigna').modal('hide');
-		$('.msg').html('');
+	if(segmento === 'citas' && (segmento2 == '' || segmento2 === 'citasprof' || segmento2 === 'historia' || segmento2 === 'adicional')){
+		let data = tablaPacientes.row( this ).data();
+		$('#idpaciente').val(data[4]);
+		$('#paciente').val(data[2]+' '+data[3]);
+		if(segmento2 === 'historia' || segmento2 === 'adicional'){
+			$('#modalAsigna').modal('hide');
+			$('.msg').html('');
+		}
 	}
 });
 $('#modalAsigna').on('hidden.bs.modal',function(e){

@@ -116,6 +116,7 @@ $route['logistica/servicios/anular'] = 'logistica/anular';
 /* Modulo de citas */
 $route['citas/pacientes'] = 'citas/pacientes';
 $route['citas/pacientes/nuevo'] = 'citas/formpaciente';
+$route['citas/pacientes/editar'] = 'citas/editarpaciente';
 $route['citas/pacientes/lista'] = 'citas/listapacientes';
 $route['citas/pacientes/regpaciente'] = 'citas/regpaciente';
 $route['citas/consultorios'] = 'citas/consultorios';
@@ -124,6 +125,7 @@ $route['citas/consultorios/lista'] = 'citas/listaconsultorios';
 $route['citas/consultorios/regconsultorio'] = 'citas/regconsultorio';
 $route['citas/medicos'] = 'citas/medicos';
 $route['citas/medicos/nuevo'] = 'citas/formmedico';
+$route['citas/medicos/editar'] = 'citas/editarmedico';
 $route['citas/medicos/lista'] = 'citas/listamedicos';
 $route['citas/medicos/regmedico'] = 'citas/regmedico';
 $route['citas/turnos'] = 'citas/turnos';
