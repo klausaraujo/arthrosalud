@@ -176,15 +176,33 @@ class Citas extends CI_Controller
 	}
 	public function editarpaciente()
 	{
+		$prov = null; $dis = null; $prov1 = null; $dis1 = null;
 		$this->load->model('Citas_model');
+		$this->load->model('General_model');
 		$tipo = $this->Citas_model->querysqlwhere('idtipodocumento,tipo_documento','tipo_documento',['activo' => 1]);
 		$edo = $this->Citas_model->querysqlwhere('idestadocivil,estado_civil','estado_civil',['activo' => 1]);
 		$dep = $this->General_model->departamentos();
+		$paciente = $this->Citas_model->queryindividual('*','paciente',['idpaciente' => $this->input->get('id')]);
+		
+		$prov = $this->General_model->provincias(['cod_dep' => substr($paciente->ubigeo_nacimiento,0,2)]);
+		$dis = $this->General_model->distritos(['cod_dep' => substr($paciente->ubigeo_nacimiento,0,2), 'cod_pro' => substr($paciente->ubigeo_nacimiento,2,2)]);
+		
+		if($paciente->ubigeo_domicilio !== $paciente->ubigeo_nacimiento){
+			$prov1 = $this->General_model->provincias(['cod_dep' => substr($paciente->ubigeo_domicilio,0,2)]);
+			$dis1 = $this->General_model->distritos(['cod_dep' => substr($paciente->ubigeo_domicilio,0,2), 'cod_pro' => substr($paciente->ubigeo_domicilio,2,2)]);
+		}else{
+			$prov1 = $prov; $dis1 = $dis;
+		}
 		
 		$data = array(
 			'tipo' => $tipo,
 			'edo' => $edo,
 			'dep' => $dep,
+			'paciente' => $paciente,
+			'provincias' => $prov,
+			'distritos' => $dis,
+			'provincias1' => $prov1,
+			'distritos1' => $dis1,			
 		);
 		return $this->load->view('main', $data);
 	}
@@ -217,7 +235,7 @@ class Citas extends CI_Controller
 		);
 		
 		$paciente = $this->Citas_model->querysqlwhere('count(idpaciente) as qty','paciente',['numero_documento' => $this->input->post('doc')]);
-		if($this->input->post('tipo_registro') === 'registrar'){
+		if($this->input->post('tiporegistro') === 'registrar'){
 			if(intval($paciente[0]->qty) === 0){
 				if($this->Citas_model->registrar('paciente', $data)){
 					$this->session->set_flashdata('claseMsg', 'alert-success');
@@ -227,7 +245,13 @@ class Citas extends CI_Controller
 				$this->session->set_flashdata('claseMsg', 'alert-warning');
 				$this->session->set_flashdata('flashMessage', 'El <b>Paciente</b> ya se encuentra registrado');
 			}
-		}elseif($this->input->post('tipo_registro') === 'editar'){
+		}elseif($this->input->post('tiporegistro') === 'editar'){
+			unset($data['idtipodocumento']);
+			unset($data['numero_documento']);
+			unset($data['apellidos']);
+			unset($data['nombres']);
+			unset($data['fecnac']);
+			unset($data['sexo']);
 			if($this->Citas_model->actualizar('paciente', $data, ['idpaciente' => $this->input->post('idpaciente')])){
 				$this->session->set_flashdata('claseMsg', 'alert-success');
 				$this->session->set_flashdata('flashMessage', '<b>Paciente</b> actualizado exitosamente');
@@ -247,20 +271,35 @@ class Citas extends CI_Controller
 		$consultorios = $tipo = $this->Citas_model->querysqlwhere('*','empresa',['activo' => 1]);
 		return $this->load->view('main', ['cons' => $consultorios]);
 	}
+	public function editarconsultorio()
+	{
+		$this->load->model('Citas_model');
+		$empresas = $tipo = $this->Citas_model->querysqlwhere('*','empresa',['activo' => 1]);
+		$consultorio = $tipo = $this->Citas_model->queryindividual('*','consultorio',['idconsultorio' => $this->input->get('id')]);
+		return $this->load->view('main', ['cons' => $consultorio, 'empresas' => $empresas]);
+	}
 	public function regconsultorio()
 	{
 		$this->load->model('Citas_model');
 		$this->session->set_flashdata('claseMsg', 'alert-danger');
-		$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>Consultorio</b>');
 		
 		$data = array(
 			'idempresa' => $this->input->post('idempresa'),
 			'consultorio' => $this->input->post('consultorio'),
 			'observaciones' => $this->input->post('obs'),
 		);
-		if($this->Citas_model->registrar('consultorio', $data)){
-			$this->session->set_flashdata('claseMsg', 'alert-success');
-			$this->session->set_flashdata('flashMessage', '<b>Consultorio</b> registrado exitosamente');
+		if($this->input->post('tiporegistro') === 'registrar'){
+			$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>Consultorio</b>');
+			if($this->Citas_model->registrar('consultorio', $data)){
+				$this->session->set_flashdata('claseMsg', 'alert-success');
+				$this->session->set_flashdata('flashMessage', '<b>Consultorio</b> registrado exitosamente');
+			}
+		}elseif($this->input->post('tiporegistro') === 'editar'){
+			$this->session->set_flashdata('flashMessage', 'No se pudo actualizar el <b>Consultorio</b>');
+			if($this->Citas_model->actualizar('consultorio', $data, ['idconsultorio' => $this->input->post('idconsultorio')])){
+				$this->session->set_flashdata('claseMsg', 'alert-success');
+				$this->session->set_flashdata('flashMessage', '<b>Consultorio</b> actualizado exitosamente');
+			}
 		}
 		header('location:'.base_url().'citas/consultorios');
 	}
@@ -291,6 +330,7 @@ class Citas extends CI_Controller
 	}
 	public function editarmedico()
 	{
+		$prov = null; $dis = null; $prov1 = null; $dis1 = null;
 		$this->load->model('Citas_model');
 		$this->load->model('General_model');
 		$tipo = $this->Citas_model->querysqlwhere('idtipodocumento,tipo_documento','tipo_documento',['activo' => 1]);
@@ -300,6 +340,18 @@ class Citas extends CI_Controller
 		$esp = $this->Citas_model->querysqlwhere('idespecialidad,especialidad','especialidad',['activo' => 1]);
 		$user = $this->Citas_model->querysqlwhere('idusuario,usuario,CONCAT(apellidos," ",nombres) as prof','usuarios',['activo' => 1]);
 		
+		$profesional = $this->Citas_model->queryindividual('*','profesional',['idprofesional' => $this->input->get('id')]);
+		
+		$prov = $this->General_model->provincias(['cod_dep' => substr($profesional->ubigeo_nacimiento,0,2)]);
+		$dis = $this->General_model->distritos(['cod_dep' => substr($profesional->ubigeo_nacimiento,0,2), 'cod_pro' => substr($profesional->ubigeo_nacimiento,2,2)]);
+		
+		if($profesional->ubigeo_domicilio !== $profesional->ubigeo_nacimiento){
+			$prov1 = $this->General_model->provincias(['cod_dep' => substr($profesional->ubigeo_domicilio,0,2)]);
+			$dis1 = $this->General_model->distritos(['cod_dep' => substr($profesional->ubigeo_domicilio,0,2), 'cod_pro' => substr($profesional->ubigeo_domicilio,2,2)]);
+		}else{
+			$prov1 = $prov; $dis1 = $dis;
+		}
+		
 		$data = array(
 			'tipo' => $tipo,
 			'edo' => $edo,
@@ -307,7 +359,13 @@ class Citas extends CI_Controller
 			'tipop' => $tipop,
 			'esp' => $esp,
 			'user' => $user,
+			'profesional' => $profesional,
+			'provincias' => $prov,
+			'distritos' => $dis,
+			'provincias1' => $prov1,
+			'distritos1' => $dis1,			
 		);
+		
 		return $this->load->view('main', $data);
 	}
 	public function regmedico()
@@ -317,40 +375,54 @@ class Citas extends CI_Controller
 		$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>M&eacute;dico</b>');
 		$ubigeo = $this->input->post('dep').$this->input->post('pro').$this->input->post('dis');
 		$ubigeo1 = $this->input->post('dep1').$this->input->post('pro1').$this->input->post('dis1');
-		$medico = $this->Citas_model->querysqlwhere('count(idprofesional) as qty','profesional',['numero_documento' => $this->input->post('doc')]);
 		
-		if(intval($medico[0]->qty) === 0){
-			$data = array(
-				'idtipodocumento' => $this->input->post('tipo'),
-				'numero_documento' => $this->input->post('doc'),
-				//'avatar' => $this->input->post(''),
-				'apellidos' => $this->input->post('apellidos'),
-				'nombres' => $this->input->post('nombres'),
-				'fecnac' => $this->input->post('fechanac'),
-				'sexo' => $this->input->post('sexo'),
-				'idestadocivil' => $this->input->post('edo'),
-				'ubigeo_nacimiento' => $ubigeo,
-				'domicilio' => $this->input->post('direccion'),
-				'ubigeo_domicilio' => $ubigeo1,
-				'idtipoprofesional' => $this->input->post('tipoprof'),
-				'colegiatura' => $this->input->post('colegiatura'),
-				'idespecialidad' => $this->input->post('especialidad'),
-				'rne' => $this->input->post('rne'),
-				'idusuario_sistema' => $this->input->post('idusuario'),
-				'idusuario_registro' => $this->usuario->idusuario,
-				'fecha_registro' => date('Y-m-d H:i:s'),
-				'celular' => $this->input->post('celular'),
-				//'celuar_mensaje' => $this->input->post(''),
-				'correo' => $this->input->post('correo'),
-				'observaciones' => $this->input->post('obs'),
-			);
-			if($this->Citas_model->registrar('profesional', $data)){
-				$this->session->set_flashdata('claseMsg', 'alert-success');
-				$this->session->set_flashdata('flashMessage', '<b>M&eacute;dico</b> registrado exitosamente');
+		$data = array(
+			'idtipodocumento' => $this->input->post('tipo'),
+			'numero_documento' => $this->input->post('doc'),
+			//'avatar' => $this->input->post(''),
+			'apellidos' => $this->input->post('apellidos'),
+			'nombres' => $this->input->post('nombres'),
+			'fecnac' => $this->input->post('fechanac'),
+			'sexo' => $this->input->post('sexo'),
+			'idestadocivil' => $this->input->post('edo'),
+			'ubigeo_nacimiento' => $ubigeo,
+			'domicilio' => $this->input->post('direccion'),
+			'ubigeo_domicilio' => $ubigeo1,
+			'idtipoprofesional' => $this->input->post('tipoprof'),
+			'colegiatura' => $this->input->post('colegiatura'),
+			'idespecialidad' => $this->input->post('especialidad'),
+			'rne' => $this->input->post('rne'),
+			'idusuario_sistema' => $this->input->post('idusuario'),
+			'idusuario_registro' => $this->usuario->idusuario,
+			'fecha_registro' => date('Y-m-d H:i:s'),
+			'celular' => $this->input->post('celular'),
+			//'celuar_mensaje' => $this->input->post(''),
+			'correo' => $this->input->post('correo'),
+			'observaciones' => $this->input->post('obs'),
+		);
+		if($this->input->post('tiporegistro') === 'registrar'){
+			$medico = $this->Citas_model->querysqlwhere('count(idprofesional) as qty','profesional',['numero_documento' => $this->input->post('doc')]);
+			
+			if(intval($medico[0]->qty) === 0){
+				if($this->Citas_model->registrar('profesional', $data)){
+					$this->session->set_flashdata('claseMsg', 'alert-success');
+					$this->session->set_flashdata('flashMessage', '<b>M&eacute;dico</b> registrado exitosamente');
+				}
+			}else{
+				$this->session->set_flashdata('claseMsg', 'alert-warning');
+				$this->session->set_flashdata('flashMessage', 'El <b>M&eacute;dico</b> ya se encuentra registrado');
 			}
-		}else{
-			$this->session->set_flashdata('claseMsg', 'alert-warning');
-			$this->session->set_flashdata('flashMessage', 'El <b>M&eacute;dico</b> ya se encuentra registrado');
+		}elseif($this->input->post('tiporegistro') === 'editar'){
+			unset($data['idtipodocumento']);
+			unset($data['numero_documento']);
+			unset($data['apellidos']);
+			unset($data['nombres']);
+			unset($data['fecnac']);
+			unset($data['sexo']);
+			if($this->Citas_model->actualizar('profesional', $data, ['idprofesional' => $this->input->post('idprofesional')])){
+				$this->session->set_flashdata('claseMsg', 'alert-success');
+				$this->session->set_flashdata('flashMessage', '<b>M&eacute;dico</b> actualizado exitosamente');
+			}
 		}
 		header('location:'.base_url().'citas/medicos');
 	}
@@ -667,7 +739,7 @@ class Citas extends CI_Controller
 			exit;
 		}
 		
-		$valida = $this->Citas_model->queryindividual('idpaciente','historia_clinica',['idpaciente' => $this->input->post('idpaciente')]);
+		$valida = $this->Citas_model->queryindividual('idpaciente','historia_clinica',['idpaciente' => $this->input->post('idpaciente'),'activo' => 1]);
 		if(empty($valida)){
 			$this->session->set_flashdata('claseMsg', 'alert-danger');
 			$this->session->set_flashdata('flashMessage', 'No se pudo registrar la <b>Historia Cl&iacute;nica</b>');
@@ -903,10 +975,16 @@ class Citas extends CI_Controller
 		$tpproc = $this->Citas_model->querysqlwhere('idtipoprocedimiento,tipo_procedimiento','tipo_procedimiento',['activo' => 1]);
 		$this->load->view('main',['tipo' => $tpproc]);
 	}
+	public function editarprocedimiento()
+	{
+		$this->load->model('Citas_model');
+		$tpproc = $this->Citas_model->querysqlwhere('idtipoprocedimiento,tipo_procedimiento','tipo_procedimiento',['activo' => 1]);
+		$proc = $this->Citas_model->queryindividual('*','procedimiento',['idprocedimiento' => $this->input->get('id')]);
+		$this->load->view('main',['tipo' => $tpproc, 'proced' => $proc]);
+	}
 	public function rprocedimientos()
 	{
 		$this->load->model('Citas_model');
-		$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>Procedimiento</b>');
 		$this->session->set_flashdata('claseMsg', 'alert-danger');
 		
 		$data = array(
@@ -914,13 +992,47 @@ class Citas extends CI_Controller
 			'procedimiento' => $this->input->post('procedimiento'),
 			'tarifa_base' => $this->input->post('tarifa'),
 		);
-		
-		if($id = $this->Citas_model->registrar('procedimiento', $data)){
-			$this->Citas_model->actualizar('procedimiento',['correlativo' => 'PROC'.sprintf('%04s',$id)],['idprocedimiento' => $id]);
-			$this->session->set_flashdata('flashMessage', '<b>Procedimiento</b> Registrado');
-			$this->session->set_flashdata('claseMsg', 'alert-success');
+		if($this->input->post('tiporegistro') === 'registrar'){
+			$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>Procedimiento</b>');
+			if($id = $this->Citas_model->registrar('procedimiento', $data)){
+				$this->Citas_model->actualizar('procedimiento',['correlativo' => 'PROC'.sprintf('%04s',$id)],['idprocedimiento' => $id]);
+				$this->session->set_flashdata('flashMessage', '<b>Procedimiento</b> Registrado');
+				$this->session->set_flashdata('claseMsg', 'alert-success');
+			}
+		}elseif($this->input->post('tiporegistro') === 'editar'){
+			$this->session->set_flashdata('flashMessage', 'No se pudo actualizar el <b>Procedimiento</b>');
+			if($this->Citas_model->actualizar('procedimiento', $data, ['idprocedimiento' => $this->input->post('idprocedimiento')])){
+				$this->session->set_flashdata('flashMessage', '<b>Procedimiento</b> Actualizado');
+				$this->session->set_flashdata('claseMsg', 'alert-success');
+			}
 		}
 		header('location:'.base_url().'citas/procedimientos');
+	}
+	public function anular()
+	{
+		$this->load->model('Citas_model');
+		$seg = $this->uri->segment(2); $valida = false; $msg = 'No se pudo anular';
+		if($seg === 'medicos'){
+			$valida = $this->Citas_model->actualizar('profesional',['activo' => 0],['idprofesional' => $this->input->get('id')]);
+			if($valida) $msg = 'Profesional Anulado';
+		}elseif($seg === 'pacientes'){
+			$valida = $this->Citas_model->actualizar('paciente',['activo' => 0],['idpaciente' => $this->input->get('id')]);
+			if($valida) $msg = 'Paciente Anulado';
+		}elseif($seg === 'historia'){
+			$valida = $this->Citas_model->actualizar('historia_clinica',['activo' => 0],['idhistoria' => $this->input->get('id')]);
+			if($valida) $msg = 'Historia Anulada';
+		}elseif($seg === 'consultorios'){
+			$valida = $this->Citas_model->actualizar('consultorio',['activo' => 0],['idconsultorio' => $this->input->get('id')]);
+			if($valida) $msg = 'Consultorio Anulado';
+		}elseif($seg === 'turnos'){
+			/*$valida = $this->Citas_model->actualizar('consultorio',['activo' => 0],['idconsultorio' => $this->input->get('id')]);
+			if($valida) $msg = 'Turno Anulado';*/
+		}elseif($seg === 'procedimientos'){
+			$valida = $this->Citas_model->actualizar('procedimiento',['activo' => 0],['idprocedimiento' => $this->input->get('id')]);
+			if($valida) $msg = 'Procedimiento Anulado';
+		}
+		
+		echo json_encode(['msg' => $msg]);
 	}
 	/*public function verhistoria()
 	{

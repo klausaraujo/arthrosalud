@@ -36,7 +36,13 @@
 </head>
 
 <body>
-	<?	date_default_timezone_set('America/Lima'); ?>
+	<?
+		date_default_timezone_set('America/Lima');
+		$fArray = explode('/',substr($paciente->fecnac,0,10));
+		$fec = new DateTime($fArray[2].'-'.$fArray[1].'-'.$fArray[0]);
+		$hoy = new DateTime();
+		$edad = $hoy->diff($fec);
+	?>
 	<div id="body">
 		<div id="content">
 		<?
@@ -47,10 +53,10 @@
 				<table style="width:100%;padding-bottom:3mm;line-height:0.5em">
 					<tr>
 						<td style="width:1.2in"><div style="text-align:left"><img src="<?=$_SERVER['DOCUMENT_ROOT']?>/arthrosalud/public/images/logo-white.png" style="width:100%" /></div></td>
-						<td align="right" style="width:2in">
+						<td align="right" style="width:3in">
 							<div style="text-align:right">
-								<h1 style="color:#094293">Dr. Jiron Cuzco Manchai</h1>
-								<cite style="color:#808080;font-size:1.5em">Dermat&oacute;logo</cite>
+								<h2 style="color:#094293">Dr. <?=$profesional->nombres.' '.$profesional->apellidos?></h2>
+								<cite style="color:#808080;font-size:1.2em"><?=$profesional->especialidad?></cite>
 							</div>
 						</td>
 					</tr>
@@ -60,35 +66,35 @@
 					<tbody>
 						<tr>
 							<td colspan="2" style="color:#808080">Nombre Paciente: </td>
-							<td colspan="5" style="font-weight:bold;"></td>
+							<td colspan="5" style="font-weight:bold;"><?=$paciente->nombres.' '.$paciente->apellidos?></td>
 						</tr>
 						<tr>
 							<td style="color:#808080">Direcci&oacute;n: </td>
-							<td colspan="5" style="font-weight:bold;"></td>
+							<td colspan="5" style="font-weight:bold;"><?=$paciente->domicilio?></td>
 						</tr>
 						<tr>
 							<td style="width:2cm;color:#808080">Tipo Doc.: </td>
-							<td style="width:1.5cm;font-weight:bold">D.N.I.</td>
+							<td style="width:1.5cm;font-weight:bold"><?=$paciente->tipo_documento?></td>
 							<td style="width:1cm;color:#808080">Nro.: </td>
-							<td style="width:2cm;font-weight:bold">12345678</td>
+							<td style="width:2cm;font-weight:bold"><?=$paciente->numero_documento?></td>
 							<td style="width:1cm;color:#808080">Edad: </td>
-							<td style="width:2cm;font-weight:bold">25 A&ntilde;os</td>
+							<td style="width:2cm;font-weight:bold"><?=$edad->y.' a&ntilde;os, '.$edad->m.' mes(es)'?></td>
 						</tr>
 						<tr>
 							<td colspan="2" style="color:#808080">Diagn&oacute;stico: </td>
-							<td colspan="5" style="font-weight:bold;"></td>
+							<td colspan="5" style="font-weight:bold;"><?=$receta->observaciones?></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
-			<table class="atenciones" style="margin-top:5mm" cellspacing="0" align="center">
+			<!--<table class="atenciones" style="margin-top:5mm" cellspacing="0" align="center">
 				<tr style="background:#d8d5d5;">
 					<td colspan="12"><strong style="margin-right:9cm">REGISTRO DE ATENCIONES DEL PACIENTE</strong>
 					<span style="text-align:right;padding:0"><strong>Fecha de Atenci&oacute;n:&nbsp;&nbsp;</strong>Fecha</span></td>
 				</tr>
 				<tbody>
 				</tbody>
-			</table>
+			</table>-->
 		<?
 			}
 		?>

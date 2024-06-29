@@ -43,4 +43,13 @@ class General_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
+	public function ubigeo($where)
+    {
+		$this->db->distinct();
+        $this->db->select('*');
+        $this->db->from('ubigeo');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->row() : array();
+    }
 }

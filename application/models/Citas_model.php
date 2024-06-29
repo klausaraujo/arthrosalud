@@ -16,6 +16,16 @@ class Citas_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
+	public function paciente($where)
+	{
+		$this->db->select('p.*,DATE_FORMAT(p.fecnac,"%d/%m/%Y") as fecnac,td.tipo_documento,e.estado_civil');
+		$this->db->from('paciente p');
+		$this->db->join('tipo_documento td','p.idtipodocumento=td.idtipodocumento');
+		$this->db->join('estado_civil e','p.idestadocivil=e.idestadocivil');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->row() : array();
+	}
 	public function listaturnos($where)
 	{
 		$this->db->select('t.*,c.consultorio,d.departamento,CONCAT(p.apellidos," ",p.nombres) as nprof,m.mes');
@@ -40,6 +50,17 @@ class Citas_model extends CI_Model
 		$this->db->order_by('p.idprofesional','DESC');
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function medico($where)
+	{
+		$this->db->select('p.*,td.tipo_documento,tp.tipo_profesional,e.especialidad');
+		$this->db->from('profesional p');
+		$this->db->join('tipo_documento td','p.idtipodocumento=td.idtipodocumento');
+		$this->db->join('tipo_profesional tp','p.idtipoprofesional=tp.idtipoprofesional');
+		$this->db->join('especialidad e','p.idespecialidad=e.idespecialidad');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->row() : array();
 	}
 	public function listaprofdash()
 	{

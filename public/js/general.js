@@ -163,7 +163,13 @@ $('table').on('click','tr,a',function(event){
 					else if(segmento2 === 'proveedores') $('#tablaProveedores').DataTable().ajax.reload();
 					else if(segmento2 === 'bienes') $('#tablaBienes').DataTable().ajax.reload();
 					else if(segmento2 === 'servicios') $('#tablaServicios').DataTable().ajax.reload();
-					
+					else if(segmento2 === 'medicos') $('#tablaMedicos').DataTable().ajax.reload();
+					else if(segmento2 === 'pacientes') $('#tablaPacientes').DataTable().ajax.reload();
+					else if(segmento2 === 'historia') $('#tablaHistoria').DataTable().ajax.reload();
+					else if(segmento2 === 'consultorios') $('#tablaConsultorios').DataTable().ajax.reload();
+					else if(segmento2 === 'turnos') $('#tablaTurnos').DataTable().ajax.reload();
+					else if(segmento2 === 'procedimientos') $('#tablaProcedimientos').DataTable().ajax.reload();
+					$('.msg').show();
 					$('.msg').html(data.msg);
 					setTimeout(function(){ $('.msg').hide('slow'); }, 3000);
 				}

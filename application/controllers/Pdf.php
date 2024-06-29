@@ -63,7 +63,10 @@ class Pdf extends CI_Controller
 	public function recetapdf()
 	{
 		$this->load->model('Citas_model');
-		$html = $this->load->view('citas/receta-pdf', null, true);
+		$receta = $this->Citas_model->queryindividual('*','receta_medica',['idrecetamedica' => $this->input->get('id')]);
+		$paciente = $this->Citas_model->paciente(['idpaciente' => $receta->idpaciente]);
+		$profesional = $this->Citas_model->medico(['idprofesional' => $receta->idprofesional]);
+		$html = $this->load->view('citas/receta-pdf', ['paciente' => $paciente,'profesional' => $profesional,'receta' => $receta], true);
 		$this->options->set('defaultPaperOrientation', 'landscape');
 		$this->viewpdf($html, 0);
 	}

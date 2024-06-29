@@ -102,10 +102,10 @@ $(document).ready(function (){
 						let btnAccion =
 						'<div class="btn-group">' +
 						/* Boton de edicion */
-						'<a title="Editar Consultorio" '+(data.activo === '1' && btnEdit? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEdit)?
+						'<a title="Editar Consultorio" '+(data.activo === '1' && btnEditarCons? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditarCons)?
 							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
 						/* Boton anular proveedor */
-						'<a title="Anular Consultorio" '+(data.activo === '1' && btnAnular? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnular)
+						'<a title="Anular Consultorio" '+(data.activo === '1' && btnAnularCons? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnularCons)
 							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
 						return btnAccion;
 					}
@@ -443,16 +443,20 @@ $(document).ready(function (){
 					orderable: false,
 					render: function(data){
 						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
-						let hrefAtencion = 'href="'+base_url+'citas/procedimientos/regdetalle?id='+data.idprocedimiento+'"';
+						let hrefEditar = 'href="'+base_url+'citas/procedimientos/editar?id='+data.idprocedimiento+'"';
 						let hrefAnular = 'href="'+base_url+'citas/procedimientos/anular?id='+data.idprocedimiento+'"';
+						let hrefFormula = 'href="'+base_url+'citas/procedimientos/formula?id='+data.idprocedimiento+'"';
 						let btnAccion =
 						'<div class="btn-group">'+
-						/* Boton de Registro de detalle */
-						'<a title="Registrar Atención" '+(btnRegAtencion? hrefAtencion:'')+' class="bg-light btnTable '+(!btnRegAtencion?'disabled':'')+
-							' atencion" '+style+'><img src="'+base_url+'public/images/iconos/result_ico.png" width="18" style="max-height:20px"></a>'+
-						/* Boton anular Historia */
-						'<a title="Desasignar" '+(btnAnulaHistoria? hrefAnular:'')+' class="bg-light btnTable '+(!btnAnulaHistoria?'disabled':'')+
-							' desasignar" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
+						/* Boton de edicion */
+						'<a title="Editar Procedimiento" '+(data.activo === '1' && btnEditaProc? hrefEditar:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditaProc)?
+							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
+						/* Boton Asignacion */
+						'<a title="Asignar Fórmula" '+(btnGeneraForm? hrefFormula:'')+' class="bg-light btnTable '+(!btnGeneraForm?'disabled':'')+
+							' formula" '+style+'><img src="'+base_url+'public/images/iconos/result_ico.png" width="18" style="max-height:20px"></a>'+
+						/* Boton anular proveedor */
+						'<a title="Anular Procedimiento" '+(data.activo === '1' && btnAnulaProc? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnulaProc)
+							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
 						return btnAccion;
 					}
 				},
@@ -981,7 +985,7 @@ $('#regreceta').bind('click', function(){
 				$('#idrecetamedica').val(data.idreceta);
 				$('.rspatencion').html(data.msg);
 				if(parseInt(data.status) === 200){
-					$('#pdfreceta').attr('href', base_url + 'citas/historia/imprimereceta?receta' + data.idreceta);
+					$('#pdfreceta').attr('href', base_url + 'citas/historia/imprimereceta?id=' + data.idreceta);
 					$('#pdfreceta').removeClass('d-none');
 				}
 				setTimeout(function(){ $('.rspatencion').hide('slow'); }, 1500);
