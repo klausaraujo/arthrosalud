@@ -88,13 +88,13 @@
 					<?
 						foreach($detalle as $row):
 					?>
-					<tr class="odd_row"><td style="text-align:center"><?=$row->descripcion?></td><td style="text-align:center"><?=$row->cantidad?></td>
-						<td style="text-align:center"><?=$row->indicaciones?></td></tr>
+					<tr class="odd_row"><td><?=$row->descripcion?></td><td style="text-align:center"><?=$row->cantidad?></td>
+						<td style="text-align:justify"><?=$row->indicaciones?></td></tr>
 					<?
 						endforeach;
 					?>
 				</table>
-				<div style="position:absolute;bottom:3cm;border-bottom:1px solid #cfcfcf;width:3cm;left:0.25in"></div>
+				<div style="position:absolute;bottom:3cm;border-bottom:1px solid #cfcfcf;width:3cm;left:0.25in;font-size:1.3em;text-align:center"><?=date('d-m-Y')?></div>
 				<div style="position:absolute;bottom:2.5cm; width:3cm;left:0.25in;text-align:center;font-size:1.3em">FECHA</div>
 				<div style="position:absolute;bottom:3cm;border-bottom:1px solid #cfcfcf;width:3cm;right:0.25in"></div>
 				<div style="position:absolute;bottom:2.5cm; width:3cm;right:0.25in;text-align:center;font-size:1.3em">FIRMA</div>
