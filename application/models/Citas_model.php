@@ -224,6 +224,15 @@ class Citas_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
+	public function detallereceta($where)
+	{
+		$this->db->select('rmd.*,a.descripcion');
+		$this->db->from('receta_medica_detalle rmd');
+		$this->db->join('articulos a','a.idarticulo=rmd.idarticulo');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
 	public function querysqlwhere($q,$t,$where)
 	{
 		$query = $this->db->select($q)->from($t)->where($where)->get();

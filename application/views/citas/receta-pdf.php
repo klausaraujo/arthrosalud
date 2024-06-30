@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Receta M&eacute;dica Nro. <?=sprintf("%'07s",1);?></title>
+	<title>Receta M&eacute;dica Nro. <?=sprintf("%'07s",$receta->numero);?></title>
 	<style>
 		@page { margin: 0.25in }
 		#content {
@@ -13,10 +13,7 @@
 		  background-color: transparent;
 		  border-bottom: 0.9px solid #ddd; /* 0.9 so table borders take precedence */
 		}
-		.even_row td {
-		  background-color: #f6f6f6;
-		  border-bottom: 0.9px solid #ddd;
-		}
+		.even_row td { background-color: #f6f6f6; border-bottom: 0.9px solid #ddd; }
 		table td{ font-size: 12px }
 		table.datos{ 
 			border-collapse:separate;
@@ -28,8 +25,7 @@
 			margin-top: 2em
 		}
 		table.datos td{ padding:0.4em 0 0.4em 0.6em; vertical-align:middle; }
-		.atenciones{ position: absolute; top: 5cm; width: 4.8in }
-		.atenciones td{ border:1px solid #878282; border-collapse: collapse; padding:0.4em 0 0.4em 0.6em; vertical-align:middle }
+		.atenciones td{ border-collapse: collapse; font-size: 1.1em; padding:0.8em 0 0 0.4em; }
 		.header1{ position:fixed; width: 5.35in; margin-right: 0.5in }
 		.header2{ left: 5.85in; position:fixed; width: 5.35in; margin-right: 0.5in }
 	</style>
@@ -86,6 +82,22 @@
 						</tr>
 					</tbody>
 				</table>
+				<table align="center" style="margin-top:0.7cm" class="atenciones" cellspacing="0">
+					<tr><th style="width:2cm;font-size:1.4em;text-align:center">Articulo</th><th style="width:2cm;font-size:1.4em;text-align:center">Cantidad</th>
+						<th style="width:6cm;font-size:1.4em;text-align:center">Indicaciones</th></tr>
+					<?
+						foreach($detalle as $row):
+					?>
+					<tr class="odd_row"><td style="text-align:center"><?=$row->descripcion?></td><td style="text-align:center"><?=$row->cantidad?></td>
+						<td style="text-align:center"><?=$row->indicaciones?></td></tr>
+					<?
+						endforeach;
+					?>
+				</table>
+				<div style="position:absolute;bottom:3cm;border-bottom:1px solid #cfcfcf;width:3cm;left:0.25in"></div>
+				<div style="position:absolute;bottom:2.5cm; width:3cm;left:0.25in;text-align:center;font-size:1.3em">FECHA</div>
+				<div style="position:absolute;bottom:3cm;border-bottom:1px solid #cfcfcf;width:3cm;right:0.25in"></div>
+				<div style="position:absolute;bottom:2.5cm; width:3cm;right:0.25in;text-align:center;font-size:1.3em">FIRMA</div>
 			</div>
 			<!--<table class="atenciones" style="margin-top:5mm" cellspacing="0" align="center">
 				<tr style="background:#d8d5d5;">
