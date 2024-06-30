@@ -5,6 +5,10 @@
 	<title>Receta M&eacute;dica Nro. <?=sprintf("%'07s",$receta->numero);?></title>
 	<style>
 		@page { margin: 0.25in }
+		#content {
+		  padding: 0.2em 1% 0.2em 1%;
+		  min-height: 15em;
+		}
 		.odd_row td { background-color: transparent; border-bottom: 0.9px solid #ddd; }
 		.even_row td { background-color: #f6f6f6; border-bottom: 0.9px solid #ddd; }
 		table td{ font-size: 12px }
@@ -44,8 +48,8 @@
 		$hoy = new DateTime();
 		$edad = $hoy->diff($fec);
 	?>
-	<div>
-		<div>
+	<div class="body">
+		<div id="content">
 		<?
 			for($i = 1; $i < 3; $i++){
 				$clase = 'header'.$i;
@@ -96,7 +100,7 @@
 					<?
 						foreach($diagnostico as $row):
 					?>
-						<tr class="odd_row"><td><?=$row->cie10?></td><td style="text-align:center"><?=$row->descripcion_cie10?></td>
+						<tr class="odd_row"><td><?=$row->cie10?></td><td><?=$row->descripcion_cie10?></td>
 							<td style="text-align:justify"><?=$row->tipo==='1'?'1 - Presuntivo':'2 - Definitivo'?></td></tr>
 					<?
 						endforeach;
