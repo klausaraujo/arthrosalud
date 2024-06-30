@@ -918,7 +918,7 @@ class Citas extends CI_Controller
 	public function datosreceta()
 	{
 		$this->load->model('Citas_model');
-		$iddep = $this->input->post('iddep'); $alm = []; $status = 500; $msg = '';
+		$iddep = $this->input->post('iddep'); $almacen = []; $status = 500; $msg = '';
 		$cta = $this->Citas_model->queryindividual('COUNT(iddiagnostico) as cta','historia_clinica_atenciones_diagnostico',
 				['idatencion' => $this->input->post('idatencion')]);
 		if($cta->cta){
@@ -964,6 +964,51 @@ class Citas extends CI_Controller
 		
 		echo json_encode($data);
 		
+	}
+	public function datosorden()
+	{
+		$this->load->model('Citas_model');
+		$iddep = $this->input->post('iddep'); $almacen = []; $status = 500; $msg = '';
+		$cta = $this->Citas_model->queryindividual('COUNT(idexamenes) as cta','historia_clinica_atenciones_examenes',
+				['idatencion' => $this->input->post('idatencion')]);
+		if($cta->cta){
+			//$almacen = $this->Citas_model->querysqlwhere('idalmacen,nombre_almacen','almacen',['idempresa' => $iddep,'tipo_almacen' => 2,'activo' => 1]);
+			$status = 200;
+		}else $msg = 'No hay Ex&aacute;menes registrados';
+		
+		echo json_encode(['status' => $status,'msg' => $msg]);
+	}
+	public function regorden()
+	{
+		$this->load->model('Citas_model');
+		$cab = json_decode($this->input->post('cab')); $ordenes = json_decode($this->input->post('ordenes'));
+		$msg = 'Error al registrar'; $id = $this->input->post('idorden'); $numb = 1; $status = 500;
+		
+		foreach($ordenes as $row):
+			unset($row->examen);
+		endforeach;
+		if($id !== ''){
+			$this->Citas_model->borrar('orden_examenes',['idorden' => $id]);
+			$this->Citas_model->borrar('orden_examenes_detalle',['idorden' => $id]);
+		}
+		
+		$nro = $this->Citas_model->queryindividual('MAX(numero) as nro','orden_examenes',['idempresa' => $cab->idempresa]);
+		if($nro->nro) $numb = intval($nro->nro) + 1;
+		$cab->numero = $numb;
+		
+		if($id = $this->Citas_model->registrar('orden_examenes',$cab)){
+			foreach($ordenes as $row):
+				unset($row->descripcion);
+				$row->idorden = $id;
+			endforeach;
+			if($this->Citas_model->registrarbatch('orden_examenes_detalle',$ordenes)){
+				$status = 200; $msg = 'Orden Registrada';
+			}
+		}
+		
+		$data = array('msg' => $msg, 'idorden' => $id, 'status' => $status);
+		
+		echo json_encode($data);		
 	}
 	public function procedimientos()
 	{

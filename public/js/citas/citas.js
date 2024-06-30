@@ -993,3 +993,58 @@ $('#regreceta').bind('click', function(){
 		});
 	}
 });
+$('#examenes_auxiliares').bind('click', function(){
+	if(examen.rows().count()){
+		let examenes = examen.rows().data().toArray(), opt = '';
+		$('#examorden').val(JSON.stringify(examenes));
+		console.log(examenes);
+		$.ajax({
+			data: { iddep: $('.iddep').val(),idatencion: $('#idatencion').val() },
+			url: base_url + 'citas/historia/datosorden',
+			method: 'POST',
+			dataType: 'JSON',
+			beforeSend: function(){},
+			success: function(data){
+				if(parseInt(data.status) === 200){
+					$.each(data.almacen, function(i,e){
+						opt += '<option value="'+e.idalmacen+'">'+e.nombre_almacen+'</option>';
+					});
+					$('#idordenalmacen').html(opt);
+					$('#modalOrdenEA').modal('show');
+				}else{
+					$('.rspatencion').addClass('pt-2');
+					$('.rspatencion').show();
+					$('.rspatencion').html(data.msg);
+					setTimeout(function(){ $('.rspatencion').hide('slow'); }, 1500);
+				}
+			}
+		});
+	}
+});
+$('#regorden').bind('click', function(){
+	event.preventDefault();
+	let i = $('#examorden').val(), c = null;
+	c = {'idempresa': $('.iddep').val(),'idatencion': $('#idatencion').val(),'fecha': $('#fecha').val(),
+		'idprofesional': $('#prof').val(),'idpaciente': $('#paciente').val(),'observaciones': $('#obsorden').val()};
+	$.ajax({
+		data: { ordenes: i,cab: JSON.stringify(c),idorden: $('#idorden').val() },
+		url: base_url + 'citas/historia/regorden',
+		method: 'POST',
+		dataType: 'JSON',
+		beforeSend: function(){
+			$('.rspatencion').html('<span class="spinner-border spinner-border-sm"></span>&nbsp;&nbsp;Cargando...');
+			$('.rspatencion').addClass('pt-2');
+			$('.rspatencion').show();
+		},
+		success: function(data){
+			$('#modalOrdenEA').modal('hide');
+			$('#idorden').val(data.idorden);
+			$('.rspatencion').html(data.msg);
+			if(parseInt(data.status) === 200){
+				$('#pdfexamenes').attr('href', base_url + 'citas/historia/imprimeorden?id=' + data.idorden);
+				$('#pdfexamenes').removeClass('d-none');
+			}
+			setTimeout(function(){ $('.rspatencion').hide('slow'); }, 1500);
+		}
+	});
+});

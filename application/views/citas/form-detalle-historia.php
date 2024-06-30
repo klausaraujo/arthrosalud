@@ -118,7 +118,7 @@
 											aria-selected="false">Procedimientos</a>
 								  </li>
 								  <li class="nav-item">
-									 <a class="nav-link disabled" id="examenes-tab" data-toggle="tab" href="#examenes" role="tab" aria-controls="examenes" 
+									 <a class="nav-link" id="examenes-tab" data-toggle="tab" href="#examenes" role="tab" aria-controls="examenes" 
 											aria-selected="false">Ex&aacute;menes Auxiliares</a>
 								  </li>
 								  <li class="nav-item">
@@ -411,7 +411,13 @@
 													<input type="text" class="form-control form-control-sm mayusc" id="indicaexamen" name="indicaexamen" />
 												</div>
 											</div>
-											<div class="col-md-2 col-lg-1"><a class="btn btn-sabogal" id="addexamen">Agregar</a></div>
+											<div class="col-md-5 col-lg-4 ml-sm-1 mt-sm-2 mt-lg-0 ">
+												<a class="btn btn-sabogal" id="addexamen">Agregar</a>
+												<a class="btn btn-dark" id="examenes_auxiliares">Receta M&eacute;dica</a>
+												<a class="btn btn-danger px-1 d-none" id="pdfexamenes" target="_blank" >
+													<i class="fa fa-file-pdf-o mx-0" aria-hidden="true" style="font-size:1.4em"></i>
+												</a>
+											</div>
 										</div>
 										<div class="container-fluid">
 											<div class="row mt-3">
@@ -595,6 +601,45 @@
 										</div>
 										<div class="row mt-3">
 											<a href="<?=base_url()?>citas/historia/regreceta" class="btn btn-sabogal ml-md-2" id="regreceta" >Registrar Receta</a>
+										</div>
+									</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Modal Examenes -->
+					<div class="modal fade" id="modalOrdenEA" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="myModalLabel">Orden EA</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								</div>
+								<div class="modal-body" style="overflow: hidden;">
+									<form method="post" id="detalleorden" >
+									<div class="container-fluid">
+										<input type="hidden" name="examorden" id="examorden" />
+										<input type="hidden" name="idorden" id="idorden" />
+										<!--<div class="row mt-2">
+											<label class="control-label col-md-3 align-self-center mb-0" for="idordenalmacen">Almac&eacute;n:</label>
+											<div class="col-md-5">
+												<div class="row">
+													<select type="text" class="form-control form-control-sm" name="idordenalmacen" id="idordenalmacen" >
+													</select>
+												</div>
+											</div>
+										</div>-->
+										<div class="row mt-2">
+											<label class="control-label col-md-3 align-self-center mb-0" for="obsorden">Observaciones:</label>
+											<div class="col-md-7">
+												<div class="row">
+													<input type="text" class="form-control form-control-sm mayusc" id="obsorden" name="obsorden" />
+												</div>
+											</div>
+										</div>
+										<div class="row mt-3">
+											<a href="<?=base_url()?>citas/historia/regorden" class="btn btn-sabogal ml-md-2" id="regorden" >Registrar Orden</a>
 										</div>
 									</div>
 									</form>
