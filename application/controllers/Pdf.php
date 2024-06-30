@@ -64,21 +64,22 @@ class Pdf extends CI_Controller
 	{
 		$this->load->model('Citas_model');
 		$receta = $this->Citas_model->queryindividual('*','receta_medica',['idrecetamedica' => $this->input->get('id')]);
-		$paciente = $this->Citas_model->paciente(['idpaciente' => $receta->idpaciente]);
-		$profesional = $this->Citas_model->medico(['idprofesional' => $receta->idprofesional]);
-		$detalle = $this->Citas_model->detallereceta(['idrecetamedica' => $this->input->get('id')]);
-		$diag = $this->Citas_model->diagnostico(['idrecetamedica' => $this->input->get('id')]);
-		
-		$data = array(
-			'paciente' => $paciente,
-			'profesional' => $profesional,
-			'receta' => $receta,
-			'detalle' => $detalle,
-			'diagnostico' => $diag,
-		);
-		$html = $this->load->view('citas/receta-pdf', $data, true);
-		$this->options->set('defaultPaperOrientation', 'landscape');
-		$this->viewpdf($html, 0);
+		if(!empty($receta)){
+			$paciente = $this->Citas_model->paciente(['idpaciente' => $receta->idpaciente]);
+			$profesional = $this->Citas_model->medico(['idprofesional' => $receta->idprofesional]);
+			$detalle = $this->Citas_model->detallereceta(['idrecetamedica' => $this->input->get('id')]);
+			$diag = $this->Citas_model->diagnostico(['idrecetamedica' => $this->input->get('id')]);
+			$data = array(
+				'paciente' => $paciente,
+				'profesional' => $profesional,
+				'receta' => $receta,
+				'detalle' => $detalle,
+				'diagnostico' => $diag,
+			);
+			$html = $this->load->view('citas/receta-pdf', $data, true);
+			$this->options->set('defaultPaperOrientation', 'landscape');
+			$this->viewpdf($html, 0);
+		}
 	}
 	private function viewpdf($page, $attach)
 	{

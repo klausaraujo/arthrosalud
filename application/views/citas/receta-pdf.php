@@ -26,7 +26,7 @@
 			-moz-border-radius: 10px;
 			-webkit-border-radius: 10px;
 			margin-top: 1em;
-			width:100%;
+			width:5in;
 		}
 		table.datos td{ padding:0.4em 0 0.4em 0.6em; vertical-align:middle; }
 		table.atenciones{
@@ -77,24 +77,24 @@
 			<table align="center" class="datos">
 				<tbody>
 					<tr>
-						<td colspan="2" style="color:#808080">Nombre Paciente: </td>
-						<td colspan="5" style="font-weight:bold;"><?=$paciente->nombres.' '.$paciente->apellidos?></td>
+						<td colspan="7" style="color:#808080">Nombre Paciente: &nbsp;&nbsp;<span style="font-weight:bold;color:#000">
+							<?=$paciente->nombres.' '.$paciente->apellidos?></span></td>
 					</tr>
 					<tr>
 						<td style="color:#808080">Direcci&oacute;n: </td>
 						<td colspan="5" style="font-weight:bold;"><?=$paciente->domicilio?></td>
 					</tr>
 					<tr>
-						<td style="width:2cm;color:#808080">Tipo Doc.: </td>
-						<td style="width:1.5cm;font-weight:bold"><?=$paciente->tipo_documento?></td>
+						<td style="width:1.7cm;color:#808080">Tipo Doc.: </td>
+						<td style="width:2.5cm;font-weight:bold"><?=$paciente->tipo_documento?></td>
 						<td style="width:0.7cm;color:#808080">Nro.: </td>
 						<td style="width:2cm;font-weight:bold"><?=$paciente->numero_documento?></td>
 						<td style="width:1cm;color:#808080">Edad: </td>
 						<td style="width:3cm;font-weight:bold"><?=$edad->y.' a&ntilde;os, '.$edad->m.' mes(es)'?></td>
 					</tr>
 					<tr>
-						<td colspan="2" style="color:#808080">Diagn&oacute;stico: </td>
-						<td colspan="5" style="font-weight:bold;"><?=$receta->observaciones?></td>
+						<td colspan="7" style="color:#808080">Diagn&oacute;stico: &nbsp;&nbsp;<span style="font-weight:bold;color:#000">
+							<?=$receta->observaciones?></span></td>
 					</tr>
 				</tbody>
 			</table>
