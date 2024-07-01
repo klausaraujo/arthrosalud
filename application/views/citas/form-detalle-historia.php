@@ -118,7 +118,7 @@
 											aria-selected="false">Procedimientos</a>
 								  </li>
 								  <li class="nav-item">
-									 <a class="nav-link" id="examenes-tab" data-toggle="tab" href="#examenes" role="tab" aria-controls="examenes" 
+									 <a class="nav-link disabled" id="examenes-tab" data-toggle="tab" href="#examenes" role="tab" aria-controls="examenes" 
 											aria-selected="false">Ex&aacute;menes Auxiliares</a>
 								  </li>
 								  <li class="nav-item">
@@ -413,7 +413,7 @@
 											</div>
 											<div class="col-md-5 col-lg-4 ml-sm-1 mt-sm-2 mt-lg-0 ">
 												<a class="btn btn-sabogal" id="addexamen">Agregar</a>
-												<a class="btn btn-dark" id="examenes_auxiliares">Receta M&eacute;dica</a>
+												<a class="btn btn-dark d-none" id="orden_examenes">Generar Orden EA</a>
 												<a class="btn btn-danger px-1 d-none" id="pdfexamenes" target="_blank" >
 													<i class="fa fa-file-pdf-o mx-0" aria-hidden="true" style="font-size:1.4em"></i>
 												</a>

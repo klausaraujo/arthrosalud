@@ -81,6 +81,25 @@ class Pdf extends CI_Controller
 			$this->viewpdf($html, 0);
 		}
 	}
+	public function ordenpdf()
+	{
+		$this->load->model('Citas_model');
+		$orden = $this->Citas_model->queryindividual('*','orden_examenes',['idorden' => $this->input->get('id')]);
+		if(!empty($orden)){
+			$paciente = $this->Citas_model->paciente(['idpaciente' => $orden->idpaciente]);
+			$profesional = $this->Citas_model->medico(['idprofesional' => $orden->idprofesional]);
+			$detalle = $this->Citas_model->detalleorden(['idorden' => $this->input->get('id')]);
+			$data = array(
+				'paciente' => $paciente,
+				'profesional' => $profesional,
+				'orden' => $orden,
+				'detalle' => $detalle,
+			);
+			$html = $this->load->view('citas/orden-pdf', $data, true);
+			$this->options->set('defaultPaperOrientation', 'landscape');
+			$this->viewpdf($html, 0);
+		}
+	}
 	private function viewpdf($page, $attach)
 	{
 		//Inicializar la clase

@@ -886,6 +886,8 @@ $('#btnRegistrar').bind('click', function(){
 					if(parseInt(data.status) === 200){ $('#receta').removeClass('d-none'); }
 				}else if(id === 'diagnosticos'){
 					if(parseInt(data.status) === 200){ $('#receta').removeClass('d-none'); }
+				}else if(id === 'examenes'){
+					if(parseInt(data.status) === 200){ $('#orden_examenes').removeClass('d-none'); }
 				}
 				setTimeout(function(){ $('.rspatencion').hide('slow'); }, 1500);
 			}
@@ -993,11 +995,10 @@ $('#regreceta').bind('click', function(){
 		});
 	}
 });
-$('#examenes_auxiliares').bind('click', function(){
+$('#orden_examenes').bind('click', function(){
 	if(examen.rows().count()){
 		let examenes = examen.rows().data().toArray(), opt = '';
 		$('#examorden').val(JSON.stringify(examenes));
-		console.log(examenes);
 		$.ajax({
 			data: { iddep: $('.iddep').val(),idatencion: $('#idatencion').val() },
 			url: base_url + 'citas/historia/datosorden',
@@ -1006,9 +1007,9 @@ $('#examenes_auxiliares').bind('click', function(){
 			beforeSend: function(){},
 			success: function(data){
 				if(parseInt(data.status) === 200){
-					$.each(data.almacen, function(i,e){
+					/*$.each(data.almacen, function(i,e){
 						opt += '<option value="'+e.idalmacen+'">'+e.nombre_almacen+'</option>';
-					});
+					});*/
 					$('#idordenalmacen').html(opt);
 					$('#modalOrdenEA').modal('show');
 				}else{

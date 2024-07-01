@@ -892,10 +892,12 @@ class Citas extends CI_Controller
 		$json = json_decode(file_get_contents('php://input'));
 		
 		if($this->Citas_model->borrar('historia_clinica_atenciones_examenes',['idatencion' => $json[0]->idatencion])){
-			if($this->Citas_model->registrarbatch('historia_clinica_atenciones_examenes', $json)) $msg = 'Ex&aacute;menes Auxiliares Registrados';
+			if($this->Citas_model->registrarbatch('historia_clinica_atenciones_examenes', $json)){
+				$msg = 'Ex&aacute;menes Auxiliares Registrados'; $status = 200;
+			}
 		}
 		
-		$data = array('msg' => $msg,);
+		$data = array('msg' => $msg, 'status' => $status);
 		echo json_encode($data);
 	}
 	public function regindicaciones()

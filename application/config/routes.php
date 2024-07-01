@@ -171,6 +171,7 @@ $route['citas/historia/datosorden'] = 'citas/datosorden';
 $route['citas/historia/regreceta'] = 'citas/regreceta';
 $route['citas/historia/regorden'] = 'citas/regorden';
 $route['citas/historia/imprimereceta'] = 'pdf/recetapdf';
+$route['citas/historia/imprimeorden'] = 'pdf/ordenpdf';
 $route['citas/adicional'] = 'citas/citaadicional';
 $route['citas/regadicional'] = 'citas/regadicional';
 $route['citas/procedimientos'] = 'citas/procedimientos';

@@ -242,6 +242,15 @@ class Citas_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
+	public function detalleorden($where)
+	{
+		$this->db->select('oed.*,ea.correlativo,ea.examen_auxiliar');
+		$this->db->from('orden_examenes_detalle oed');
+		$this->db->join('examenes_auxiliares ea','ea.idexamenauxiliar=oed.idexamenauxiliar');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
 	public function querysqlwhere($q,$t,$where)
 	{
 		$query = $this->db->select($q)->from($t)->where($where)->get();
