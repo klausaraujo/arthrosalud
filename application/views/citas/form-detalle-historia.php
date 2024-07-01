@@ -162,7 +162,7 @@
 															<input type="checkbox" class="custom-control-input" name="gestante" id="gestante" />
 															<label class="custom-control-label" for="gestante">Gestante:</label>
 														</div>
-												</div>
+													</div>
 												</div>
 												<label class="control-label col-md-2 col-lg-1 align-self-center mb-0 pl-md-5 pl-lg-0" for="semanas">
 														&nbsp;&nbsp;&nbsp;Semanas:</label>

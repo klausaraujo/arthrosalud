@@ -375,6 +375,7 @@ class Citas extends CI_Controller
 		$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>M&eacute;dico</b>');
 		$ubigeo = $this->input->post('dep').$this->input->post('pro').$this->input->post('dis');
 		$ubigeo1 = $this->input->post('dep1').$this->input->post('pro1').$this->input->post('dis1');
+		$cons = $this->input->post('consultorio')? 1 : 0;
 		
 		$data = array(
 			'idtipodocumento' => $this->input->post('tipo'),
@@ -398,6 +399,7 @@ class Citas extends CI_Controller
 			'celular' => $this->input->post('celular'),
 			//'celuar_mensaje' => $this->input->post(''),
 			'correo' => $this->input->post('correo'),
+			'atencion_consultorio' => $cons,
 			'observaciones' => $this->input->post('obs'),
 		);
 		if($this->input->post('tiporegistro') === 'registrar'){

@@ -310,6 +310,14 @@
 										</div>
 									</div>
 									<div class="row mt-3">
+										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0">&nbsp;</label>
+										<div class="custom-control custom-switch col-md-6 col-lg-4">
+											<input type="checkbox" class="custom-control-input" name="consultorio" id="consultorio" 
+												<?=$profesional->atencion_consultorio === '1'? 'checked' : ''?> />
+											<label class="custom-control-label" for="consultorio">Atenci&oacute;n en Consultorio:</label>
+										</div>
+									</div>
+									<div class="row mt-3">
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="usuario">Asignar Usuario:</label>
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
