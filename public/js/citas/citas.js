@@ -7,6 +7,7 @@ $(document).ready(function (){
 				url: base_url + 'citas/turnos/lista',
 				type: 'POST',
 				data: function(d){
+					d.idempresa = $('.iddep').val();
 					d.idconsultorio = $('.cons').val();
 					d.iddepartamento = $('.cdep').val();
 					d.idprofesional = $('.cprof').val();
@@ -40,12 +41,12 @@ $(document).ready(function (){
 						return btnAccion;
 					}
 				},
-				{ data: 'consultorio' },{ data: 'departamento' },{ data: 'nprof' },{ data: 'anio' },{ data: 'mes' },
+				{ data: 'nombre_comercial' },{ data: 'consultorio' },{ data: 'departamento' },{ data: 'nprof' },{ data: 'anio' },{ data: 'mes' },
 				{ data: 'duracion_consulta' },
 			],
 			columnDefs:[
-				{title:'Acciones',targets: 0},{title:'Consultorio',targets: 1},{title:'Area',targets: 2},{title:'Profesional',targets: 3},
-				{title:'A&ntilde;o',targets: 4},{title:'Mes',targets: 5},{title:'Duraci&oacute;n',targets: 6},//{title:'Status',targets: 8},
+				{title:'Acciones',targets: 0},{title:'Sede',targets: 1},{title:'Consultorio',targets: 2},{title:'Area',targets: 3},
+				{title:'Profesional',targets: 4},{title:'A&ntilde;o',targets: 5},{title:'Mes',targets: 6},{title:'Duraci&oacute;n',targets: 7},
 			], order: [],
 		});
 	}else if(segmento2 === 'medicos'){
@@ -155,6 +156,7 @@ $(document).ready(function (){
 				url: base_url + 'citas/citas/lista',
 				type: 'POST',
 				data: function(d){
+					d.idempresa = $('.iddep').val();
 					d.idconsultorio = $('.cons').val();
 					d.iddepartamento = $('.cdep').val();
 					d.idprofesional = $('.cprof').val();
@@ -200,7 +202,7 @@ $(document).ready(function (){
 						return btnAccion;
 					}
 				},
-				{ data: 'consultorio' },{ data: 'departamento' },{ data: 'nprof' },{ data: 'npac' },{ data: 'entrada' },{ data: 'salida' },
+				{ data: 'nombre_comercial' },{ data: 'consultorio' },{ data: 'departamento' },{ data: 'nprof' },{ data: 'npac' },{ data: 'entrada' },{ data: 'salida' },
 				{
 					data: 'idpaciente',
 					render: function(data,meta,row){
@@ -217,8 +219,8 @@ $(document).ready(function (){
 				if(data.tipo === '1') $(row).css('background','RGB(240 222 141)');
 			},
 			columnDefs:[
-				{title:'Acciones',targets: 0},{title:'Consultorio',targets: 1},{title:'Area',targets: 2},{title:'Profesional',targets: 3},{title:'Paciente',targets: 4},
-				{title:'H.Entrada',targets: 5},{title:'H.Salida',targets: 6},{title:'Status',targets: 7},//{title:'Status',targets: 8},
+				{title:'Acciones',targets: 0},{title:'Sede',targets: 1},{title:'Consultorio',targets: 2},{title:'Area',targets: 3},
+				{title:'Profesional',targets: 4},{title:'Paciente',targets: 5},{title:'H.Entrada',targets: 6},{title:'H.Salida',targets: 7},{title:'Status',targets: 8},
 			], order: [],
 		});
 	}else if(segmento2 === 'historia'){
@@ -519,13 +521,13 @@ $('.iddep').bind('change', function(){
 			beforeSend: function(){ $('.cons').html('<option> Cargando...</option>'); },
 			success: function (data) {
 				let html = '';
-				if((segmento === 'citas' && segmento2 == '') || segmento2 == 'citas')
+				if((segmento === 'citas' && segmento2 == '') || segmento2 == 'citas'){
 					html = '';
-				else html = '<option value="">-- Seleccione --</option>';
+					grillappal.ajax.reload();
+				}else html = '<option value="">-- Seleccione --</option>';
 				$.each(data, function (i, e){ html += '<option value="' + e.idconsultorio + '">' + e.consultorio + '</option>'; });
 				$('.cons').html(html);
-				if((segmento === 'citas' && segmento2 == '') || segmento2 == 'citas')
-					grillappal.ajax.reload();
+				if(segmento2 == 'turnos') grillappal.ajax.reload();
 			}
 		});
 	}

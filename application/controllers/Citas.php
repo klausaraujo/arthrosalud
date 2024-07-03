@@ -32,7 +32,7 @@ class Citas extends CI_Controller
 	public function listaturnos()
 	{
 		$data = array(
-			//'t.idconsultorio' => $this->input->post('idconsultorio'),
+			'e.idempresa' => $this->input->post('idempresa'),
 			't.iddepartamento' => $this->input->post('iddepartamento'),
 			//'t.idprofesional' => $this->input->post('idprofesional'),
 			't.anio' => $this->input->post('anio'),
@@ -112,6 +112,7 @@ class Citas extends CI_Controller
 	public function listacitas()
 	{
 		$data = array(
+			'e.idempresa' => $this->input->post('idempresa'),
 			't.idconsultorio' => $this->input->post('idconsultorio'),
 			't.iddepartamento' => $this->input->post('iddepartamento'),
 			't.idprofesional' => $this->input->post('idprofesional'),
@@ -486,12 +487,16 @@ class Citas extends CI_Controller
 		$this->session->set_flashdata('claseMsg', 'alert-danger');
 		$this->session->set_flashdata('flashMessage', 'No se pudo registrar el <b>Turno</b>');
 		$est = $this->input->post('idestablecimiento'); $dep = $this->input->post('iddepartamento'); $cons = $this->input->post('idconsultorio');
-		$prof = $this->input->post('idprofesional'); $a = $this->input->post('anio'); $m = $this->input->post('idmes');
+		$prof = $this->input->post('idprofesional'); $a = $this->input->post('anio'); $m = $this->input->post('idmes'); $validaturno = false;
 		
-		$turno = $this->Citas_model->querysqlwhere('count(idturno) as qty','turnos',['idconsultorio' => $cons,'iddepartamento' => $dep,'idprofesional' => $prof,
-				'anio' => $a,'idmes' => $m,'activo' => 1]);
+		/*$turno = $this->Citas_model->querysqlwhere('count(idturno) as qty','turnos',['idconsultorio' => $cons,'iddepartamento' => $dep,'idprofesional' => $prof,
+				'anio' => $a,'idmes' => $m,'activo' => 1]);*/
 		
-		if(intval($turno[0]->qty) === 0){
+		$turno = $this->Citas_model->validaturno(['idprofesional' => $prof,'anio' => $a,'idmes' => $m,'t.activo' => 1]);
+		
+		if(!empty($turno)){ $validaturno = true;  }
+		
+		if(!$validaturno){
 			$data = array(
 				'idconsultorio' => $cons,
 				'iddepartamento' => $dep,
@@ -507,7 +512,7 @@ class Citas extends CI_Controller
 			}
 		}else{
 			$this->session->set_flashdata('claseMsg', 'alert-warning');
-			$this->session->set_flashdata('flashMessage', 'El <b>Turno</b> ya se encuentra registrado');
+			$this->session->set_flashdata('flashMessage', 'El <b>Turno</b> del mes para el profesional ya se encuentra registrado');
 		}
 		header('location:'.base_url().'citas/turnos');
 	}
