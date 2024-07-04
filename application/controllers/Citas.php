@@ -441,7 +441,7 @@ class Citas extends CI_Controller
 				$i++;
 			}
 		endforeach;
-		$prof = $this->Citas_model->querysqlwhere('idprofesional,nombres,apellidos','profesional',['activo' => 1]);
+		$prof = $this->Citas_model->querysqlwhere('idprofesional,nombres,apellidos','profesional',['activo' => 1,'atencion_consultorio' => 1]);
 		$mes = $this->Citas_model->querysqlwhere('idmes,mes','mes',['activo' => 1]);
 		$anio = $this->Citas_model->querysqlwhere('anio','anio',['activo' => 1]);
 		
@@ -462,7 +462,7 @@ class Citas extends CI_Controller
 		$estab = $this->Citas_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
 		$dep = $this->Citas_model->querysqlwhere('iddepartamento,departamento','departamento',['activo' => 1]);
 		//$cons = $this->Citas_model->querysqlwhere('idconsultorio,consultorio','tipo_profesional',['activo' => 1]);
-		$prof = $this->Citas_model->querysqlwhere('idprofesional,nombres,apellidos','profesional',['activo' => 1]);
+		$prof = $this->Citas_model->querysqlwhere('idprofesional,nombres,apellidos','profesional',['activo' => 1,'atencion_consultorio' => 1]);
 		$mes = $this->Citas_model->querysqlwhere('idmes,mes','mes',['activo' => 1]);
 		$anio = $this->Citas_model->querysqlwhere('anio','anio',['activo' => 1]);
 		
@@ -491,10 +491,13 @@ class Citas extends CI_Controller
 		
 		/*$turno = $this->Citas_model->querysqlwhere('count(idturno) as qty','turnos',['idconsultorio' => $cons,'iddepartamento' => $dep,'idprofesional' => $prof,
 				'anio' => $a,'idmes' => $m,'activo' => 1]);*/
+		$empresa = $this->Citas_model->validaturno(['idprofesional' => $prof,'anio' => $a,'idmes' => $m,'t.activo' => 1]);
 		
-		$turno = $this->Citas_model->validaturno(['idprofesional' => $prof,'anio' => $a,'idmes' => $m,'t.activo' => 1]);
-		
-		if(!empty($turno)){ $validaturno = true;  }
+		if(!empty($empresa)){
+			foreach($empresa as $row):
+				if($row->idempresa === $est){ $validaturno = true; break; }
+			endforeach;
+		}
 		
 		if(!$validaturno){
 			$data = array(
@@ -512,7 +515,7 @@ class Citas extends CI_Controller
 			}
 		}else{
 			$this->session->set_flashdata('claseMsg', 'alert-warning');
-			$this->session->set_flashdata('flashMessage', 'El <b>Turno</b> del mes para el profesional ya se encuentra registrado');
+			$this->session->set_flashdata('flashMessage', 'El <b>Turno</b> para el establecimiento ya se encuentra registrado');
 		}
 		header('location:'.base_url().'citas/turnos');
 	}

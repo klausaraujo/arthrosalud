@@ -256,13 +256,13 @@ class Citas_model extends CI_Model
 	public function validaturno($where)
 	{
 		$this->db->db_debug = TRUE;
-		$this->db->select('t.idmes,t.anio,e.idempresa,e.nombre_comercial');
+		$this->db->select('e.idempresa');
 		$this->db->from('turnos t');
 		$this->db->join('consultorio c','t.idconsultorio=c.idconsultorio');
 		$this->db->join('empresa e','c.idempresa=e.idempresa');
 		$this->db->where($where);
 		$result = $this->db->get();
-		return ($result->num_rows() > 0)? $result->row() : array();
+		return ($result->num_rows() > 0)? $result->result() : array();
 	}
 	public function querysqlwhere($q,$t,$where)
 	{
