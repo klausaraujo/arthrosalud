@@ -34,7 +34,7 @@
 													<div class="row">
 														<input type="text" class="form-control form-control-sm col-md-8 num numerodoc" name="doc" id="doc" 
 															placeholder="Número Doc." minlength="8" maxlength="8" required="" />
-														<a href="buscadni" class="col-md-2 mt-1 buscadni"><i class="fa fa-search" style="font-size:1.3em"></i></a>
+														<a href="buscadni" class="col-md-2 buscadni" style="font-size:1.3em"><i class="fa fa-search"></i></a>
 														<div class="invalid-feedback" id="error-doc">Campo Requerido</div>
 													</div>
 												</div>

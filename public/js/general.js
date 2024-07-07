@@ -81,7 +81,7 @@ $('.buscadni').bind('click', function(){
 			method: 'POST',
 			dataType: 'JSON',
 			beforeSend: function() {
-				$(a).html('<i class="fas fa-spinner fa-pulse fa-2x"></i>');
+				$(a).html('<i class="fas fa-spinner fa-pulse"></i>');
 		},
 		success: function(data){
 			$(a).html('<i class="fa fa-search"></i>');

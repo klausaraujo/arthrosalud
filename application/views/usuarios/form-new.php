@@ -11,7 +11,7 @@
 											<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="tipodoc">Tipo de Documento:</label>
 											<div class="col-md-6 col-lg-3">
 												<div class="row">
-													<select class="form-control tipodoc" name="tipodoc" id="tipodoc" required="">
+													<select class="form-control tpdoc" name="tipodoc" id="tipodoc" required="">
 													<?
 															foreach($tipodoc as $row):	?>
 																<option value="<?=$row->idtipodocumento;?>"><?=$row->tipo_documento;?></option>
@@ -23,10 +23,11 @@
 										</div>
 										<div class="row mt-3">
 											<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="doc">N&uacute;mero de Documento:</label>
-											<div class="col-md-4 col-lg-2">
+											<div class="col-md-4 col-lg-3">
 												<div class="row">
-													<input type="text" class="form-control doc borra num numcurl" maxlength="8" minlength="8" name="doc" id="doc" autocomplete="off"
-														placeholder="Nro. Documento" required="" />
+													<input type="text" class="form-control numerodoc num numcurl col-md-10" maxlength="8" 
+														minlength="8" name="doc" id="doc" autocomplete="off" placeholder="Nro. Documento" required="" />
+													<a href="buscadni" class="col-md-2 buscadni" style="font-size:1.5em"><i class="fa fa-search"></i></a>
 													<div class="invalid-feedback" id="error-doc">Documento requerido</div>
 												</div>
 											</div>
@@ -39,7 +40,8 @@
 											<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="apellidos">Apellidos:</label>
 											<div class="col-md-6 col-lg-4">
 												<div class="row">
-													<input type="text" class="form-control borra apellidos" name="apellidos" id="apellidos" placeholder="Apellidos" required="" />
+													<input type="text" class="form-control borra apellidos desha" name="apellidos" id="apellidos" 
+														placeholder="Apellidos" required="" />
 													<div class="invalid-feedback">Campo requerido</div>
 												</div>
 											</div>
@@ -48,7 +50,8 @@
 											<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="nombres">Nombres:</label>
 											<div class="col-md-6 col-lg-4">
 												<div class="row">
-													<input type="text" class="form-control borra nombres" name="nombres" id="nombres" placeholder="Nombres" required="" />
+													<input type="text" class="form-control borra nombres desha" name="nombres" id="nombres" 
+														placeholder="Nombres" required="" />
 													<div class="invalid-feedback" id="error-doc">Campo requerido</div>
 												</div>
 											</div>
