@@ -176,4 +176,36 @@ class Main extends CI_Controller
 		
 		echo json_encode(array('data' => json_decode($result),'status' => $code));
 	}
+	public function consultadni()
+	{
+		$user = 'lfernandez';
+		$pass = 'Ole220522';
+		$url = 'https://sireed.minsa.gob.pe/doLogin';
+		$con = 'https://sireed.minsa.gob.pe/brigadistas/curl';
+
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, "usuario=$user&key=$pass");
+		//curl_setopt($ch, CURLOPT_USERPWD, "$pass:$user");
+		curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__.'/cookies.txt');
+		curl_exec($ch);
+		if($error = curl_error($ch)){
+			die ($error);
+		}
+		curl_setopt($ch, CURLOPT_URL, $con);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,
+			"type=01&document=42545573");
+		curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__.'/cookies.txt');
+		$res = curl_exec($ch);
+		if($error = curl_error($ch)){
+			die ($error);
+		}
+		if(curl_getinfo($ch, CURLINFO_HTTP_CODE) === 200){
+			$data = json_decode($res);
+			print_r($data->data->attributes);
+		}
+		curl_close( $ch );
+	}
 }
