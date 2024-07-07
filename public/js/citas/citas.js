@@ -1,4 +1,5 @@
-let grillappal = null, tablaPacientes = null, cie = null, tablaCIE = null, proc = null, examen = null, indic = null, tablaPROC = null, tablaART = null, tablaEXAMEN = null;
+let grillappal = null, tablaPacientes = null, cie = null, tablaCIE = null, proc = null, examen = null;
+let indic = null, tablaPROC = null, tablaART = null, tablaEXAMEN = null;
 
 $(document).ready(function (){
 	if(segmento2 === 'turnos'){

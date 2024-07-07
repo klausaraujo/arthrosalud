@@ -56,7 +56,7 @@ $route['default_controller'] = 'login';
 $route['login'] = 'login/login';
 $route['dologin'] = 'login/doLogin';
 $route['logout'] = 'login/logout';
-$route['parametros/curl'] = 'main/consultadni';
+$route['parametros/curlajax'] = 'main/dniajax';
 
 /* Programacion en general */
 $route['usuarios'] = 'main/usuarios';
