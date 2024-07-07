@@ -77,7 +77,7 @@
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="nombres">Fecha de Nacimiento:</label>
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
-												<input type="date" class="form-control form-control-sm desha" name="fechanac" id="fechanac" 
+												<input type="date" class="form-control form-control-sm" name="fechanac" id="fechanac" 
 													placeholder="Nombres" value="<?=date('Y-m-d');?>" required="" />
 												<div class="invalid-feedback" id="error-razon">Campo Requerido</div>
 											</div>
@@ -87,7 +87,7 @@
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="sexo">Sexo:</label>
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
-												<select class="form-control form-control-sm desha" name="sexo" id="sexo" required="" >
+												<select class="form-control form-control-sm" name="sexo" id="sexo" required="" >
 													<option value="2">Masculino</option>
 													<option value="1">Femenino</option>
 												</select>
@@ -99,7 +99,7 @@
 										<label class="control-label col-md-6 col-lg-3 align-self-center mb-0" for="edo">Estado Civil:</label>
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
-												<select class="form-control form-control-sm desha" name="edo" id="edo" required="" >
+												<select class="form-control form-control-sm" name="edo" id="edo" required="" >
 											<?
 												foreach($edo as $row):	?>
 													<option value="<?=$row->idestadocivil;?>"><?=$row->estado_civil;?></option>

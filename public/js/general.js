@@ -1,5 +1,5 @@
 let btnCancelar = $('.btn-cancelar'), inputs = document.querySelectorAll( '.inputfile' );
-let sexoText = $('#sexo')[0].innerHTML, edoText = $('#edo')[0].innerHTML;
+let sexoText = $('#sexo option').clone(), edoText = $('#edo option').clone();
 
 $(document).ready(function (){
 	setTimeout(function () { $('.alert').hide('slow'); }, 2500);
@@ -68,6 +68,13 @@ $('.buscadni').bind('click', function(){
 	if($('.tpdoc').val() === '2') tipo = '03';
 	else if($('.tpdoc').val() === '1') tipo = '01';
 	
+	$('.desha').val('');
+	$('.desha').prop('readonly',false);
+	$('#sexo').html(sexoText);
+	$('#edo').html(edoText);
+	$('#sexo').val(2);
+	$('#edo').val(1);
+	
 	$.ajax({
 		data: {tipo: tipo, doc: $('.numerodoc').val()},
 			url: base_url + 'parametros/curlajax',
@@ -75,32 +82,27 @@ $('.buscadni').bind('click', function(){
 			dataType: 'JSON',
 			beforeSend: function() {
 				$(a).html('<i class="fas fa-spinner fa-pulse fa-2x"></i>');
-			},
-			success: function(data){
-				$(a).html('<i class="fa fa-search"></i>');
-				$('.desha').val('');
-				let hoy = new Date(Date.now()), hoydia = '', hoymes = '', hoyanio = '';
-				hoymes = String(hoy.getMonth()).length < 2? '0'+(hoy.getMonth()+1) : (hoy.getMonth()+1);
-				hoydia = String(hoy.getDate()).length < 2? '0'+hoy.getDate() : hoy.getDate();
-				hoyanio = hoy.getFullYear();
-				$('#fechanac').val(hoyanio+'-'+hoymes+'-'+hoydia);
-				if(parseInt(data.status) === 200){
-					let d = data.data.attributes, sexo = d.sexo==='1'? '2' : '1';
-					$('#apellidos').val(d.apellido_paterno+' '+d.apellido_materno);
-					$('#nombres').val(d.nombres);
-					$('#fechanac').val(d.fecha_nacimiento);
-					$('#sexo').val(sexo);
-					$('#sexo').html($('#sexo option[value="'+$('#sexo').val()+'"]')[0]);
-					$('#edo').val(d.estado_civil);
-					$('#edo').html($('#edo option[value="'+$('#edo').val()+'"]')[0]);
-					$('.desha').prop('readonly',true);
-				}else{
-					$('.desha').prop('readonly',false);
-					$('#sexo').html(sexoText);
-					$('#edo').html(edoText);
-				}
+		},
+		success: function(data){
+			$(a).html('<i class="fa fa-search"></i>');
+			let hoy = new Date(Date.now()), hoydia = '', hoymes = '', hoyanio = '';
+			hoymes = String(hoy.getMonth()).length < 2? '0'+(hoy.getMonth()+1) : (hoy.getMonth()+1);
+			hoydia = String(hoy.getDate()).length < 2? '0'+hoy.getDate() : hoy.getDate();
+			hoyanio = hoy.getFullYear();
+			$('#fechanac').val(hoyanio+'-'+hoymes+'-'+hoydia);
+			if(parseInt(data.status) === 200){
+				let d = data.data.attributes, sexo = d.sexo==='1'? 2 : 1;
+				$('#apellidos').val(d.apellido_paterno+' '+d.apellido_materno);
+				$('#nombres').val(d.nombres);
+				$('#fechanac').val(d.fecha_nacimiento);
+				$('#sexo').val(sexo);
+				$('#sexo').html($('#sexo option[value="'+$('#sexo').val()+'"]')[0]);
+				$('#edo').val(d.estado_civil);
+				$('#edo').html($('#edo option[value="'+$('#edo').val()+'"]')[0]);
+				$('.desha').prop('readonly',true);
 			}
-		});
+		}
+	});
 	
 });
 
@@ -360,10 +362,12 @@ $('.tpdoc').bind('change',function(){
 	else if(this.value === '4'){
 		$('.numerodoc').prop('maxlength',15), $('.numerodoc').prop('minlength',15), $('.numerodoc').removeClass('num');
 	}
-	$('.desha').val('');
 	$('.desha').prop('readonly',false);
+	$('.desha').val('');
 	$('#sexo').html(sexoText);
 	$('#edo').html(edoText);
+	$('#sexo').val(2);
+	$('#edo').val(1);
 	let hoy = new Date(Date.now()), hoydia = '', hoymes = '', hoyanio = '';
 	hoymes = String(hoy.getMonth()).length < 2? '0'+(hoy.getMonth()+1) : (hoy.getMonth()+1);
 	hoydia = String(hoy.getDate()).length < 2? '0'+hoy.getDate() : hoy.getDate();
