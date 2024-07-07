@@ -42,6 +42,7 @@ function ceros( number, width ){
 }
 
 $('.tipodoc').bind('change',function(e){
+	$('form').removeClass('was-validated');
 	if(this.value === '1') $('.numcurl').prop('maxlength',8);
 	else if(this.value === '2') $('.numcurl').prop('maxlength',9);
 	
@@ -62,6 +63,7 @@ $('.tipodoc').bind('change',function(e){
 });
 $('.buscadni').bind('click', function(){
 	event.preventDefault();
+	$('form').removeClass('was-validated');
 	let tipo = '01', nro = '', a = this;
 	if($('.tpdoc').val() === '2') tipo = '03';
 	else if($('.tpdoc').val() === '1') tipo = '01';
@@ -367,4 +369,5 @@ $('.tpdoc').bind('change',function(){
 	hoydia = String(hoy.getDate()).length < 2? '0'+hoy.getDate() : hoy.getDate();
 	hoyanio = hoy.getFullYear();
 	$('#fechanac').val(hoyanio+'-'+hoymes+'-'+hoydia);
+	$('form').removeClass('was-validated');
 });

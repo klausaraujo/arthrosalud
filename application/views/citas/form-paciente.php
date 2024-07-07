@@ -88,7 +88,6 @@
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
 												<select class="form-control form-control-sm desha" name="sexo" id="sexo" required="" >
-													<option value="">-- Seleccione --</option>
 													<option value="2">Masculino</option>
 													<option value="1">Femenino</option>
 												</select>
@@ -101,7 +100,6 @@
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
 												<select class="form-control form-control-sm desha" name="edo" id="edo" required="" >
-													<option value="">-- Seleccione --</option>
 											<?
 												foreach($edo as $row):	?>
 													<option value="<?=$row->idestadocivil;?>"><?=$row->estado_civil;?></option>
