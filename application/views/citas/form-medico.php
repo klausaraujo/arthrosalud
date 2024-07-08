@@ -30,10 +30,11 @@
 											</div>
 											<div class="row mt-3">
 												<label class="control-label col-md-6 col-lg-6 align-self-center mb-0" for="doc">N&uacute;mero Documento:</label>
-												<div class="col-md-4 col-lg-4">
+												<div class="col-md-4 col-lg-5">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm num mayusc numerodoc" name="doc" id="doc" 
-															placeholder="Número Documento"  minlength="8" maxlength="8" required="" />
+														<input type="text" class="form-control form-control-sm col-md-8 num numerodoc" name="doc" id="doc" 
+															placeholder="Número Doc." minlength="8" maxlength="8" required="" />
+														<a href="buscadni" class="col-md-2 buscadni" style="font-size:1.3em"><i class="fa fa-search"></i></a>
 														<div class="invalid-feedback" id="error-doc">Campo Requerido</div>
 													</div>
 												</div>
@@ -42,7 +43,7 @@
 												<label class="control-label col-md-6 col-lg-6 align-self-center mb-0" for="apellidos">Apellidos:</label>
 												<div class="col-md-4 col-lg-4">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm mayusc" name="apellidos" id="apellidos" 
+														<input type="text" class="form-control form-control-sm mayusc desha" name="apellidos" id="apellidos" 
 															placeholder="Apellidos" value="" required="" />
 														<div class="invalid-feedback" id="error-razon">Campo Requerido</div>
 													</div>
@@ -52,7 +53,7 @@
 												<label class="control-label col-md-6 col-lg-6 align-self-center mb-0" for="nombres">Nombres:</label>
 												<div class="col-md-4 col-lg-4">
 													<div class="row">
-														<input type="text" class="form-control form-control-sm mayusc" name="nombres" id="nombres" 
+														<input type="text" class="form-control form-control-sm borra mayusc desha" name="nombres" id="nombres" 
 															placeholder="Nombres" value="" required="" />
 														<div class="invalid-feedback" id="error-razon">Campo Requerido</div>
 													</div>
@@ -87,9 +88,8 @@
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
 												<select class="form-control form-control-sm" name="sexo" id="sexo" required="" >
-													<option value="">-- Seleccione --</option>
-													<option value="1">Femenino</option>
 													<option value="2">Masculino</option>
+													<option value="1">Femenino</option>
 												</select>
 												<div class="invalid-feedback">Campo Requerido</div>
 											</div>
@@ -100,7 +100,6 @@
 										<div class="col-md-6 col-lg-3">
 											<div class="row">
 												<select class="form-control form-control-sm" name="edo" id="edo" required="" >
-													<option value="">-- Seleccione --</option>
 											<?
 												foreach($edo as $row):	?>
 													<option value="<?=$row->idestadocivil;?>"><?=$row->estado_civil;?></option>

@@ -176,36 +176,44 @@ class Main extends CI_Controller
 		
 		echo json_encode(array('data' => json_decode($result),'status' => $code));
 	}
-	public function consultadni()
+	public function dniajax()
 	{
-		$user = 'lfernandez';
-		$pass = 'Ole220522';
+		$data = null; $user = 'lfernandez'; $pass = 'Ole220522'; $e = 0; $status = 500;
 		$url = 'https://sireed.minsa.gob.pe/doLogin';
 		$con = 'https://sireed.minsa.gob.pe/brigadistas/curl';
-
+		$tipo = $this->input->post('tipo'); $doc = $this->input->post('doc');
+		
+		//Seteamos el valor de la url
 		$ch = curl_init($url);
+		//Activamos el retorno de la info consultada
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		//Activamos el seguimiento de la solicitud (status)
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		//Seteamos el post como metodo de envío de los valores
 		curl_setopt($ch, CURLOPT_POST, true);
+		//Enviamos los campos necesarios por post
 		curl_setopt($ch, CURLOPT_POSTFIELDS, "usuario=$user&key=$pass");
-		//curl_setopt($ch, CURLOPT_USERPWD, "$pass:$user");
+		//Guardamos la sesion ficticia en una cookie
 		curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__.'/cookies.txt');
+		//Ejecutamos el curl y traemos la data requerida
 		curl_exec($ch);
-		if($error = curl_error($ch)){
-			die ($error);
-		}
+		//En caso de error salimos de la funcion e imprimimos el mensaje de error
+		if($error = curl_error($ch)) $status = $error->code; /*die($error);*/
+		
 		curl_setopt($ch, CURLOPT_URL, $con);
-		curl_setopt($ch, CURLOPT_POSTFIELDS,
-			"type=01&document=42545573");
+		curl_setopt($ch, CURLOPT_POSTFIELDS, "type=$tipo&document=$doc");
 		curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__.'/cookies.txt');
 		$res = curl_exec($ch);
-		if($error = curl_error($ch)){
-			die ($error);
-		}
+		if($error = curl_error($ch)) $status = $error->code;
+		
 		if(curl_getinfo($ch, CURLINFO_HTTP_CODE) === 200){
-			$data = json_decode($res);
-			print_r($data->data->attributes);
+			$d = json_decode($res);
+			if(isset($d->data)){ $data['data'] = $d->data; $status = 200; }
 		}
+		
 		curl_close( $ch );
+		$data['status'] = $status;
+		
+		echo json_encode($data);
 	}
 }

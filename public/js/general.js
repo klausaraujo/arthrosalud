@@ -1,4 +1,5 @@
 let btnCancelar = $('.btn-cancelar'), inputs = document.querySelectorAll( '.inputfile' );
+let sexoText = $('#sexo option').clone(), edoText = $('#edo option').clone();
 
 $(document).ready(function (){
 	setTimeout(function () { $('.alert').hide('slow'); }, 2500);
@@ -41,6 +42,7 @@ function ceros( number, width ){
 }
 
 $('.tipodoc').bind('change',function(e){
+	$('form').removeClass('was-validated');
 	if(this.value === '1') $('.numcurl').prop('maxlength',8);
 	else if(this.value === '2') $('.numcurl').prop('maxlength',9);
 	
@@ -58,6 +60,50 @@ $('.tipodoc').bind('change',function(e){
 		$('.nombres').removeAttr('readonly'), $('.nombres').focus(), $('.btn_curl').addClass('disabled'), $('.btn_ruc').addClass('disabled'), $('.ruc').attr('readonly', true);
 		$('.numcurl').attr('readonly', true);
 	}
+});
+$('.buscadni').bind('click', function(){
+	event.preventDefault();
+	$('form').removeClass('was-validated');
+	let tipo = '01', nro = '', a = this;
+	if($('.tpdoc').val() === '2') tipo = '03';
+	else if($('.tpdoc').val() === '1') tipo = '01';
+	
+	$('.desha').val('');
+	$('.desha').prop('readonly',false);
+	$('#sexo').html(sexoText);
+	$('#edo').html(edoText);
+	$('#sexo').val(2);
+	$('#edo').val(1);
+	
+	$.ajax({
+		data: {tipo: tipo, doc: $('.numerodoc').val()},
+			url: base_url + 'parametros/curlajax',
+			method: 'POST',
+			dataType: 'JSON',
+			beforeSend: function() {
+				$(a).html('<i class="fas fa-spinner fa-pulse"></i>');
+		},
+		success: function(data){
+			$(a).html('<i class="fa fa-search"></i>');
+			let hoy = new Date(Date.now()), hoydia = '', hoymes = '', hoyanio = '';
+			hoymes = String(hoy.getMonth()).length < 2? '0'+(hoy.getMonth()+1) : (hoy.getMonth()+1);
+			hoydia = String(hoy.getDate()).length < 2? '0'+hoy.getDate() : hoy.getDate();
+			hoyanio = hoy.getFullYear();
+			$('#fechanac').val(hoyanio+'-'+hoymes+'-'+hoydia);
+			if(parseInt(data.status) === 200){
+				let d = data.data.attributes, sexo = d.sexo==='1'? 2 : 1;
+				$('#apellidos').val(d.apellido_paterno+' '+d.apellido_materno);
+				$('#nombres').val(d.nombres);
+				$('#fechanac').val(d.fecha_nacimiento);
+				$('#sexo').val(sexo);
+				$('#sexo').html($('#sexo option[value="'+$('#sexo').val()+'"]')[0]);
+				$('#edo').val(d.estado_civil);
+				$('#edo').html($('#edo option[value="'+$('#edo').val()+'"]')[0]);
+				$('.desha').prop('readonly',true);
+			}
+		}
+	});
+	
 });
 
 $('.moneda').bind('input',function(e){
@@ -308,7 +354,7 @@ $('.dis1').change(function(){
 });
 $('.tpdoc').bind('change',function(){
 	$('.numerodoc').val('');
-	if(!$('.numerodoc').hasClass('num')) $('.numerodoc').addClass('num'), alert('no tiene');
+	if(!$('.numerodoc').hasClass('num')) $('.numerodoc').addClass('num');
 	
 	if(this.value === '1') $('.numerodoc').prop('maxlength',8), $('.numerodoc').prop('minlength',8);
 	else if(this.value === '2') $('.numerodoc').prop('maxlength',9), $('.numerodoc').prop('minlength',9);
@@ -316,4 +362,16 @@ $('.tpdoc').bind('change',function(){
 	else if(this.value === '4'){
 		$('.numerodoc').prop('maxlength',15), $('.numerodoc').prop('minlength',15), $('.numerodoc').removeClass('num');
 	}
+	$('.desha').prop('readonly',false);
+	$('.desha').val('');
+	$('#sexo').html(sexoText);
+	$('#edo').html(edoText);
+	$('#sexo').val(2);
+	$('#edo').val(1);
+	let hoy = new Date(Date.now()), hoydia = '', hoymes = '', hoyanio = '';
+	hoymes = String(hoy.getMonth()).length < 2? '0'+(hoy.getMonth()+1) : (hoy.getMonth()+1);
+	hoydia = String(hoy.getDate()).length < 2? '0'+hoy.getDate() : hoy.getDate();
+	hoyanio = hoy.getFullYear();
+	$('#fechanac').val(hoyanio+'-'+hoymes+'-'+hoydia);
+	$('form').removeClass('was-validated');
 });
