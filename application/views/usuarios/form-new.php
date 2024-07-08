@@ -27,7 +27,7 @@
 												<div class="row">
 													<input type="text" class="form-control numerodoc num numcurl col-md-10" maxlength="8" 
 														minlength="8" name="doc" id="doc" autocomplete="off" placeholder="Nro. Documento" required="" />
-													<a href="buscadni" class="col-md-2 buscadni" style="font-size:1.5em"><i class="fa fa-search"></i></a>
+													<a href="<?=base_url()?>parametros/curlajax" class="col-md-2 buscadni" style="font-size:1.5em"><i class="fa fa-search"></i></a>
 													<div class="invalid-feedback" id="error-doc">Documento requerido</div>
 												</div>
 											</div>
