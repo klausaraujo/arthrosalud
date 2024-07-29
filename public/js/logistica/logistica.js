@@ -1,4 +1,4 @@
-let grillappal = null;
+let grillappal = null, tablaProveedores = null;
 
 $(document).ready(function (){
 	if(segmento2 === 'proveedores' || segmento2 == ''){
@@ -146,7 +146,181 @@ $(document).ready(function (){
 				{title:'Acciones',targets: 0},{title:'Descripci&oacute;n',targets: 1},{title:'U.M',targets: 2},{title:'Status',targets: 3},
 			], order: [],
 		});
+	}else if(segmento2 === 'gentrada' && segmento3 == ''){
+		grillappal = $('#tablaIngresos').DataTable({
+			ajax: {
+				url: base_url + 'logistica/gentrada/lista',
+			},
+			bAutoWidth:false, bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+			columns:[
+				{
+					data: null,
+					orderable: false,
+					render: function(data){
+						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
+						let hrefEdit = 'href="'+base_url+'logistica/gentrada/editar?id='+data.idguia+'"';
+						let hrefAnular = 'href="'+base_url+'logistica/gentrada/anular?id='+data.idguia+'"';
+						let btnAccion =
+						'<div class="btn-group">' +
+						/* Boton de edicion */
+						'<a title="Editar" '+(data.activo === '1' && btnEditServ? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditServ)?
+							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a></div>';
+						/* Boton anular guia 
+						'<a title="Anular Guia" '+(data.activo === '1' && btnAnularServ? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnularServ)
+							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';*/
+						return btnAccion;
+					}
+				},
+				{ data: 'numero',render: function(data){ return ceros(data,7); } },
+				{
+					data: 'fecha',
+					render: function(data){
+						return formatoFecha(new Date(data), 'dd/mm/YYYY');
+					}
+				},{ data: 'tipo_movimiento' },{ data: 'razon_social' },{ data: 'tipo_comprobante' },{ data: 'numero_comprobante' },
+			],
+			columnDefs:[
+				{title:'Acciones',targets: 0},{title:'Nro. Gu&iacute;a',targets: 1},{title:'Fecha Gu&iacute;a',targets: 2},
+				{title:'Movimiento',targets: 3},{title:'Proveedor',targets: 4},{title:'Tipo Comprob.',targets: 5},{title:'Nro. Comprob.',targets: 6},
+			], order: [],
+		});
+	}else if(segmento2 === 'gsalida' && segmento3 == ''){
+		grillappal = $('#tablaSalidas').DataTable({
+			ajax: {
+				url: base_url + 'logistica/gsalida/lista',
+			},
+			bAutoWidth:false, bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+			columns:[
+				{
+					data: null,
+					orderable: false,
+					render: function(data){
+						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
+						let hrefEdit = 'href="'+base_url+'logistica/gsalida/editar?id='+data.idguia+'"';
+						//let hrefAnular = 'href="'+base_url+'logistica/gsalida/anular?id='+data.idguia+'"';
+						let btnAccion =
+						'<div class="btn-group">' +
+						/* Boton de edicion */
+						'<a title="Editar" '+(data.activo === '1' && btnEditServ? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditServ)?
+							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a></div>';
+						/* Boton anular guia 
+						'<a title="Anular Guia" '+(data.activo === '1' && btnAnularServ? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnularServ)
+							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>*/;
+						return btnAccion;
+					}
+				},
+				{ data: 'numero',render: function(data){ return ceros(data,7); } },
+				{
+					data: 'fecha',
+					render: function(data){
+						return formatoFecha(new Date(data), 'dd/mm/YYYY');
+					}
+				},
+				{ data: 'tipo_movimiento' },{ data: 'razon_social' },{ data: 'tipo_comprobante' },{ data: 'numero_comprobante' },
+			],
+			columnDefs:[
+				{title:'Acciones',targets: 0},{title:'Nro. Gu&iacute;a',targets: 1},{title:'Fecha Gu&iacute;a',targets: 2},
+				{title:'Movimiento',targets: 3},{title:'Proveedor',targets: 4},{title:'Tipo Comprob.',targets: 5},{title:'Nro. Comprob.',targets: 6},
+			], order: [],
+		});
 	}
+	
+	if(segmento === 'logistica' && (segmento2 === 'gentrada' || segmento2 === 'gsalida') && (segmento3 === 'nuevo' || segmento3 === 'editar')){
+		/*Datatable serverside de proveedores*/
+		$('#tablaProveedores').DataTable({
+			pageLength: 5,
+			processing: true,
+			serverSide: true,
+			lengthMenu:[[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, 'Todas']],
+			ajax:{
+				url: base_url + 'logistica/buscaproveedor',
+			type: 'GET',
+				error: function(){
+					$("#post_list_processing").css('display','none');
+				}
+			},
+			columns:[
+				{ data: 0 },{ data: 1 },{ data: 2 },{ data: 3 },{ data: 4, visible: false },{ data: 5 },{ data: 6 },
+				{
+					data: 7,
+					render: function(data){
+						let a = {'1':'Activo','0':'Anulado'};
+						let valor = '-';
+						for(let k in a){ if(data === k) valor = a[k]; }
+						return valor; 
+					}
+				},
+			],
+			dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
+			colReorder: { order: [ 8, 7, 6, 5, 4, 3, 2, 1, 0 ] }, language: lngDataTable,
+		});
+		
+		/*Datatable de articulos elegidos*/
+		grillappal = $('#tablaArticulos').DataTable({
+			ajax: {
+				url: base_url + 'logistica/articulosguias',
+				type: 'POST',
+				data: function(d){
+					d.tabla = $('#tabla').val();
+					d.idguia = $('#idguia').val();
+				}
+			},
+			bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+			columns:[
+				{
+					data: null, orderable: false,
+					render: function(data){
+						let btnAccion =
+						'<div class="btn-group">'+
+							'<a title="Remover" href="borrar" class="bg-danger btnTable remover">'+
+							'<i class="fa fa-trash-o" aria-hidden="true" style="padding:5px"></i></a>'+
+						'</div>';
+						return btnAccion;
+					}
+				},
+				{ data: 'idarticulo' },{ data: 'descripcion' },
+				{ data: 'cantidad', render: function(data){ return formatMoneda(data); } },
+				{ data: 'costo', render: function(data){ return formatMoneda(data); } },
+				{ data: 'fecha_vencimiento', render: function(data){ return formatoFecha(new Date(data), 'dd/mm/YYYY'); } },
+				{ data: 'numero_lote' },{ data: 'activo' }
+			],
+			columnDefs:[
+				{ title: 'Acciones', targets: 0 },{ title: 'idarticulo', targets: 1, visible: false },
+				{ title: 'Art&iacute;culo', targets: 2 },{ title: 'Cantidad', targets: 3 },{ title: 'Costo', targets: 4 },
+				{ title: 'Fecha Venc.', targets: 5 },{ title: 'Nro. Lote', targets: 6 },{ title: 'Status', targets: 7, visible: false }
+			],order: [],dom: 'tp',
+		});
+		
+		/*Datatable serverside de articulos*/
+		$('#tablaArtServer').DataTable({
+			pageLength: 5,
+			processing: true,
+			serverSide: true,
+			lengthMenu:[[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, 'Todas']],
+			ajax:{
+				url: base_url + 'logistica/buscaarticulos',
+			type: 'GET',
+				error: function(){
+					$("#post_list_processing").css('display','none');
+				}
+			},
+			columns:[
+				{ data: 0 },{ data: 1 },{ data: 2 },
+				{
+					data: 3,
+					render: function(data){
+						let a = {'1':'Activo','0':'Anulado'};
+						let valor = '-';
+						for(let k in a){ if(data === k) valor = a[k]; }
+						return valor; 
+					}
+				},
+				{ data: 4, visible: false }
+			],
+			dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
+			colReorder: { order: [ 4, 3, 2, 1, 0 ] }, language: lngDataTable,
+		});
+	}	
 });
 
 $('.upload-button').bind('click',function(e){ $('.file-upload').trigger('click'); });
@@ -174,4 +348,77 @@ $('.file-upload').bind('change',function(){
 		imgperfil.attr( 'src', img );
 		perfiltop.attr( 'src', img );
 	});*/	
+});
+
+/*Eliminar las validaciones de los formularios*/
+$('select').bind('change',function(){ $('.was-validated').removeClass('was-validated'); });
+$('input').bind('blur',function(){ $('.was-validated').removeClass('was-validated'); });
+
+/*Cambio de Empresa y almacen*/
+$('.idempresa').bind('change', function(){
+	$.ajax({
+		data: { idempresa: this.value },
+		url: base_url + 'logistica/findalmacenes',
+		method: 'POST',
+		dataType: 'JSON',
+		beforeSend: function(){ $('.almacen').html('<option> Cargando...</option>'); },
+		success: function (data) {
+			let html = '';
+			if(segmento3 !== 'editar') html = '<option value="">-- Seleccione --</option>';
+			if((segmento2 === 'gentrada' || segmento2 === 'gsalida') && segmento3 == '') grillappal.ajax.reload();
+			
+			$.each(data, function (i, e){ html += '<option value="' + e.idalmacen + '">' + e.nombre_almacen + '</option>'; });
+			$('.almacen').html(html);
+		}
+	});
+});
+
+/*Accion del click en la tabla proveedores*/
+$('#tablaProveedores').on('click','tr',function(){
+	let data = $('#tablaProveedores').DataTable().row( this ).data();
+	$('#idproveedor').val(data[4]);
+	$('#proveedor').val(data[1]);
+	//$('#tablaProveedores').DataTable().ajax.reload();
+	$('#modalProveedores').modal('hide');
+});
+
+/*Eliminar fila de la tabla al hacer click*/
+$('#tablaArticulos').bind('click','a',function(e){
+	let t = e.target, a = $(t).parents('a');
+	if(a.hasClass('remover')){
+		event.preventDefault();
+		$('#tablaArticulos').DataTable().row($(a).parents('tr')).remove().draw();
+		if(!$('#tablaArticulos').DataTable().rows().count()) $('[type="submit"]').addClass('disabled');
+		else{
+			let d = $('#tablaArticulos').DataTable().data().toArray();
+			$('#json').val(JSON.stringify(d));
+		}
+	}
+});
+
+/*Accion del click en la tabla Articulos del servidor*/
+$('#tablaArtServer').on('click','tr',function(){
+	let data = $('#tablaArtServer').DataTable().row( this ).data();
+	$('#idarticulo').val(data[4]);
+	$('#articulo').val(data[1]);
+	//$('#tablaArtServer').DataTable().ajax.reload();
+	$('#modalArticulos').modal('hide');
+});
+
+/*Click agregar articulo*/
+$('#agregararticulo').bind('click', function(){
+	if($('#idarticulo').val() !== '' && $('#cantidad').val() !== '' && $('#costo').val() !== '' && $('#nrolote').val() !== ''){
+		let json = [{idarticulo: $('#idarticulo').val(),descripcion: $('#articulo').val(),cantidad: $('#cantidad').val(),
+			costo: $('#costo').val(),fecha_vencimiento: $('#fechaven').val(),numero_lote: $('#nrolote').val(),activo: 1}];
+		$('#tablaArticulos').DataTable().rows.add(json).draw();
+		let d = $('#tablaArticulos').DataTable().data().toArray();
+		$('#json').val(JSON.stringify(d));
+		$('[type="submit"]').removeClass('disabled');
+	}
+});
+
+/*Accion al cerrar los modales*/
+$('.modal').on('hidden.bs.modal',function(e){
+	if(this.id === 'modalArticulos') $('#tablaArtServer').DataTable().ajax.reload();
+	if(this.id === 'modalProveedores') $('#tablaProveedores').DataTable().ajax.reload();
 });

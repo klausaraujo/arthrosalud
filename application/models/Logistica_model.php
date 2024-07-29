@@ -29,6 +29,39 @@ class Logistica_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
+	public function listaingresos()
+	{
+		$this->db->select('gi.*,tp.tipo_movimiento,p.razon_social,tc.tipo_comprobante');
+		$this->db->from('guia_ingreso gi');
+		$this->db->join('tipo_movimiento tp','gi.idtipomovimiento=tp.idtipomovimiento');
+		$this->db->join('proveedor p','gi.idproveedor=p.idproveedor');
+		$this->db->join('tipo_comprobante tc','gi.idtipocomprobante=tc.idtipocomprobante');
+		$this->db->where(['gi.activo' => 1]);
+		$this->db->order_by('gi.numero','DESC');
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function listasalidas()
+	{
+		$this->db->select('ge.*,tp.tipo_movimiento,p.razon_social,tc.tipo_comprobante');
+		$this->db->from('guia_salida ge');
+		$this->db->join('tipo_movimiento tp','ge.idtipomovimiento=tp.idtipomovimiento');
+		$this->db->join('proveedor p','ge.idproveedor=p.idproveedor');
+		$this->db->join('tipo_comprobante tc','ge.idtipocomprobante=tc.idtipocomprobante');
+		$this->db->where(['ge.activo' => 1]);
+		$this->db->order_by('ge.numero','DESC');
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function listaarticulos($t, $where)
+	{
+		$this->db->select('ge.*,tp.descripcion');
+		$this->db->from($t.' ge');
+		$this->db->join('articulos tp','ge.idarticulo=tp.idarticulo');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
 	public function querysqlwhere($q, $t ,$where)
 	{
 		$query = $this->db->select($q)->from($t)->where($where)->get();
@@ -39,9 +72,19 @@ class Logistica_model extends CI_Model
 		$query = $this->db->select($q)->from($t)->get();
 		return $query->num_rows() > 0? $query->result() : array();
 	}
+	public function queryindividual($q,$t,$where)
+	{
+		$query = $this->db->select($q)->from($t)->where($where)->get();
+		return $query->num_rows() > 0? $query->row() : array();
+	}
 	public function registrar($t, $data)
 	{
 		if ($this->db->insert($t, $data)) return $this->db->insert_id();
+		else return 0;
+	}
+	public function registrarbatch($t, $data)
+	{
+		if ($this->db->insert_batch($t, $data)) return 1;
 		else return 0;
 	}
 	public function actualizar($t, $data, $where)
@@ -55,5 +98,9 @@ class Logistica_model extends CI_Model
 	{
 		$query = $this->db->select($q)->from($t)->where($where)->get();
 		return $query->num_rows() > 0? $query->result() : array();
+	}
+	public function borrar($t, $data)
+	{
+		return $this->db->delete($t, $data);
 	}
 }

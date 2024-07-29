@@ -7,6 +7,18 @@ $(document).ready(function (){
 	//setTimeout(function(){ $('.msg').hide('slow'); }, 3000);
 });
 
+/*Formateo de fecha*/
+function formatoFecha(fecha, formato) {
+    const map = {
+        dd: String(fecha.getUTCDate()).length < 2? '0'+fecha.getUTCDate() : fecha.getUTCDate(),
+        mm: String(fecha.getUTCMonth()+1).length < 2? '0'+(fecha.getUTCMonth()+1) : fecha.getUTCMonth()+1,
+        yy: fecha.getFullYear().toString().slice(-2),
+        YYYY: fecha.getFullYear()
+    }
+
+    return formato.replace(/dd|mm|yy|YYYY/g, matched => map[matched]);
+}
+
 Array.prototype.forEach.call( inputs, function( input )
 {
 	var label	 = input.nextElementSibling,

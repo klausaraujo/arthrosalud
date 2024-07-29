@@ -130,6 +130,12 @@
 				else if(e.idboton === '15') btnServ = true;
 				else if(e.idboton === '16') btnAnularServ = true;
 			});
+			<?
+				$d = '';
+				if(($this->uri->segment(2)==='gentrada' || $this->uri->segment(2)==='gsalida') && $this->uri->segment(3)==='editar')
+					$d = $detalle;
+			?>
+			$('#json').val(JSON.stringify(<?=$d?>));
 		</script>
 			<?	if($this->uri->segment(2) === 'proveedores'){?>
 			<script src="<?=base_url()?>public/js/mapa/map.js"></script>

@@ -36,6 +36,53 @@ class Logistica extends CI_Controller
 		//$data = json_decode(json_encode($empresas, JSON_FORCE_OBJECT));
 		echo json_encode(['data' => $servicios]);
 	}
+	public function listaingresos()
+	{
+		$this->load->model('Logistica_model');
+		$ingresos = $this->Logistica_model->listaingresos();
+		echo json_encode(['data' => $ingresos]);
+	}
+	public function listasalidas()
+	{
+		$this->load->model('Logistica_model');
+		$salidas = $this->Logistica_model->listasalidas();
+		echo json_encode(['data' => $salidas]);
+	}
+	public function findalmacenes()
+	{
+		$this->load->model('Logistica_model');
+		$almacenes = $this->Logistica_model->querysqlwhere('idalmacen,nombre_almacen','almacen',
+				['idempresa' => $this->input->post('idempresa'),'tipo_almacen' => 1,'activo' => 1]);
+		echo json_encode($almacenes);
+	}
+	public function listaProvServer()
+	{
+		$this->load->library('datatables_server_side', array(
+			'table' => 'proveedor',
+			'primary_key' => 'idproveedor',
+			'columns' => array('numero_ruc','nombre_comercial','domicilio','ubigeo','idproveedor','contacto',
+						'correo','activo'),
+			'where' => array('activo' => 1),
+		));
+		$this->datatables_server_side->process();
+	}
+	public function listaarticulosguias()
+	{
+		$this->load->model('Logistica_model');
+		$articulos = $this->Logistica_model->listaarticulos($this->input->post('tabla'),
+				['idguia' => $this->input->post('idguia'),'ge.activo' => 1]);
+		echo json_encode(['data' => $articulos]);
+	}
+	public function listaArtServer()
+	{
+		$this->load->library('datatables_server_side', array(
+			'table' => 'articulos',
+			'primary_key' => 'idarticulo',
+			'columns' => array('correlativo','descripcion','fotografia','activo','idarticulo'),
+			'where' => array('disponible_compra' => 1,'activo' => 1),
+		));
+		$this->datatables_server_side->process();
+	}
 	public function proveedores()
 	{
 		return $this->load->view('main');
@@ -47,6 +94,16 @@ class Logistica extends CI_Controller
 	public function servicios()
 	{
 		return $this->load->view('main');
+	}
+	public function entrada()
+	{
+		$data = array('detalle' => array());
+		return $this->load->view('main',$data);
+	}
+	public function salida()
+	{
+		$data = array('detalle' => array());
+		return $this->load->view('main',$data);
 	}
 	public function nuevo()
 	{
@@ -98,6 +155,54 @@ class Logistica extends CI_Controller
 			'um' => $um,
 		);
 		return $this->load->view('main', $data);
+	}
+	public function formingresos()
+	{
+		$this->load->model('Logistica_model');
+		$estab = $this->Logistica_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);		
+		$alm = null; $i = 1;
+		foreach($estab as $row):
+			if($i === 1){
+				$alm = $this->Logistica_model->querysqlwhere('idalmacen,nombre_almacen','almacen',
+						['idempresa' => $row->idempresa,'tipo_almacen' => 1,'activo' => 1]);
+				$i++;
+			}
+		endforeach;
+		
+		$mov = $this->Logistica_model->querysqlwhere('idtipomovimiento,tipo_movimiento','tipo_movimiento',['factor' => 1,'activo' => 1]);
+		$comp = $this->Logistica_model->querysqlwhere('idtipocomprobante,tipo_comprobante','tipo_comprobante',['activo' => 1]);
+		
+		$data = array(
+			'estab' => $estab,
+			'alm' => $alm,
+			'mov' => $mov,
+			'comp' => $comp,
+		);
+		return $this->load->view('main',$data);
+	}
+	public function formsalidas()
+	{
+		$this->load->model('Logistica_model');
+		$estab = $this->Logistica_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);		
+		$alm = null; $i = 1;
+		foreach($estab as $row):
+			if($i === 1){
+				$alm = $this->Logistica_model->querysqlwhere('idalmacen,nombre_almacen','almacen',
+						['idempresa' => $row->idempresa,'tipo_almacen' => 1,'activo' => 1]);
+				$i++;
+			}
+		endforeach;
+		
+		$mov = $this->Logistica_model->querysqlwhere('idtipomovimiento,tipo_movimiento','tipo_movimiento',['factor' => -1,'activo' => 1]);
+		$comp = $this->Logistica_model->querysqlwhere('idtipocomprobante,tipo_comprobante','tipo_comprobante',['activo' => 1]);
+		
+		$data = array(
+			'estab' => $estab,
+			'alm' => $alm,
+			'mov' => $mov,
+			'comp' => $comp,
+		);
+		return $this->load->view('main',$data);
 	}
 	public function regproveedor()
 	{
@@ -224,6 +329,120 @@ class Logistica extends CI_Controller
 		}
 		header('location:'.base_url().'logistica/servicios');
 	}
+	public function regentrada()
+	{
+		$this->load->model('Logistica_model');
+		$this->session->set_flashdata('claseMsg', 'alert-danger'); date_default_timezone_set('America/Lima');
+		$anio = date('Y'); $numb = 1;
+		$nro = $this->Logistica_model->queryindividual('MAX(numero) as nro','guia_ingreso',['anio' => $anio]);
+		if($nro->nro) $numb = intval($nro->nro) + 1;
+		
+		$data = array(
+			'anio' => $anio,
+			'numero' => $numb,
+			'fecha' => date('Y-m-d H:i:s'),
+			'idalmacen' => $this->input->post('almacen'),
+			'idtipomovimiento' => $this->input->post('idtipo'),
+			'idproveedor' => $this->input->post('idproveedor'),
+			'idtipocomprobante' => $this->input->post('idcomp'),
+			'serie_comprobante' => $this->input->post('serie'),
+			'numero_comprobante' => $this->input->post('nrocomp'),
+			'fecha_emision_comprobante' => date('Y-m-d H:i:s'),
+			'observaciones' => $this->input->post('obs')
+		);
+		
+		if($this->input->post('tiporegistro') === 'registrar'){
+			$this->session->set_flashdata('flashMessage', 'No se pudo registrar el detalle de la <b>Gu&iacute;a</b>');
+			if($idguia = $this->Logistica_model->registrar('guia_ingreso', $data)){
+				$detalle = json_decode($this->input->post('json'));
+				foreach($detalle as $row):
+					unset($row->descripcion);
+					$row->idguia = $idguia;
+				endforeach;
+				if($this->Logistica_model->registrarbatch('guia_ingreso_detalle', $detalle)){
+					$this->session->set_flashdata('flashMessage', 'Detalle de <b>Gu&iacute;a</b> registrado con &Eacute;xito');
+					$this->session->set_flashdata('claseMsg', 'alert-primary');
+				}
+			}
+		}elseif($this->input->post('tiporegistro') === 'editar'){
+			$this->session->set_flashdata('flashMessage', 'No se pudo actualizar la <b>Gu&iacute;a</b>');
+			unset($data['anio']);
+			unset($data['numero']);
+			unset($data['fecha']);
+			unset($data['fecha_emision_comprobante']);
+			if($this->Logistica_model->actualizar('guia_ingreso', $data, ['idguia' => $this->input->post('idguia')])){
+				if($this->Logistica_model->borrar('guia_ingreso_detalle',['idguia' => $this->input->post('idguia')])){
+					$detalle = json_decode($this->input->post('json'));
+					foreach($detalle as $row):
+						unset($row->descripcion);
+						unset($row->iddetalle);
+					endforeach;
+					if($this->Logistica_model->registrarbatch('guia_ingreso_detalle', $detalle)){
+						$this->session->set_flashdata('flashMessage', 'Detalle de <b>Gu&iacute;a</b> actualizado con &Eacute;xito');
+						$this->session->set_flashdata('claseMsg', 'alert-primary');
+					}
+				}
+			}
+		}
+		header('location:'.base_url().'logistica/gentrada');
+	}
+	public function regsalida()
+	{
+		$this->load->model('Logistica_model');
+		$this->session->set_flashdata('claseMsg', 'alert-danger'); date_default_timezone_set('America/Lima');
+		$anio = date('Y'); $numb = 1;
+		$nro = $this->Logistica_model->queryindividual('MAX(numero) as nro','guia_salida',['anio' => $anio]);
+		if($nro->nro) $numb = intval($nro->nro) + 1;
+		
+		$data = array(
+			'anio' => $anio,
+			'numero' => $numb,
+			'fecha' => date('Y-m-d H:i:s'),
+			'idalmacen' => $this->input->post('almacen'),
+			'idtipomovimiento' => $this->input->post('idtipo'),
+			'idproveedor' => $this->input->post('idproveedor'),
+			'idtipocomprobante' => $this->input->post('idcomp'),
+			'serie_comprobante' => $this->input->post('serie'),
+			'numero_comprobante' => $this->input->post('nrocomp'),
+			'fecha_emision_comprobante' => date('Y-m-d H:i:s'),
+			'observaciones' => $this->input->post('obs')
+		);
+		
+		if($this->input->post('tiporegistro') === 'registrar'){
+			$this->session->set_flashdata('flashMessage', 'No se pudo registrar el detalle de la <b>Gu&iacute;a</b>');
+			if($idguia = $this->Logistica_model->registrar('guia_salida', $data)){
+				$detalle = json_decode($this->input->post('json'));
+				foreach($detalle as $row):
+					unset($row->descripcion);
+					$row->idguia = $idguia;
+				endforeach;
+				if($this->Logistica_model->registrarbatch('guia_salida_detalle', $detalle)){
+					$this->session->set_flashdata('flashMessage', 'Detalle de <b>Gu&iacute;a</b> registrado con &Eacute;xito');
+					$this->session->set_flashdata('claseMsg', 'alert-primary');
+				}
+			}
+		}elseif($this->input->post('tiporegistro') === 'editar'){
+			$this->session->set_flashdata('flashMessage', 'No se pudo actualizar la <b>Gu&iacute;a</b>');
+			unset($data['anio']);
+			unset($data['numero']);
+			unset($data['fecha']);
+			unset($data['fecha_emision_comprobante']);
+			if($this->Logistica_model->actualizar('guia_salida', $data, ['idguia' => $this->input->post('idguia')])){
+				if($this->Logistica_model->borrar('guia_salida_detalle',['idguia' => $this->input->post('idguia')])){
+					$detalle = json_decode($this->input->post('json'));
+					foreach($detalle as $row):
+						unset($row->descripcion);
+						unset($row->iddetalle);
+					endforeach;
+					if($this->Logistica_model->registrarbatch('guia_salida_detalle', $detalle)){
+						$this->session->set_flashdata('flashMessage', 'Detalle de <b>Gu&iacute;a</b> actualizado con &Eacute;xito');
+						$this->session->set_flashdata('claseMsg', 'alert-primary');
+					}
+				}
+			}
+		}
+		header('location:'.base_url().'logistica/gsalida');
+	}
 	public function editproveedor()
 	{
 		$this->load->model('Logistica_model');
@@ -278,6 +497,62 @@ class Logistica extends CI_Controller
 			'bien' => $bien
 		);
 		return $this->load->view('main', $data);
+	}
+	public function editingresos()
+	{
+		$this->load->model('Logistica_model');
+		$guia = $this->Logistica_model->queryindividual('*','guia_ingreso',['idguia' => $this->input->get('id')]);
+		$estab = $this->Logistica_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
+		$empresa = $this->Logistica_model->queryindividual('idempresa','almacen',['idalmacen' => $guia->idalmacen]);
+		
+		$alm = $this->Logistica_model->querysqlwhere('idalmacen,nombre_almacen','almacen',
+					['idempresa' => $empresa->idempresa,'tipo_almacen' => 1,'activo' => 1]);
+		
+		$proveedor = $this->Logistica_model->queryindividual('nombre_comercial','proveedor',['idproveedor' => $guia->idproveedor]);
+		$mov = $this->Logistica_model->querysqlwhere('idtipomovimiento,tipo_movimiento','tipo_movimiento',['factor' => 1,'activo' => 1]);
+		$comp = $this->Logistica_model->querysqlwhere('idtipocomprobante,tipo_comprobante','tipo_comprobante',['activo' => 1]);
+		$detalle = $this->Logistica_model->querysqlwhere('*','guia_ingreso_detalle',['idguia' => $this->input->get('id')]);
+		
+		$data = array(
+			'estab' => $estab,
+			'alm' => $alm,
+			'mov' => $mov,
+			'comp' => $comp,
+			'guia' => $guia,
+			'emp' => $empresa,
+			'prov' => $proveedor,
+			'detalle' => json_encode($detalle),
+		);
+		
+		return $this->load->view('main',$data);
+	}
+	public function editsalidas()
+	{
+		$this->load->model('Logistica_model');
+		$guia = $this->Logistica_model->queryindividual('*','guia_salida',['idguia' => $this->input->get('id')]);
+		$estab = $this->Logistica_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
+		$empresa = $this->Logistica_model->queryindividual('idempresa','almacen',['idalmacen' => $guia->idalmacen]);
+		
+		$alm = $this->Logistica_model->querysqlwhere('idalmacen,nombre_almacen','almacen',
+					['idempresa' => $empresa->idempresa,'tipo_almacen' => 1,'activo' => 1]);
+		
+		$proveedor = $this->Logistica_model->queryindividual('nombre_comercial','proveedor',['idproveedor' => $guia->idproveedor]);
+		$mov = $this->Logistica_model->querysqlwhere('idtipomovimiento,tipo_movimiento','tipo_movimiento',['factor' => -1,'activo' => 1]);
+		$comp = $this->Logistica_model->querysqlwhere('idtipocomprobante,tipo_comprobante','tipo_comprobante',['activo' => 1]);
+		$detalle = $this->Logistica_model->querysqlwhere('*','guia_salida_detalle',['idguia' => $this->input->get('id')]);
+		
+		$data = array(
+			'estab' => $estab,
+			'alm' => $alm,
+			'mov' => $mov,
+			'comp' => $comp,
+			'guia' => $guia,
+			'emp' => $empresa,
+			'prov' => $proveedor,
+			'detalle' => json_encode($detalle),
+		);
+		
+		return $this->load->view('main',$data);
 	}
 	public function anular()
 	{

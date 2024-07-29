@@ -42,8 +42,7 @@
 								elseif($this->uri->segment(3) === 'editar') $this->load->view('parametros/form-edit');
 							}elseif($this->uri->segment(2) === 'centros') $this->load->view('parametros/centro-costos');
 						}elseif($this->uri->segment(1) === 'logistica'){
-							if($this->uri->segment(2) == '')
-								$this->load->view('logistica/proveedores');
+							if($this->uri->segment(2) == '') $this->load->view('logistica/proveedores');
 							elseif($this->uri->segment(2) === 'proveedores'){
 								if($this->uri->segment(3) == '') $this->load->view('logistica/proveedores');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('logistica/form-new');
@@ -56,7 +55,15 @@
 								if($this->uri->segment(3) == '') $this->load->view('logistica/servicios');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('logistica/form-servicios');
 								elseif($this->uri->segment(3) === 'editar') $this->load->view('logistica/servicios-edit');
-							}
+							}elseif($this->uri->segment(2) === 'gentrada'){
+								if($this->uri->segment(3) == '') $this->load->view('logistica/ingresos');
+								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('logistica/form-ingresos');
+								elseif($this->uri->segment(3) === 'editar') $this->load->view('logistica/form-ingresos-edit');
+							}elseif($this->uri->segment(2) === 'gsalida'){
+								if($this->uri->segment(3) == '') $this->load->view('logistica/salidas');
+								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('logistica/form-salidas');
+								elseif($this->uri->segment(3) === 'editar') $this->load->view('logistica/form-salidas-edit');
+							}else $this->load->view('mantenimiento');
 						}elseif($this->uri->segment(1) === 'citas'){
 							if(!strlen($this->uri->segment(2))) $this->load->view('citas/citasdash');
 							elseif($this->uri->segment(2) === 'citasprof') $this->load->view('citas/citas');
