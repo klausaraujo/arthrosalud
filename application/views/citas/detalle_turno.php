@@ -44,7 +44,7 @@
 												//Se recorre la cantidad de días del mes para crear la tabla
 												for($i = 1;$i <= $n;$i++){
 													$d = date('N',strtotime($turno->anio.'-'.$turno->idmes.'-'.$i));
-													if(date('d/m/Y',strtotime($turno->anio.'-'.$turno->idmes.'-'.$i)) < date('d/m/Y'))
+													if(time(date('d/m/Y',strtotime($turno->anio.'-'.$turno->idmes.'-'.$i))) < time(date('d/m/Y')))
 														$disabled = 'horadisabled';
 													else $disabled = '';
 													
