@@ -83,6 +83,20 @@ class Logistica extends CI_Controller
 		));
 		$this->datatables_server_side->process();
 	}
+	public function listaoc()
+	{
+		$this->load->model('Logistica_model');
+		$oc = $this->Logistica_model->listaoc();
+		//$data = json_decode(json_encode($empresas, JSON_FORCE_OBJECT));
+		echo json_encode(['data' => $oc]);
+	}
+	public function listaos()
+	{
+		$this->load->model('Logistica_model');
+		$oc = $this->Logistica_model->listaos();
+		//$data = json_decode(json_encode($empresas, JSON_FORCE_OBJECT));
+		echo json_encode(['data' => $oc]);
+	}
 	public function proveedores()
 	{
 		return $this->load->view('main');
@@ -553,6 +567,10 @@ class Logistica extends CI_Controller
 		);
 		
 		return $this->load->view('main',$data);
+	}
+	public function oc()
+	{
+		return $this->load->view('main');
 	}
 	public function anular()
 	{

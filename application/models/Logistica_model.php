@@ -62,6 +62,32 @@ class Logistica_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
+	public function listaoc()
+	{
+		$this->db->select('oc.*,e.razon_social,cc.centro_costos,p.razon_social as provnombre,tp.tipo_pago');
+		$this->db->from('orden_compra oc');
+		$this->db->join('empresa e','e.idempresa=oc.idempresa');
+		$this->db->join('centro_costos cc','cc.idcentro=oc.idcentro');
+		$this->db->join('proveedor p','p.idproveedor=oc.idproveedor');
+		$this->db->join('tipo_pago tp','tp.idtipopago=oc.idtipopago');
+		$this->db->where(['oc.activo' => 1]);
+		$this->db->order_by('oc.numero','DESC');
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function listaos()
+	{
+		$this->db->select('oc.*,e.razon_social,cc.centro_costos,p.razon_social as provnombre,tp.tipo_pago');
+		$this->db->from('orden_servicio oc');
+		$this->db->join('empresa e','e.idempresa=oc.idempresa');
+		$this->db->join('centro_costos cc','cc.idcentro=oc.idcentro');
+		$this->db->join('proveedor p','p.idproveedor=oc.idproveedor');
+		$this->db->join('tipo_pago tp','tp.idtipopago=oc.idtipopago');
+		$this->db->where(['oc.activo' => 1]);
+		$this->db->order_by('oc.numero','DESC');
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
 	public function querysqlwhere($q, $t ,$where)
 	{
 		$query = $this->db->select($q)->from($t)->where($where)->get();

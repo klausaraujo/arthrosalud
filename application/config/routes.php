@@ -121,6 +121,10 @@ $route['logistica/gsalida'] = 'logistica/salida';
 $route['logistica/gsalida/lista'] = 'logistica/listasalidas';
 $route['logistica/gsalida/nuevo'] = 'logistica/formsalidas';
 $route['logistica/gsalida/editar'] = 'logistica/editsalidas';
+$route['logistica/ocompra'] = 'logistica/oc';
+$route['logistica/ocompra/lista'] = 'logistica/listaoc';
+$route['logistica/oservicio'] = 'logistica/oc';
+$route['logistica/oservicio/lista'] = 'logistica/listaoc';
 
 $route['logistica/findalmacenes'] = 'logistica/findalmacenes';
 $route['logistica/buscaproveedor'] = 'logistica/listaProvServer';

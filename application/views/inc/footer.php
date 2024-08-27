@@ -118,7 +118,9 @@
 		<script src="<?=base_url()?>public/js/logistica/logistica.js"></script>
 		<script>
 			let botonesLog = JSON.parse('<?=$this->session->userdata('perLogistica')?>');
-			let btnEdit = false, btnAnular = false, btnEditArt = false, btnArt = false, btnAnularArt = false, btnEditServ = false, btnServ = false, btnAnularServ = false;
+			let btnEdit = false, btnAnular = false, btnEditArt = false, btnArt = false, btnAnularArt = false, btnEditServ = false;
+			let	btnServ = false, btnAnularServ = false, btnEditOC = false, btnAnulaOC = false, btnVerOC = false, btnEditOS = false, btnAnulaOS = false;
+			let btnVerOS = false;
 			
 			$.each(botonesLog,function(i,e){
 				if(e.idboton === '9') btnEdit = true;
@@ -129,6 +131,12 @@
 				else if(e.idboton === '14') btnEditServ = true;
 				else if(e.idboton === '15') btnServ = true;
 				else if(e.idboton === '16') btnAnularServ = true;
+				else if(e.idboton === '39') btnEditOC = true;
+				else if(e.idboton === '40') btnAnulaOC = true;
+				else if(e.idboton === '41') btnVerOC = true;
+				else if(e.idboton === '42') btnEditOS = true;
+				else if(e.idboton === '43') btnAnulaOS = true;
+				else if(e.idboton === '44') btnVerOS = true;
 			});
 			<?
 				$d = '';

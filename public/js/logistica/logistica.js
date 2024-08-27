@@ -223,6 +223,88 @@ $(document).ready(function (){
 				{title:'Movimiento',targets: 3},{title:'Proveedor',targets: 4},{title:'Tipo Comprob.',targets: 5},{title:'Nro. Comprob.',targets: 6},
 			], order: [],
 		});
+	}else if(segmento2 === 'ocompra' && segmento3 == ''){
+		grillappal = $('#tablaOC').DataTable({
+			ajax: {
+				url: base_url + 'logistica/ocompra/lista',
+			},
+			bAutoWidth:false, bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+			columns:[
+				{
+					data: null,
+					orderable: false,
+					render: function(data){
+						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
+						let hrefEdit = 'href="'+base_url+'logistica/ocompra/editar?id='+data.idorden+'"';
+						let hrefAnular = 'href="'+base_url+'logistica/ocompra/anular?id='+data.idorden+'"';
+						let hrefVer = 'href="'+base_url+'logistica/ocompra/veroc?id='+data.idorden+'"';
+						let btnAccion =
+						'<div class="btn-group">' +
+						/* Boton de editar OC */
+						'<a title="Editar OC" '+(data.activo === '1' && btnEditOC? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditOC)?
+							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a></div>';
+						/* Boton anular OC */ 
+						'<a title="Anular OC" '+(data.activo === '1' && btnAnulaOC? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnulaOC)
+							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
+						/* Boton ver OC */ 
+						'<a title="Ver OC" '+(data.activo === '1' && btnVerOC? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnVerOC)
+							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/evaluar_ico.png" width="20"></a></div>';
+						return btnAccion;
+					}
+				},
+				{ data: 'numero',render: function(data){ return ceros(data,7); } },
+				{
+					data: 'fecha',
+					render: function(data){ return formatoFecha(new Date(data), 'dd/mm/YYYY'); }
+				},
+				{ data: 'razon_social' },{ data: 'centro_costos' },{ data: 'provnombre' },{ data: 'tipo_pago' },
+			],
+			columnDefs:[
+				{title:'Acciones',targets: 0},{title:'Nro. Orden',targets: 1},{title:'Fecha Orden',targets: 2},
+				{title:'Empresa',targets: 3},{title:'C. Costos',targets: 4},{title:'Proveedor.',targets: 5},{title:'Tipo Pago',targets: 6},
+			], order: [],
+		});
+	}else if(segmento2 === 'oservicio' && segmento3 == ''){
+		grillappal = $('#tablaOS').DataTable({
+			ajax: {
+				url: base_url + 'logistica/oservicio/lista',
+			},
+			bAutoWidth:false, bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+			columns:[
+				{
+					data: null,
+					orderable: false,
+					render: function(data){
+						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
+						let hrefEdit = 'href="'+base_url+'logistica/oservicio/editar?id='+data.idorden+'"';
+						let hrefAnular = 'href="'+base_url+'logistica/oservicio/anular?id='+data.idorden+'"';
+						let hrefVer = 'href="'+base_url+'logistica/oservicio/veros?id='+data.idorden+'"';
+						let btnAccion =
+						'<div class="btn-group">' +
+						/* Boton de editar OC */
+						'<a title="Editar OS" '+(data.activo === '1' && btnEditOS? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditOS)?
+							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a></div>';
+						/* Boton anular OC */ 
+						'<a title="Anular OS" '+(data.activo === '1' && btnAnulaOS? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnulaOS)
+							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
+						/* Boton ver OC */ 
+						'<a title="Ver OS" '+(data.activo === '1' && btnVerOS? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnVerOS)
+							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/evaluar_ico.png" width="20"></a></div>';
+						return btnAccion;
+					}
+				},
+				{ data: 'numero',render: function(data){ return ceros(data,7); } },
+				{
+					data: 'fecha',
+					render: function(data){ return formatoFecha(new Date(data), 'dd/mm/YYYY'); }
+				},
+				{ data: 'razon_social' },{ data: 'centro_costos' },{ data: 'provnombre' },{ data: 'tipo_pago' },
+			],
+			columnDefs:[
+				{title:'Acciones',targets: 0},{title:'Nro. Orden',targets: 1},{title:'Fecha Orden',targets: 2},
+				{title:'Empresa',targets: 3},{title:'C. Costos',targets: 4},{title:'Proveedor.',targets: 5},{title:'Tipo Pago',targets: 6},
+			], order: [],
+		});
 	}
 	
 	if(segmento === 'logistica' && (segmento2 === 'gentrada' || segmento2 === 'gsalida') && (segmento3 === 'nuevo' || segmento3 === 'editar')){

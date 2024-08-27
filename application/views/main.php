@@ -63,6 +63,10 @@
 								if($this->uri->segment(3) == '') $this->load->view('logistica/salidas');
 								elseif($this->uri->segment(3) === 'nuevo') $this->load->view('logistica/form-salidas');
 								elseif($this->uri->segment(3) === 'editar') $this->load->view('logistica/form-salidas-edit');
+							}elseif($this->uri->segment(2) === 'ocompra'){
+								if($this->uri->segment(3) == '') $this->load->view('logistica/ocompra');								
+							}elseif($this->uri->segment(2) === 'oservicio'){
+								if($this->uri->segment(3) == '') $this->load->view('logistica/oservicio');								
 							}else $this->load->view('mantenimiento');
 						}elseif($this->uri->segment(1) === 'citas'){
 							if(!strlen($this->uri->segment(2))) $this->load->view('citas/citasdash');
