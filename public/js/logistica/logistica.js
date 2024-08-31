@@ -307,7 +307,8 @@ $(document).ready(function (){
 		});
 	}
 	
-	if(segmento === 'logistica' && (segmento2 === 'gentrada' || segmento2 === 'gsalida') && (segmento3 === 'nuevo' || segmento3 === 'editar')){
+	if(segmento === 'logistica' && (segmento2 === 'gentrada' || segmento2 === 'gsalida' || segmento2 === 'ocompra' || segmento2 === 'oservicio') && 
+		(segmento3 === 'nuevo' || segmento3 === 'editar')){
 		/*Datatable serverside de proveedores*/
 		$('#tablaProveedores').DataTable({
 			pageLength: 5,
@@ -370,6 +371,41 @@ $(document).ready(function (){
 				{ title: 'Acciones', targets: 0 },{ title: 'idarticulo', targets: 1, visible: false },
 				{ title: 'Art&iacute;culo', targets: 2 },{ title: 'Cantidad', targets: 3 },{ title: 'Costo', targets: 4 },
 				{ title: 'Fecha Venc.', targets: 5 },{ title: 'Nro. Lote', targets: 6 },{ title: 'Status', targets: 7, visible: false }
+			],order: [],dom: 'tp',
+		});
+		
+		/*Datatable de articulos elegidos*/
+		grillappal = $('#tablaArtOcOs').DataTable({
+			ajax: {
+				url: base_url + 'logistica/articulosocos',
+				type: 'POST',
+				data: function(d){
+					d.tabla = $('#tabla').val();
+					d.idorden = $('#idorden').val();
+				}
+			},
+			bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+			columns:[
+				{
+					data: null, orderable: false,
+					render: function(data){
+						let btnAccion =
+						'<div class="btn-group">'+
+							'<a title="Remover" href="borrar" class="bg-danger btnTable remover">'+
+							'<i class="fa fa-trash-o" aria-hidden="true" style="padding:5px"></i></a>'+
+						'</div>';
+						return btnAccion;
+					}
+				},
+				{ data: 'idarticulo' },{ data: 'descripcion' },
+				{ data: 'tipo_articulo' },{ data: 'presentacion' },
+				{ data: 'cantidad', render: function(data){ return formatMoneda(data); } },
+				{ data: 'costo', render: function(data){ return formatMoneda(data); } },{ data: 'activo' },
+			],
+			columnDefs:[
+				{ title: 'Acciones', targets: 0 },{ title: 'idarticulo', targets: 1, visible: false },
+				{ title: 'Art&iacute;culo', targets: 2 },{ title: 'Tipo Art&iacute;culo', targets: 3 },{ title: 'Presentaci&oacute;n', targets: 4 },
+				{ title: 'Cantidad', targets: 5 },{ title: 'Costo', targets: 6 },{ title: 'Status', targets: 7, visible: false }
 			],order: [],dom: 'tp',
 		});
 		
@@ -454,6 +490,23 @@ $('.idempresa').bind('change', function(){
 		}
 	});
 });
+$('.idestab').bind('change', function(){
+	$.ajax({
+		data: { idempresa: this.value },
+		url: base_url + 'logistica/findcc',
+		method: 'POST',
+		dataType: 'JSON',
+		beforeSend: function(){ $('.centro').html('<option> Cargando...</option>'); },
+		success: function (data) {
+			let html = '<option value="">-- Seleccione --</option>';
+			/*if(segmento3 !== 'editar') html = '<option value="">-- Seleccione --</option>';
+			if((segmento2 === 'gentrada' || segmento2 === 'gsalida') && segmento3 == '') grillappal.ajax.reload();*/
+			
+			$.each(data, function (i, e){ html += '<option value="' + e.idcentro + '">' + e.centro_costos + '</option>'; });
+			$('.centro').html(html);
+		}
+	});
+});
 
 /*Accion del click en la tabla proveedores*/
 $('#tablaProveedores').on('click','tr',function(){
@@ -477,6 +530,16 @@ $('#tablaArticulos').bind('click','a',function(e){
 		}
 	}
 });
+$('#tablaArtOcOs').bind('click','a',function(e){
+	let t = e.target, a = $(t).parents('a');
+	event.preventDefault();
+	$('#tablaArtOcOs').DataTable().row($(a).parents('tr')).remove().draw();
+	if(!$('#tablaArtOcOs').DataTable().rows().count()) $('[type="submit"]').addClass('disabled');
+	else{
+		let d = $('#tablaArtOcOs').DataTable().data().toArray();
+		$('#json').val(JSON.stringify(d));
+	}
+});
 
 /*Accion del click en la tabla Articulos del servidor*/
 $('#tablaArtServer').on('click','tr',function(){
@@ -494,6 +557,18 @@ $('#agregararticulo').bind('click', function(){
 			costo: $('#costo').val(),fecha_vencimiento: $('#fechaven').val(),numero_lote: $('#nrolote').val(),activo: 1}];
 		$('#tablaArticulos').DataTable().rows.add(json).draw();
 		let d = $('#tablaArticulos').DataTable().data().toArray();
+		$('#json').val(JSON.stringify(d));
+		$('[type="submit"]').removeClass('disabled');
+	}
+});
+
+/*Click agregar articulo*/
+$('#agregar').bind('click', function(){
+	if($('#idarticulo').val() !== '' && $('#cantidad').val() !== '' && $('#costo').val()){
+		let json = [{idarticulo: $('#idarticulo').val(),descripcion: $('#articulo').val(),cantidad: $('#cantidad').val(),
+			costo: $('#costo').val(),tipo_articulo: 'FARMACOS',presentacion: 'NO ESPECIFICA',activo: 1}];
+		$('#tablaArtOcOs').DataTable().rows.add(json).draw();
+		let d = $('#tablaArtOcOs').DataTable().data().toArray();
 		$('#json').val(JSON.stringify(d));
 		$('[type="submit"]').removeClass('disabled');
 	}

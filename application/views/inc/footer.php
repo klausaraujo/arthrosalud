@@ -140,7 +140,8 @@
 			});
 			<?
 				$d = '';
-				if(($this->uri->segment(2)==='gentrada' || $this->uri->segment(2)==='gsalida') && $this->uri->segment(3)==='editar')
+				if(($this->uri->segment(2)==='gentrada' || $this->uri->segment(2)==='gsalida' || $this->uri->segment(2)==='ocompra' || 
+						$this->uri->segment(2)==='oservicio') && $this->uri->segment(3)==='editar')
 					$d = $detalle;
 			?>
 			$('#json').val(JSON.stringify(<?=$d?>));

@@ -55,9 +55,12 @@ class Logistica_model extends CI_Model
 	}
 	public function listaarticulos($t, $where)
 	{
-		$this->db->select('ge.*,tp.descripcion');
+		//$this->db->db_debug = TRUE;
+		$this->db->select('ge.*,tp.descripcion,p.presentacion,t.tipo_articulo');
 		$this->db->from($t.' ge');
 		$this->db->join('articulos tp','ge.idarticulo=tp.idarticulo');
+		$this->db->join('presentacion p','p.idpresentacion=tp.idpresentacion');
+		$this->db->join('tipo_articulo t','t.idtipoarticulo=tp.idtipoarticulo');
 		$this->db->where($where);
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();

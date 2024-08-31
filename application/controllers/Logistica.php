@@ -55,6 +55,13 @@ class Logistica extends CI_Controller
 				['idempresa' => $this->input->post('idempresa'),'tipo_almacen' => 1,'activo' => 1]);
 		echo json_encode($almacenes);
 	}
+	public function findcc()
+	{
+		$this->load->model('Logistica_model');
+		$centros = $this->Logistica_model->querysqlwhere('idcentro,centro_costos','centro_costos',
+				['idempresa' => $this->input->post('idempresa'),'activo' => 1]);
+		echo json_encode($centros);
+	}
 	public function listaProvServer()
 	{
 		$this->load->library('datatables_server_side', array(
@@ -71,6 +78,13 @@ class Logistica extends CI_Controller
 		$this->load->model('Logistica_model');
 		$articulos = $this->Logistica_model->listaarticulos($this->input->post('tabla'),
 				['idguia' => $this->input->post('idguia'),'ge.activo' => 1]);
+		echo json_encode(['data' => $articulos]);
+	}
+	public function articulosocos()
+	{
+		$this->load->model('Logistica_model');
+		$articulos = $this->Logistica_model->listaarticulos($this->input->post('tabla'),
+				['idorden' => $this->input->post('idorden'),'ge.activo' => 1]);
 		echo json_encode(['data' => $articulos]);
 	}
 	public function listaArtServer()
@@ -118,6 +132,10 @@ class Logistica extends CI_Controller
 	{
 		$data = array('detalle' => array());
 		return $this->load->view('main',$data);
+	}
+	public function oc()
+	{
+		return $this->load->view('main');
 	}
 	public function nuevo()
 	{
@@ -217,6 +235,24 @@ class Logistica extends CI_Controller
 			'comp' => $comp,
 		);
 		return $this->load->view('main',$data);
+	}
+	public function ocform()
+	{
+		$this->load->model('Logistica_model');
+		$anio = $this->Logistica_model->querysqlwhere('anio','anio',['activo' => 1]);
+		$emp = $this->Logistica_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
+		$medio = $this->Logistica_model->querysqlwhere('idmediopago,medio_pago','medio_pago',['activo' => 1]);
+		$tipo = $this->Logistica_model->querysqlwhere('idtipopago,tipo_pago','tipo_pago',['activo' => 1]);
+		$mon = $this->Logistica_model->querysqlwhere('idtipomoneda,tipo_moneda','tipo_moneda',['activo' => 1]);
+		
+		$data = array(
+			'anio' => $anio,
+			'emp' => $emp,
+			'medio' => $medio,
+			'tipo' => $tipo,
+			'mon' => $mon,
+		);
+		return $this->load->view('main', $data);
 	}
 	public function regproveedor()
 	{
@@ -457,6 +493,136 @@ class Logistica extends CI_Controller
 		}
 		header('location:'.base_url().'logistica/gsalida');
 	}
+	public function regoc()
+	{
+		$this->load->model('Logistica_model');
+		$this->session->set_flashdata('claseMsg', 'alert-danger'); date_default_timezone_set('America/Lima');
+		$anio = date('Y'); $numb = 1;
+		$nro = $this->Logistica_model->queryindividual('MAX(numero) as nro','orden_compra',['anio' => $anio]);
+		if($nro->nro) $numb = intval($nro->nro) + 1;
+		
+		$data = array(
+			'anio' => $this->input->post('anio'),
+			'numero' => $numb,
+			'fecha' => $this->input->post('fecha'),
+			'idempresa' => $this->input->post('idempresa'),
+			'idcentro' => $this->input->post('centro'),
+			'idproveedor' => $this->input->post('idproveedor'),
+			'idtipopago' => $this->input->post('tpago'),
+			'idmediopago' => $this->input->post('mpago'),
+			'idtipomoneda' => $this->input->post('tmon'),
+			'observaciones' => $this->input->post('obs'),
+			'tipo_cambio' => $this->input->post('tcambio'),
+			'importe' => $this->input->post('importe'),
+			'impuesto' => $this->input->post('impuesto'),
+			'total' => $this->input->post('total'),
+		);
+		
+		if($this->input->post('tiporegistro') === 'registrar'){
+			$this->session->set_flashdata('flashMessage', 'No se pudo registrar el detalle de la <b>Orden</b>');
+			if($idorden = $this->Logistica_model->registrar('orden_compra', $data)){
+				$detalle = json_decode($this->input->post('json'));
+				foreach($detalle as $row):
+					unset($row->descripcion);
+					unset($row->presentacion);
+					unset($row->tipo_articulo);
+					$row->idorden = $idorden;
+				endforeach;
+				if($this->Logistica_model->registrarbatch('orden_compra_detalle', $detalle)){
+					$this->session->set_flashdata('flashMessage', 'Detalle de <b>Orden</b> registrado con &Eacute;xito');
+					$this->session->set_flashdata('claseMsg', 'alert-primary');
+				}
+			}
+		}elseif($this->input->post('tiporegistro') === 'editar'){
+			$this->session->set_flashdata('flashMessage', 'No se pudo actualizar la <b>Orden</b>');
+			unset($data['anio']);
+			unset($data['numero']);
+			unset($data['fecha']);
+			if($this->Logistica_model->actualizar('orden_compra', $data, ['idorden' => $this->input->post('idorden')])){
+				if($this->Logistica_model->borrar('orden_compra_detalle',['idorden' => $this->input->post('idorden')])){
+					$detalle = json_decode($this->input->post('json'));
+					foreach($detalle as $row):
+						unset($row->descripcion);
+						unset($row->presentacion);
+						unset($row->tipo_articulo);
+						unset($row->iddetalle);
+						unset($row->idorden);
+						$row->idorden = $this->input->post('idorden');
+					endforeach;
+					if($this->Logistica_model->registrarbatch('orden_compra_detalle', $detalle)){
+						$this->session->set_flashdata('flashMessage', 'Detalle de <b>Orden</b> actualizado con &Eacute;xito');
+						$this->session->set_flashdata('claseMsg', 'alert-primary');
+					}
+				}
+			}
+		}
+		header('location:'.base_url().'logistica/ocompra');
+	}
+	public function regos()
+	{
+		$this->load->model('Logistica_model');
+		$this->session->set_flashdata('claseMsg', 'alert-danger'); date_default_timezone_set('America/Lima');
+		$anio = date('Y'); $numb = 1;
+		$nro = $this->Logistica_model->queryindividual('MAX(numero) as nro','orden_servicio',['anio' => $anio]);
+		if($nro->nro) $numb = intval($nro->nro) + 1;
+		
+		$data = array(
+			'anio' => $this->input->post('anio'),
+			'numero' => $numb,
+			'fecha' => $this->input->post('fecha'),
+			'idempresa' => $this->input->post('idempresa'),
+			'idcentro' => $this->input->post('centro'),
+			'idproveedor' => $this->input->post('idproveedor'),
+			'idtipopago' => $this->input->post('tpago'),
+			'idmediopago' => $this->input->post('mpago'),
+			'idtipomoneda' => $this->input->post('tmon'),
+			'observaciones' => $this->input->post('obs'),
+			'tipo_cambio' => $this->input->post('tcambio'),
+			'importe' => $this->input->post('importe'),
+			'impuesto' => $this->input->post('impuesto'),
+			'total' => $this->input->post('total'),
+		);
+		
+		if($this->input->post('tiporegistro') === 'registrar'){
+			$this->session->set_flashdata('flashMessage', 'No se pudo registrar el detalle de la <b>Orden</b>');
+			if($idorden = $this->Logistica_model->registrar('orden_servicio', $data)){
+				$detalle = json_decode($this->input->post('json'));
+				foreach($detalle as $row):
+					unset($row->descripcion);
+					unset($row->presentacion);
+					unset($row->tipo_articulo);
+					$row->idorden = $idorden;
+				endforeach;
+				if($this->Logistica_model->registrarbatch('orden_servicio_detalle', $detalle)){
+					$this->session->set_flashdata('flashMessage', 'Detalle de <b>Orden</b> registrado con &Eacute;xito');
+					$this->session->set_flashdata('claseMsg', 'alert-primary');
+				}
+			}
+		}elseif($this->input->post('tiporegistro') === 'editar'){
+			$this->session->set_flashdata('flashMessage', 'No se pudo actualizar la <b>Orden</b>');
+			unset($data['anio']);
+			unset($data['numero']);
+			unset($data['fecha']);
+			if($this->Logistica_model->actualizar('orden_servicio', $data, ['idorden' => $this->input->post('idorden')])){
+				if($this->Logistica_model->borrar('orden_servicio_detalle',['idorden' => $this->input->post('idorden')])){
+					$detalle = json_decode($this->input->post('json'));
+					foreach($detalle as $row):
+						unset($row->descripcion);
+						unset($row->presentacion);
+						unset($row->tipo_articulo);
+						unset($row->iddetalle);
+						unset($row->idorden);
+						$row->idorden = $this->input->post('idorden');
+					endforeach;
+					if($this->Logistica_model->registrarbatch('orden_servicio_detalle', $detalle)){
+						$this->session->set_flashdata('flashMessage', 'Detalle de <b>Orden</b> actualizado con &Eacute;xito');
+						$this->session->set_flashdata('claseMsg', 'alert-primary');
+					}
+				}
+			}
+		}
+		header('location:'.base_url().'logistica/oservicio');
+	}
 	public function editproveedor()
 	{
 		$this->load->model('Logistica_model');
@@ -568,9 +734,61 @@ class Logistica extends CI_Controller
 		
 		return $this->load->view('main',$data);
 	}
-	public function oc()
+	public function editoc()
 	{
-		return $this->load->view('main');
+		$this->load->model('Logistica_model');
+		$orden = $this->Logistica_model->queryindividual('*','orden_compra',['idorden' => $this->input->get('id')]);
+		$estab = $this->Logistica_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
+		$centro = $this->Logistica_model->querysqlwhere('idcentro,centro_costos','centro_costos',['idempresa' => $orden->idempresa]);
+		$proveedor = $this->Logistica_model->queryindividual('nombre_comercial','proveedor',['idproveedor' => $orden->idproveedor]);		
+		$anio = $this->Logistica_model->querysqlwhere('anio','anio',['activo' => 1]);
+		$medio = $this->Logistica_model->querysqlwhere('idmediopago,medio_pago','medio_pago',['activo' => 1]);
+		$tipo = $this->Logistica_model->querysqlwhere('idtipopago,tipo_pago','tipo_pago',['activo' => 1]);
+		$mon = $this->Logistica_model->querysqlwhere('idtipomoneda,tipo_moneda','tipo_moneda',['activo' => 1]);
+		
+		$detalle = $this->Logistica_model->querysqlwhere('*','orden_compra_detalle',['idorden' => $this->input->get('id')]);
+		
+		$data = array(
+			'orden' => $orden,
+			'emp' => $estab,
+			'centro' => $centro,
+			'prov' => $proveedor,
+			'anio' => $anio,
+			'medio' => $medio,
+			'tipo' => $tipo,
+			'mon' => $mon,
+			'detalle' => json_encode($detalle),
+		);
+		
+		return $this->load->view('main',$data);
+	}
+	public function editos()
+	{
+		$this->load->model('Logistica_model');
+		$orden = $this->Logistica_model->queryindividual('*','orden_servicio',['idorden' => $this->input->get('id')]);
+		$estab = $this->Logistica_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
+		$centro = $this->Logistica_model->querysqlwhere('idcentro,centro_costos','centro_costos',['idempresa' => $orden->idempresa]);
+		$proveedor = $this->Logistica_model->queryindividual('nombre_comercial','proveedor',['idproveedor' => $orden->idproveedor]);		
+		$anio = $this->Logistica_model->querysqlwhere('anio','anio',['activo' => 1]);
+		$medio = $this->Logistica_model->querysqlwhere('idmediopago,medio_pago','medio_pago',['activo' => 1]);
+		$tipo = $this->Logistica_model->querysqlwhere('idtipopago,tipo_pago','tipo_pago',['activo' => 1]);
+		$mon = $this->Logistica_model->querysqlwhere('idtipomoneda,tipo_moneda','tipo_moneda',['activo' => 1]);
+		
+		$detalle = $this->Logistica_model->querysqlwhere('*','orden_servicio_detalle',['idorden' => $this->input->get('id')]);
+		
+		$data = array(
+			'orden' => $orden,
+			'emp' => $estab,
+			'centro' => $centro,
+			'prov' => $proveedor,
+			'anio' => $anio,
+			'medio' => $medio,
+			'tipo' => $tipo,
+			'mon' => $mon,
+			'detalle' => json_encode($detalle),
+		);
+		
+		return $this->load->view('main',$data);
 	}
 	public function anular()
 	{

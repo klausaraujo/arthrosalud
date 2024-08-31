@@ -123,8 +123,12 @@ $route['logistica/gsalida/nuevo'] = 'logistica/formsalidas';
 $route['logistica/gsalida/editar'] = 'logistica/editsalidas';
 $route['logistica/ocompra'] = 'logistica/oc';
 $route['logistica/ocompra/lista'] = 'logistica/listaoc';
+$route['logistica/ocompra/nuevo'] = 'logistica/ocform';
+$route['logistica/ocompra/editar'] = 'logistica/editoc';
 $route['logistica/oservicio'] = 'logistica/oc';
-$route['logistica/oservicio/lista'] = 'logistica/listaoc';
+$route['logistica/oservicio/lista'] = 'logistica/listaos';
+$route['logistica/oservicio/nuevo'] = 'logistica/ocform';
+$route['logistica/oservicio/editar'] = 'logistica/editos';
 
 $route['logistica/findalmacenes'] = 'logistica/findalmacenes';
 $route['logistica/buscaproveedor'] = 'logistica/listaProvServer';
