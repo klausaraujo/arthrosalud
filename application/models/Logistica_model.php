@@ -65,6 +65,17 @@ class Logistica_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
+	public function listaserv($t, $where)
+	{
+		$this->db->db_debug = TRUE;
+		$this->db->select('ge.*,tp.descripcion,p.descripcion as tiposervicio');
+		$this->db->from($t.' ge');
+		$this->db->join('servicios tp','ge.idservicio=tp.idservicio');
+		$this->db->join('tipo_servicio p','p.idtiposervicio=tp.idtiposervicio');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
 	public function listaoc()
 	{
 		$this->db->select('oc.*,e.razon_social,cc.centro_costos,p.razon_social as provnombre,tp.tipo_pago');
@@ -113,12 +124,12 @@ class Logistica_model extends CI_Model
 	}
 	public function registrarbatch($t, $data)
 	{
+		$this->db->db_debug = TRUE;
 		if ($this->db->insert_batch($t, $data)) return 1;
 		else return 0;
 	}
 	public function actualizar($t, $data, $where)
 	{
-		$this->db->db_debug = TRUE;
 		$this->db->where($where);
 		if($this->db->update($t, $data)) return true;
         else return false;

@@ -155,19 +155,19 @@
 										</div>
 										<div class="container-fluid row"><hr class="col-sm-12 mb-1"></div>
 										<div class="row iq-bg-primary rounded mx-1 mb-3">
-											<div class="col-12"><h5 class="text-primary">Art&iacute;culos</h5></div>
+											<div class="col-12"><h5 class="text-primary">Servicios</h5></div>
 										</div>
 										<div class="container-fluid">
 											<div class="row mb-3">
 												<div class="col-md-7 col-lg-6">
 													<div class="row">
-														<label class="control-label col-md-4 align-self-center mb-0" for="articulo">Art&iacute;culo:</label>
+														<label class="control-label col-md-4 align-self-center mb-0" for="servicio">Servicio:</label>
 														<div class="col-md-8">
 															<div class="row">
-																<input type="hidden" id="idarticulo" />
-																<input type="text" class="form-control form-control-sm col-10 mayusc" name="articulo" 
-																	id="articulo" placeholder="Artículo" readonly />
-																<a href="#" class="col-2" data-target="#modalArticulos" data-toggle="modal" title="Buscar">
+																<input type="hidden" id="idservicio" />
+																<input type="text" class="form-control form-control-sm col-10 mayusc" name="servicio" 
+																	id="servicio" placeholder="Servicio" readonly />
+																<a href="#" class="col-2" data-target="#modalServicios" data-toggle="modal" title="Buscar">
 																	<i class="fa fa-search mt-2" aria-hidden="true" style="font-size:1.3em"></i>
 																</a>
 															</div>
@@ -195,7 +195,7 @@
 													</div>
 												</div>
 												<div class="col-md-6 col-lg-2 mt-sm-2 mt-md-3">
-													<a href="javascript:void(0)" class="btn btn-sabogal" id="agregar">Agregar</a>
+													<a href="javascript:void(0)" class="btn btn-sabogal" id="agregarserv">Agregar</a>
 												</div>
 											</div>
 										</div>
@@ -243,22 +243,20 @@
 							</div>
 						</div>
 					</div>
-					<div class="modal fade" id="modalArticulos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal fade" id="modalServicios" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog modal-lg" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="myModalLabel">Elegir Art&iacute;culo</h5>
+									<h5 class="modal-title" id="myModalLabel">Elegir Servicio</h5>
 									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 								</div>
 								<div class="modal-body" style="overflow: hidden;">
 									<div class="container-fluid">
 										<div class="row">
 											<div class="col-12 mx-auto" style="overflow-x:auto">
-												<table id="tablaArtServer" class="table table-striped dt-responsive table-bordered display nowrap table-hover mb-0 mx-0" style="width:100%">
+												<table id="tablaServServer" class="table table-striped dt-responsive table-bordered display nowrap table-hover mb-0 mx-0" style="width:100%">
 													<thead>
-														<tr><th>C&oacute;digo</th><th>Descripci&oacute;n</th><th>Fotograf&iacute;a</th><th>Status</th>
-															<th>item</th>
-														</tr>
+														<tr><th>Item</th><th>Descripci&oacute;n</th><th>Tipo Servicio</th><th>Status</th></tr>
 													</thead>
 												</table>
 											</div>

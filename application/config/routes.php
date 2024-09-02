@@ -123,17 +123,22 @@ $route['logistica/gsalida/nuevo'] = 'logistica/formsalidas';
 $route['logistica/gsalida/editar'] = 'logistica/editsalidas';
 $route['logistica/ocompra'] = 'logistica/oc';
 $route['logistica/ocompra/lista'] = 'logistica/listaoc';
+$route['logistica/ocompra/articulosocos'] = 'logistica/articulosocos';
 $route['logistica/ocompra/nuevo'] = 'logistica/ocform';
 $route['logistica/ocompra/editar'] = 'logistica/editoc';
+$route['logistica/ocompra/anular'] = 'logistica/anular';
 $route['logistica/oservicio'] = 'logistica/oc';
 $route['logistica/oservicio/lista'] = 'logistica/listaos';
+$route['logistica/oservicio/articulosocos'] = 'logistica/articulosocos';
 $route['logistica/oservicio/nuevo'] = 'logistica/ocform';
 $route['logistica/oservicio/editar'] = 'logistica/editos';
+$route['logistica/oservicio/anular'] = 'logistica/anular';
 
 $route['logistica/findalmacenes'] = 'logistica/findalmacenes';
 $route['logistica/buscaproveedor'] = 'logistica/listaProvServer';
 $route['logistica/articulosguias'] = 'logistica/listaarticulosguias';
 $route['logistica/buscaarticulos'] = 'logistica/listaArtServer';
+$route['logistica/buscaservicios'] = 'logistica/listaServServer';
 
 /* Modulo de citas */
 $route['citas/pacientes'] = 'citas/pacientes';

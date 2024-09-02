@@ -82,9 +82,15 @@ class Logistica extends CI_Controller
 	}
 	public function articulosocos()
 	{
-		$this->load->model('Logistica_model');
-		$articulos = $this->Logistica_model->listaarticulos($this->input->post('tabla'),
-				['idorden' => $this->input->post('idorden'),'ge.activo' => 1]);
+		$this->load->model('Logistica_model'); $articulos = null;
+		
+		if($this->uri->segment(2) === 'ocompra')
+			$articulos = $this->Logistica_model->listaarticulos($this->input->post('tabla'),
+					['idorden' => $this->input->post('idorden'),'ge.activo' => 1]);
+		else
+			$articulos = $this->Logistica_model->listaserv($this->input->post('tabla'),
+					['idorden' => $this->input->post('idorden'),'ge.activo' => 1]);
+		
 		echo json_encode(['data' => $articulos]);
 	}
 	public function listaArtServer()
@@ -94,6 +100,16 @@ class Logistica extends CI_Controller
 			'primary_key' => 'idarticulo',
 			'columns' => array('correlativo','descripcion','fotografia','activo','idarticulo'),
 			'where' => array('disponible_compra' => 1,'activo' => 1),
+		));
+		$this->datatables_server_side->process();
+	}
+	public function listaServServer()
+	{
+		$this->load->library('datatables_server_side', array(
+			'table' => 'servicios',
+			'primary_key' => 'idservicio',
+			'columns' => array('idservicio','descripcion','idunidadmedida','activo'),
+			'where' => array('disponible_venta' => 1,'activo' => 1),
 		));
 		$this->datatables_server_side->process();
 	}
@@ -589,8 +605,7 @@ class Logistica extends CI_Controller
 				$detalle = json_decode($this->input->post('json'));
 				foreach($detalle as $row):
 					unset($row->descripcion);
-					unset($row->presentacion);
-					unset($row->tipo_articulo);
+					unset($row->tiposervicio);
 					$row->idorden = $idorden;
 				endforeach;
 				if($this->Logistica_model->registrarbatch('orden_servicio_detalle', $detalle)){
@@ -608,10 +623,8 @@ class Logistica extends CI_Controller
 					$detalle = json_decode($this->input->post('json'));
 					foreach($detalle as $row):
 						unset($row->descripcion);
-						unset($row->presentacion);
-						unset($row->tipo_articulo);
+						unset($row->tiposervicio);
 						unset($row->iddetalle);
-						unset($row->idorden);
 						$row->idorden = $this->input->post('idorden');
 					endforeach;
 					if($this->Logistica_model->registrarbatch('orden_servicio_detalle', $detalle)){
@@ -800,6 +813,10 @@ class Logistica extends CI_Controller
 			if($this->Parametros_model->actualizar('proveedor',['activo' => 0],['idproveedor'=> $this->input->get('id')])) $msg = 'Registro anulado';
 		}elseif($segmento === 'bienes' || $segmento === 'servicios'){
 			if($this->Parametros_model->actualizar('articulos',['activo' => 0],['idarticulo'=> $this->input->get('id')])) $msg = 'Registro anulado';
+		}elseif($segmento === 'ocompra'){
+			if($this->Parametros_model->actualizar('orden_compra',['activo' => 0],['idorden'=> $this->input->get('id')])) $msg = 'Registro anulado';
+		}elseif($segmento === 'oservicio'){
+			if($this->Parametros_model->actualizar('orden_servicio',['activo' => 0],['idorden'=> $this->input->get('id')])) $msg = 'Registro anulado';
 		}
 		
 		echo json_encode(['msg' => $msg]);

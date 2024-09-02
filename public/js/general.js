@@ -227,6 +227,8 @@ $('table').on('click','tr,a',function(event){
 					else if(segmento2 === 'consultorios') $('#tablaConsultorios').DataTable().ajax.reload();
 					else if(segmento2 === 'turnos') $('#tablaTurnos').DataTable().ajax.reload();
 					else if(segmento2 === 'procedimientos') $('#tablaProcedimientos').DataTable().ajax.reload();
+					else if(segmento2 === 'ocompra') $('#tablaOC').DataTable().ajax.reload();
+					else if(segmento2 === 'oservicio') $('#tablaOS').DataTable().ajax.reload();
 					$('.msg').show();
 					$('.msg').html(data.msg);
 					setTimeout(function(){ $('.msg').hide('slow'); }, 3000);

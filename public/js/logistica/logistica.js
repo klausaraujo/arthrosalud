@@ -240,15 +240,15 @@ $(document).ready(function (){
 						let hrefVer = 'href="'+base_url+'logistica/ocompra/veroc?id='+data.idorden+'"';
 						let btnAccion =
 						'<div class="btn-group">' +
-						/* Boton de editar OC */
+						/* Boton de edicion */
 						'<a title="Editar OC" '+(data.activo === '1' && btnEditOC? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditOC)?
-							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a></div>';
-						/* Boton anular OC */ 
+							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
+						/* Boton codigos servicios */
 						'<a title="Anular OC" '+(data.activo === '1' && btnAnulaOC? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnulaOC)
-							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
-						/* Boton ver OC */ 
-						'<a title="Ver OC" '+(data.activo === '1' && btnVerOC? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnVerOC)
-							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/evaluar_ico.png" width="20"></a></div>';
+							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a>'+
+						/* Boton anular servicios */
+						'<a title="Ver OC" '+(data.activo === '1' && btnVerOC? hrefVer:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnVerOC)
+							?'disabled':'')+' verpdf" '+style+'><img src="'+base_url+'public/images/iconos/pdf_ico.png" width="18"></a></div>';
 						return btnAccion;
 					}
 				},
@@ -281,19 +281,19 @@ $(document).ready(function (){
 						let hrefVer = 'href="'+base_url+'logistica/oservicio/veros?id='+data.idorden+'"';
 						let btnAccion =
 						'<div class="btn-group">' +
-						/* Boton de editar OC */
+						/* Boton de edicion */
 						'<a title="Editar OS" '+(data.activo === '1' && btnEditOS? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditOS)?
-							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a></div>';
-						/* Boton anular OC */ 
+							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
+						/* Boton codigos servicios */
 						'<a title="Anular OS" '+(data.activo === '1' && btnAnulaOS? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnulaOS)
-							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';
-						/* Boton ver OC */ 
-						'<a title="Ver OS" '+(data.activo === '1' && btnVerOS? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnVerOS)
-							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/evaluar_ico.png" width="20"></a></div>';
+							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a>'+
+						/* Boton anular servicios */
+						'<a title="Ver OS" '+(data.activo === '1' && btnVerOS? hrefVer:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnVerOS)
+							?'disabled':'')+' verpdf" '+style+'><img src="'+base_url+'public/images/iconos/pdf_ico.png" width="18"></a></div>';
 						return btnAccion;
 					}
 				},
-				{ data: 'numero',render: function(data){ return ceros(data,7); } },
+				{ data: 'numero', render: function(data){ return ceros(data,7); } },
 				{
 					data: 'fecha',
 					render: function(data){ return formatoFecha(new Date(data), 'dd/mm/YYYY'); }
@@ -373,41 +373,76 @@ $(document).ready(function (){
 				{ title: 'Fecha Venc.', targets: 5 },{ title: 'Nro. Lote', targets: 6 },{ title: 'Status', targets: 7, visible: false }
 			],order: [],dom: 'tp',
 		});
-		
-		/*Datatable de articulos elegidos*/
-		grillappal = $('#tablaArtOcOs').DataTable({
-			ajax: {
-				url: base_url + 'logistica/articulosocos',
-				type: 'POST',
-				data: function(d){
-					d.tabla = $('#tabla').val();
-					d.idorden = $('#idorden').val();
-				}
-			},
-			bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
-			columns:[
-				{
-					data: null, orderable: false,
-					render: function(data){
-						let btnAccion =
-						'<div class="btn-group">'+
-							'<a title="Remover" href="borrar" class="bg-danger btnTable remover">'+
-							'<i class="fa fa-trash-o" aria-hidden="true" style="padding:5px"></i></a>'+
-						'</div>';
-						return btnAccion;
+		if(segmento2 === 'ocompra'){
+			/*Datatable de articulos elegidos*/
+			grillappal = $('#tablaArtOcOs').DataTable({
+				ajax: {
+					url: base_url + 'logistica/ocompra/articulosocos',
+					type: 'POST',
+					data: function(d){
+						d.tabla = $('#tabla').val();
+						d.idorden = $('#idorden').val();
 					}
 				},
-				{ data: 'idarticulo' },{ data: 'descripcion' },
-				{ data: 'tipo_articulo' },{ data: 'presentacion' },
-				{ data: 'cantidad', render: function(data){ return formatMoneda(data); } },
-				{ data: 'costo', render: function(data){ return formatMoneda(data); } },{ data: 'activo' },
-			],
-			columnDefs:[
-				{ title: 'Acciones', targets: 0 },{ title: 'idarticulo', targets: 1, visible: false },
-				{ title: 'Art&iacute;culo', targets: 2 },{ title: 'Tipo Art&iacute;culo', targets: 3 },{ title: 'Presentaci&oacute;n', targets: 4 },
-				{ title: 'Cantidad', targets: 5 },{ title: 'Costo', targets: 6 },{ title: 'Status', targets: 7, visible: false }
-			],order: [],dom: 'tp',
-		});
+				bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+				columns:[
+					{
+						data: null, orderable: false,
+						render: function(data){
+							let btnAccion =
+							'<div class="btn-group">'+
+								'<a title="Remover" href="borrar" class="bg-danger btnTable remover">'+
+								'<i class="fa fa-trash-o" aria-hidden="true" style="padding:5px"></i></a>'+
+							'</div>';
+							return btnAccion;
+						}
+					},
+					{ data: 'idarticulo' },{ data: 'descripcion' },
+					{ data: 'tipo_articulo' },{ data: 'presentacion' },
+					{ data: 'cantidad', render: function(data){ return formatMoneda(data); } },
+					{ data: 'costo', render: function(data){ return formatMoneda(data); } },{ data: 'activo' },
+				],
+				columnDefs:[
+					{ title: 'Acciones', targets: 0 },{ title: 'idarticulo', targets: 1, visible: false },
+					{ title: 'Art&iacute;culo', targets: 2 },{ title: 'Tipo Art&iacute;culo', targets: 3 },{ title: 'Presentaci&oacute;n', targets: 4 },
+					{ title: 'Cantidad', targets: 5 },{ title: 'Costo', targets: 6 },{ title: 'Status', targets: 7, visible: false }
+				],order: [],dom: 'tp',
+			});
+		}else if(segmento2 === 'oservicio'){
+			/*Datatable de articulos elegidos*/
+			grillappal = $('#tablaArtOcOs').DataTable({
+				ajax: {
+					url: base_url + 'logistica/oservicio/articulosocos',
+					type: 'POST',
+					data: function(d){
+						d.tabla = $('#tabla').val();
+						d.idorden = $('#idorden').val();
+					}
+				},
+				bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
+				columns:[
+					{
+						data: null, orderable: false,
+						render: function(data){
+							let btnAccion =
+							'<div class="btn-group">'+
+								'<a title="Remover" href="borrar" class="bg-danger btnTable remover">'+
+								'<i class="fa fa-trash-o" aria-hidden="true" style="padding:5px"></i></a>'+
+							'</div>';
+							return btnAccion;
+						}
+					},
+					{ data: 'idservicio' },{ data: 'descripcion' },
+					{ data: 'tiposervicio' },{ data: 'cantidad', render: function(data){ return formatMoneda(data); } },
+					{ data: 'costo', render: function(data){ return formatMoneda(data); } },{ data: 'activo' },
+				],
+				columnDefs:[
+					{ title: 'Acciones', targets: 0 },{ title: 'idservicio', targets: 1, visible: false },
+					{ title: 'Servicio', targets: 2 },{ title: 'Tipo Servicio', targets: 3 },
+					{ title: 'Cantidad', targets: 4 },{ title: 'Costo', targets: 5 },{ title: 'Status', targets: 6, visible: false }
+				],order: [],dom: 'tp',
+			});
+		}
 		
 		/*Datatable serverside de articulos*/
 		$('#tablaArtServer').DataTable({
@@ -434,6 +469,43 @@ $(document).ready(function (){
 					}
 				},
 				{ data: 4, visible: false }
+			],
+			dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
+			colReorder: { order: [ 4, 3, 2, 1, 0 ] }, language: lngDataTable,
+		});
+		/*Datatable serverside de servicios*/
+		$('#tablaServServer').DataTable({
+			pageLength: 5,
+			processing: true,
+			serverSide: true,
+			lengthMenu:[[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, 'Todas']],
+			ajax:{
+				url: base_url + 'logistica/buscaservicios',
+			type: 'GET',
+				error: function(){
+					$("#post_list_processing").css('display','none');
+				}
+			},
+			columns:[
+				{ data: 0 },{ data: 1 },
+				{
+					data: 2,
+					render: function(data){
+						let a = {'1':'Servicio'};
+						let valor = '-';
+						for(let k in a){ if(data === k) valor = a[k]; }
+						return valor; 
+					}
+				},
+				{
+					data: 3,
+					render: function(data){
+						let a = {'1':'Activo','0':'Anulado'};
+						let valor = '-';
+						for(let k in a){ if(data === k) valor = a[k]; }
+						return valor; 
+					}
+				}
 			],
 			dom: '<"row"<"mx-auto"l><"mx-auto"f>>rtp',
 			colReorder: { order: [ 4, 3, 2, 1, 0 ] }, language: lngDataTable,
@@ -549,6 +621,14 @@ $('#tablaArtServer').on('click','tr',function(){
 	//$('#tablaArtServer').DataTable().ajax.reload();
 	$('#modalArticulos').modal('hide');
 });
+/*Accion del click en la tabla Servicios del servidor*/
+$('#tablaServServer').on('click','tr',function(){
+	let data = $('#tablaServServer').DataTable().row( this ).data();
+	$('#idservicio').val(data[0]);
+	$('#servicio').val(data[1]);
+	//$('#tablaArtServer').DataTable().ajax.reload();
+	$('#modalServicios').modal('hide');
+});
 
 /*Click agregar articulo*/
 $('#agregararticulo').bind('click', function(){
@@ -562,11 +642,22 @@ $('#agregararticulo').bind('click', function(){
 	}
 });
 
-/*Click agregar articulo*/
+/*Click agregar articulo oc*/
 $('#agregar').bind('click', function(){
 	if($('#idarticulo').val() !== '' && $('#cantidad').val() !== '' && $('#costo').val()){
 		let json = [{idarticulo: $('#idarticulo').val(),descripcion: $('#articulo').val(),cantidad: $('#cantidad').val(),
 			costo: $('#costo').val(),tipo_articulo: 'FARMACOS',presentacion: 'NO ESPECIFICA',activo: 1}];
+		$('#tablaArtOcOs').DataTable().rows.add(json).draw();
+		let d = $('#tablaArtOcOs').DataTable().data().toArray();
+		$('#json').val(JSON.stringify(d));
+		$('[type="submit"]').removeClass('disabled');
+	}
+});
+/*Click agregar servicio os*/
+$('#agregarserv').bind('click', function(){
+	if($('#idservicio').val() !== '' && $('#cantidad').val() !== '' && $('#costo').val()){
+		let json = [{idservicio: $('#idservicio').val(),descripcion: $('#servicio').val(),cantidad: $('#cantidad').val(),
+			costo: $('#costo').val(),tiposervicio: 'Servicio',activo: 1}];
 		$('#tablaArtOcOs').DataTable().rows.add(json).draw();
 		let d = $('#tablaArtOcOs').DataTable().data().toArray();
 		$('#json').val(JSON.stringify(d));
