@@ -154,8 +154,8 @@
 											</div>
 										</div>
 										<div class="container-fluid row"><hr class="col-sm-12 mb-1"></div>
-										<div class="row iq-bg-primary rounded mx-1 mb-3">
-											<div class="col-12"><h5 class="text-primary">Servicios</h5></div>
+										<div class="row iq-bg-warning rounded mx-1 mb-3">
+											<div class="col-12"><h5 class="text-warning">Servicios</h5></div>
 										</div>
 										<div class="container-fluid">
 											<div class="row mb-3">
