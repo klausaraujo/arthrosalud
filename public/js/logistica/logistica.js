@@ -248,7 +248,7 @@ $(document).ready(function (){
 							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a>'+
 						/* Boton anular servicios */
 						'<a title="Ver OC" '+(data.activo === '1' && btnVerOC? hrefVer:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnVerOC)
-							?'disabled':'')+' verpdf" '+style+'><img src="'+base_url+'public/images/iconos/pdf_ico.png" width="18"></a></div>';
+							?'disabled':'')+' verpdf" target="_blank" '+style+'><img src="'+base_url+'public/images/iconos/pdf_ico.png" width="18"></a></div>';
 						return btnAccion;
 					}
 				},
@@ -289,7 +289,7 @@ $(document).ready(function (){
 							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a>'+
 						/* Boton anular servicios */
 						'<a title="Ver OS" '+(data.activo === '1' && btnVerOS? hrefVer:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnVerOS)
-							?'disabled':'')+' verpdf" '+style+'><img src="'+base_url+'public/images/iconos/pdf_ico.png" width="18"></a></div>';
+							?'disabled':'')+' verpdf" target="_blank" '+style+'><img src="'+base_url+'public/images/iconos/pdf_ico.png" width="18"></a></div>';
 						return btnAccion;
 					}
 				},

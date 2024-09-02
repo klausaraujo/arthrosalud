@@ -821,6 +821,14 @@ class Logistica extends CI_Controller
 		
 		echo json_encode(['msg' => $msg]);
 	}
+	public function verorden()
+	{
+		if($this->uri->segment(2) === 'ocompra'){
+			
+		}elseif($this->uri->segment(2) === 'oservicio'){
+			
+		}
+	}
 	public function fileupload($file, $nmb)
 	{
 		$ext = pathinfo($file['name'],PATHINFO_EXTENSION);
