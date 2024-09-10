@@ -554,25 +554,29 @@ $('#guardar-horarios').bind('click', function(event){
 	let tr = document.querySelectorAll('.f-horas'), idturno = $('#idturno').val(), json = {}, data = [], valida = false;
 	
 	$.each($(tr),function(i,e){
-		let f = $(e).find('.fecha'), e0 = $(e).find('.e'), e1 = $(e).find('.e1'), e2 = $(e).find('.e2');
+		let f = $(e).find('.fecha'), j = 0;
+		let e1 = $(e).find('.e'), e2 = $(e).find('.e1'), e3 = $(e).find('.e2');
+		let s1 = $(e).find('.s'), s2 = $(e).find('.s1'), s3 = $(e).find('.s2');
+		let v1 = $(e).find('.v1'), v2 = $(e).find('.v2'), v3 = $(e).find('.v3');
 		
-		let s = $(e).find('.s'), s1 = $(e).find('.s1'), s2 = $(e).find('.s2');
-		let en = '', en2 = '', en3 = '', sa = '', sa2 = '', sa3 = '';
+		let en1 = '00:00', en2 = '00:00', en3 = '00:00', sa1 = '00:00', sa2 = '00:00', sa3 = '00:00';
 		
-		let sep0 = e0.val().split(':'), sep1 = s.val().split(':');
-		if(parseInt(sep1[0]) > parseInt(sep0[0]) && parseInt(sep1[1]) >= parseInt(sep0[1]) && parseInt(sep0[0]) > 0){
-			en = e0.val(), sa = s.val(), valida = true;
+		if((s1.val().split(':').reduce((p,c)=> parseInt(p) * 60 + parseInt(c)) - 
+					e1.val().split(':').reduce((p,c)=> parseInt(p) * 60 + parseInt(c))) >= parseInt($('#duracion').val())){
+			en1 = e1.val(), sa1 = s1.val(), valida = true;
 		}
-		let sep2 = e1.val().split(':'), sep3 = s1.val().split(':');
-		if(parseInt(sep3[0]) > parseInt(sep2[0]) && parseInt(sep3[1]) >= parseInt(sep2[1]) && parseInt(sep2[0]) > 0){
-			en2 = e1.val(), sa2 = s1.val(), valida = true;
+		if((s2.val().split(':').reduce((p,c)=> parseInt(p) * 60 + parseInt(c)) - 
+					e2.val().split(':').reduce((p,c)=> parseInt(p) * 60 + parseInt(c))) >= parseInt($('#duracion').val())){
+			en2 = e2.val(), sa2 = s2.val(), valida = true;
 		}
-		let sep4 = e2.val().split(':'), sep5 = s2.val().split(':');
-		if(parseInt(sep5[0]) > parseInt(sep4[0]) && parseInt(sep5[1]) >= parseInt(sep4[1]) && parseInt(sep4[0]) > 0){
-			en3 = e2.val(), sa3 = s2.val(), valida = true;
+		if((s3.val().split(':').reduce((p,c)=> parseInt(p) * 60 + parseInt(c)) - 
+					e3.val().split(':').reduce((p,c)=> parseInt(p) * 60 + parseInt(c))) >= parseInt($('#duracion').val())){
+			en3 = e3.val(), sa3 = s3.val(), valida = true;
 		}
 		if(valida){
-			data.push({idturno:idturno,fecha:f.val(),entrada1:en,salida1:sa,entrada2:en2,salida2:sa2,entrada3:en3,salida3:sa3});
+			data.push({idturno:idturno,fecha:f.val(),entrada1:en1,salida1:sa1,entrada2:en2,salida2:sa2,entrada3:en3,salida3:sa3,
+					v1:v1.val(),v2:v2.val(),v3:v3.val()});
+			console.log(data);
 		}
 		valida = false;
 	});

@@ -38,13 +38,16 @@
 													<tbody>
 												
 											<?
+												date_default_timezone_set('America/Lima');
 												$disabled = '';
 												//Nro de días del mes
 												$n = cal_days_in_month(CAL_GREGORIAN, $turno->idmes, $turno->anio);
 												//Se recorre la cantidad de días del mes para crear la tabla
 												for($i = 1;$i <= $n;$i++){
 													$d = date('N',strtotime($turno->anio.'-'.$turno->idmes.'-'.$i));
-													if(time(date('d/m/Y',strtotime($turno->anio.'-'.$turno->idmes.'-'.$i))) < time(date('d/m/Y')))
+													$v = 0;
+													
+													if(strtotime($turno->anio.'-'.$turno->idmes.'-'.$i) < strtotime(date('Y-m-d',time())))
 														$disabled = 'horadisabled';
 													else $disabled = '';
 													
@@ -59,6 +62,7 @@
 													//Sacar los horarios que ya estan asignados
 													$e = '00:00'; $e1 = '00:00'; $e2 = '00:00'; $s = '00:00'; $s1 = '00:00'; $s2 = '00:00';
 													$ce = ''; $ce1 = ''; $ce2 = ''; $cs = ''; $cs1 = ''; $cs2 = '';
+													$v1 = 0; $v2 = 0; $v3 = 0;
 													foreach($horas as $row):
 														if($row->fecha === $f){
 															$e = $row->entrada1; $e1 = $row->entrada2; $e2 = $row->entrada3;
@@ -75,7 +79,9 @@
 															$cs2 = intval($part2[0]) || intval($part2[1])? 'bg-primary' : '';
 															$ce = $cs = $row->valida1? $ce.' disabled' : $ce;
 															$ce1 = $cs1 = $row->valida2? $ce1.' disabled' : $ce1;
-															$ce2 = $cs2= $row->valida3? $ce2.' disabled' : $ce2;
+															$ce2 = $cs2 = $row->valida3? $ce2.' disabled' : $ce2;
+															$v1 = $row->valida1? 1 : 0; $v2 = $row->valida2? 1 : 0;
+															$v3 = $row->valida3? 1 : 0;
 														}
 													endforeach;
 											?>
@@ -84,12 +90,21 @@
 																<input type="hidden" name="fecha" class="fecha" value="<?=$f?>" /><?=$dia;?>
 															</td>
 															<td style="background-color: rgba(0, 0, 0, 0.06);"><?=$i;?></td>
-															<td><input type="time" class="hora e <?=$ce.' '.$disabled?>" value="<?=$e?>"/></td>
-															<td><input type="time" class="hora s <?=$cs.' '.$disabled?>" value="<?=$s?>"/></td>
-															<td><input type="time" class="hora e1 <?=$ce1.' '.$disabled?>" value="<?=$e1?>"/></td>
-															<td><input type="time" class="hora s1 <?=$cs1.' '.$disabled?>" value="<?=$s1?>"/></td>
-															<td><input type="time" class="hora e2 <?=$ce2.' '.$disabled?>" value="<?=$e2?>"/></td>
-															<td><input type="time" class="hora s2 <?=$cs2.' '.$disabled?>" value="<?=$s2?>"/></td>
+															<td>
+																<input type="time" class="hora e <?=$ce.' '.$disabled?>" value="<?=date('H:i',strtotime($e))?>"/>
+																<input type="hidden" class="v1" value="<?=$v1?>" />
+															</td>
+															<td><input type="time" class="hora s <?=$cs.' '.$disabled?>" value="<?=date('H:i',strtotime($s))?>"/></td>
+															<td>
+																<input type="time" class="hora e1 <?=$ce1.' '.$disabled?>" value="<?=date('H:i',strtotime($e1))?>"/>
+																<input type="hidden" class="v2" value="<?=$v2?>" />
+															</td>
+															<td><input type="time" class="hora s1 <?=$cs1.' '.$disabled?>" value="<?=date('H:i',strtotime($s1))?>"/></td>
+															<td>
+																<input type="time" class="hora e2 <?=$ce2.' '.$disabled?>" value="<?=date('H:i',strtotime($e2))?>"/>
+																<input type="hidden" class="v3" value="<?=$v3?>" />
+															</td>
+															<td><input type="time" class="hora s2 <?=$cs2.' '.$disabled?>" value="<?=date('H:i',strtotime($s2))?>"/></td>
 														</tr>
 											<?	}	?>
 													</tbody>

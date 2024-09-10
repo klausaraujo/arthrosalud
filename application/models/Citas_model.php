@@ -125,7 +125,6 @@ class Citas_model extends CI_Model
 	}
 	public function listardiag($where)
 	{
-		//$this->db->db_debug = TRUE;
 		$this->db->select('hd.idcie10,hd.tipo,c.cie10,c.descripcion_cie10');
 		$this->db->from('historia_clinica_atenciones_diagnostico hd');
 		$this->db->join('cie10 c','c.idcie10=hd.idcie10');
@@ -135,7 +134,6 @@ class Citas_model extends CI_Model
 	}
 	public function listarproc($where)
 	{
-		//$this->db->db_debug = TRUE;
 		$this->db->select('hp.idprocedimiento,hp.indicaciones,hp.estado,hp.avatar,p.procedimiento,tp.tipo_procedimiento');
 		$this->db->from('historia_clinica_atenciones_procedimientos hp');
 		$this->db->join('procedimiento p','p.idprocedimiento=hp.idprocedimiento');
@@ -175,7 +173,6 @@ class Citas_model extends CI_Model
 	}
 	public function atenciones($where)
 	{
-		//$this->db->db_debug = TRUE;
 		$this->db->select('h.*,DATE_FORMAT(fecha_atencion,"%d/%m/%Y") as fecha,CONCAT(p.apellidos," ",p.nombres) as nombres,e.razon_social');
 		$this->db->from('historia_clinica_atenciones h');
 		$this->db->join('profesional p','h.idprofesional=p.idprofesional');
@@ -188,7 +185,6 @@ class Citas_model extends CI_Model
 	}
 	public function diagnosticos($where)
 	{
-		//$this->db->db_debug = TRUE;
 		$this->db->select('hd.*,c.cie10,c.descripcion_cie10');
 		$this->db->from('historia_clinica_atenciones_diagnostico hd');
 		$this->db->join('cie10 c','c.idcie10=hd.idcie10');
@@ -198,7 +194,6 @@ class Citas_model extends CI_Model
 	}
 	public function proc($where)
 	{
-		//$this->db->db_debug = TRUE;
 		$this->db->select('hd.*,c.correlativo,c.procedimiento');
 		$this->db->from('historia_clinica_atenciones_procedimientos hd');
 		$this->db->join('procedimiento c','c.idprocedimiento=hd.idprocedimiento');
@@ -208,7 +203,6 @@ class Citas_model extends CI_Model
 	}
 	public function examenes($where)
 	{
-		//$this->db->db_debug = TRUE;
 		$this->db->select('hd.*,c.correlativo,c.examen_auxiliar');
 		$this->db->from('historia_clinica_atenciones_examenes hd');
 		$this->db->join('examenes_auxiliares c','c.idexamenauxiliar=hd.idexamenauxiliar');
@@ -218,7 +212,6 @@ class Citas_model extends CI_Model
 	}
 	public function indic($where)
 	{
-		//$this->db->db_debug = TRUE;
 		$this->db->select('hd.*,c.*');
 		$this->db->from('historia_clinica_atenciones_indicaciones hd');
 		$this->db->join('articulos c','c.idarticulo=hd.idarticulo');
@@ -255,7 +248,6 @@ class Citas_model extends CI_Model
 	}
 	public function validaturno($where)
 	{
-		$this->db->db_debug = TRUE;
 		$this->db->select('e.idempresa');
 		$this->db->from('turnos t');
 		$this->db->join('consultorio c','t.idconsultorio=c.idconsultorio');
@@ -281,7 +273,6 @@ class Citas_model extends CI_Model
 	}
 	public function registrar($t, $data)
 	{
-		$this->db->db_debug = TRUE;
 		if ($this->db->insert($t, $data)) return $this->db->insert_id();
 		else return 0;
 	}

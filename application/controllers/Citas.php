@@ -525,11 +525,14 @@ class Citas extends CI_Controller
 		$turno = $this->Citas_model->listaturno(['idturno' => $this->input->get('id'),'t.activo' => 1]);
 		$horas = $this->Citas_model->querysqlwhere('*','turnos_detalle',['idturno' => $this->input->get('id')]);
 		foreach($horas as $row):
-			$det = $this->Citas_model->querysqlwhere('*','citas','idpaciente <> 1 AND fecha="'.$row->fecha.'" AND entrada BETWEEN "'.$row->entrada1.'" AND "'.$row->salida1.'"');
+			$det = $this->Citas_model->querysqlwhere('*','citas','idturno="'.$this->input->get('id').'" AND 
+					idpaciente <> 1 AND fecha="'.$row->fecha.'" AND entrada BETWEEN "'.$row->entrada1.'" AND "'.$row->salida1.'"');
 			$row->valida1 = count($det)? 1 : 0;
-			$det = $this->Citas_model->querysqlwhere('*','citas','idpaciente <> 1 AND fecha="'.$row->fecha.'" AND entrada BETWEEN "'.$row->entrada2.'" AND "'.$row->salida2.'"');
+			$det = $this->Citas_model->querysqlwhere('*','citas','idturno="'.$this->input->get('id').'" AND 
+					idpaciente <> 1 AND fecha="'.$row->fecha.'" AND entrada BETWEEN "'.$row->entrada2.'" AND "'.$row->salida2.'"');
 			$row->valida2 = count($det)? 1 : 0;
-			$det = $this->Citas_model->querysqlwhere('*','citas','idpaciente <> 1 AND fecha="'.$row->fecha.'" AND entrada BETWEEN "'.$row->entrada3.'" AND "'.$row->salida3.'"');
+			$det = $this->Citas_model->querysqlwhere('*','citas','idturno="'.$this->input->get('id').'" AND 
+					idpaciente <> 1 AND fecha="'.$row->fecha.'" AND entrada BETWEEN "'.$row->entrada3.'" AND "'.$row->salida3.'"');
 			$row->valida3 = count($det)? 1 : 0;
 		endforeach;
 		return $this->load->view('main',['turno' => $turno, 'horas' => $horas]);
@@ -546,98 +549,91 @@ class Citas extends CI_Controller
 		$cons = $data->detalle->cons;
 		$prof = $data->detalle->prof;
 		$detalle = $data->data;
+		$k = 0; $j = 0; $citas = [];
 		
-		if($this->Citas_model->borrar('turnos_detalle', ['idturno' => $detalle[0]->idturno])){
-			$borracitas = false;
-			if($this->Citas_model->borrar('citas',['idturno' => $detalle[0]->idturno])) $borracitas = true;
-			foreach($detalle as $row):
-				if($this->Citas_model->registrar('turnos_detalle', $row)){
-					$msg = 'Horarios Registrados'; $j = 0;
-					// Diferencia entre las horas
-					$h1 = new DateTime($row->entrada1);
-					$h2 = new DateTime($row->salida1);
-					$dif = $h1->diff($h2);
-					$minutos = (intval($dif->format('%H')) * 60) + intval($dif->format('%i'));
-					$nrocitas = intval($minutos / intval($dura));
-					
-					for($i = 0; $i < $nrocitas; $i++){
-						$hi = $h1->format('H:i');
-						// Variable temporal para formatear la hora final
-						$ht = $h1->modify('+'.$dura.' minutes');
-						$hf = $ht->format('H:i');
-						// Array para insertar los registros en la tabla citas
-						$cita[$j] = array(
-							'idconsultorio' => $cons,
-							'iddepartamento' => $dep,
-							'idprofesional' => $prof,
-							'idpaciente' => 1,
-							'idturno' => $row->idturno,
-							'fecha' => $row->fecha,
-							'entrada' => $hi,
-							'salida' => $hf,
-						);
-						$j++;
-					}
-					
-					$h3 = new DateTime($row->entrada2);
-					$h4 = new DateTime($row->salida2);
-					$dif = $h3->diff($h4);
-					// Minutos totales entre la Ultima hora y la primera 
-					$minutos = (intval($dif->format('%H')) * 60) + intval($dif->format('%i'));
-					$nrocitas = intval($minutos / intval($dura));
-					
-					for($i = 0; $i < $nrocitas; $i++){
-						$hi = $h3->format('H:i');
-						// Variable temporal para formatear la hora final
-						$ht = $h3->modify('+'.$dura.' minutes');
-						$hf = $ht->format('H:i');
-						// Array para insertar los registros en la tabla citas
-						$cita[$j] = array(
-							'idconsultorio' => $cons,
-							'iddepartamento' => $dep,
-							'idprofesional' => $prof,
-							'idpaciente' => 1,
-							'idturno' => $row->idturno,
-							'fecha' => $row->fecha,
-							'entrada' => $hi,
-							'salida' => $hf,
-						);
-						$j++;
-					}
-					
-					$h5 = new DateTime($row->entrada3);
-					$h6 = new DateTime($row->salida3);
-					$dif = $h5->diff($h6);
-					// Minutos totales entre la Ultima hora y la primera 
-					$minutos = (intval($dif->format('%H')) * 60) + intval($dif->format('%i'));
-					// Cantidad de citas disponibles
-					$nrocitas = intval($minutos / intval($dura));
-					
-					for($i = 0; $i < $nrocitas; $i++){
-						$hi = $h5->format('H:i');
-						// Variable temporal para formatear la hora final
-						$ht = $h5->modify('+'.$dura.' minutes');
-						$hf = $ht->format('H:i');
-						// Array para insertar los registros en la tabla citas
-						$cita[$j] = array(
-							'idconsultorio' => $cons,
-							'iddepartamento' => $dep,
-							'idprofesional' => $prof,
-							'idpaciente' => 1,
-							'idturno' => $row->idturno,
-							'fecha' => $row->fecha,
-							'entrada' => $hi,
-							'salida' => $hf,
-						);
-						$j++;
-					}
-					
-					if($borracitas) $this->Citas_model->registrarbatch('citas', $cita);
+		$det_turno = $this->Citas_model->querysqlwhere('*','turnos_detalle',['idturno' => $detalle[0]->idturno]);
+		
+		foreach($det_turno as $row):
+			$det = $this->Citas_model->querysqlwhere('*','citas','idturno='.$detalle[0]->idturno.' AND idpaciente <> 1 AND fecha="'.$row->fecha.'" 
+				AND entrada BETWEEN "'.$row->entrada1.'" AND "'.$row->salida1.'"');
+			if(!count($det)){
+				$this->Citas_model->borrar('citas','idturno='.$detalle[0]->idturno.' AND 
+					fecha="'.$row->fecha.'"AND entrada BETWEEN "'.$row->entrada1.'" AND "'.$row->salida1.'"');
+			}else{ $k++; }
+			$det = $this->Citas_model->querysqlwhere('*','citas','idturno='.$detalle[0]->idturno.' AND idpaciente <> 1 AND fecha="'.$row->fecha.'" 
+				AND entrada BETWEEN "'.$row->entrada2.'" AND "'.$row->salida2.'"');
+			if(!count($det)){
+				$this->Citas_model->borrar('citas','idturno='.$detalle[0]->idturno.' AND 
+					fecha="'.$row->fecha.'"AND entrada BETWEEN "'.$row->entrada2.'" AND "'.$row->salida2.'"');
+			}else{ $k++; }
+			$det = $this->Citas_model->querysqlwhere('*','citas','idturno='.$detalle[0]->idturno.' AND idpaciente <> 1 AND fecha="'.$row->fecha.'" 
+				AND entrada BETWEEN "'.$row->entrada3.'" AND "'.$row->salida3.'"');
+			if(!count($det)){
+				$this->Citas_model->borrar('citas','idturno='.$detalle[0]->idturno.' AND 
+					fecha="'.$row->fecha.'"AND entrada BETWEEN "'.$row->entrada3.'" AND "'.$row->salida3.'"');
+			}else{ $k++; }
+			if(! $k) $this->Citas_model->borrar('turnos_detalle', ['idturno' => $detalle[0]->idturno, 'fecha' => $row->fecha]);
+		endforeach;
+		
+		foreach($detalle as $row):
+			if(intval($row->v1) || intval($row->v2) || intval($row->v3)){
+				if(! intval($row->v1)){
+					$this->Citas_model->actualizar('turnos_detalle',['entrada1'=>$row->entrada1,'salida1'=>$row->salida1],
+						['idturno' => $row->idturno,'fecha'=>$row->fecha]);
+					//funcion para obtener los horarios de las citas
+					$this->citashorarios($row->entrada1,$row->salida1,$dura,$cons,$dep,$prof,$row->idturno,$row->fecha,$citas);
 				}
-			endforeach;
-		}
+				if(! intval($row->v2)){
+					$this->Citas_model->actualizar('turnos_detalle',['entrada2'=>$row->entrada2,'salida2'=>$row->salida2],
+						['idturno' => $row->idturno,'fecha'=>$row->fecha]);
+					$this->citashorarios($row->entrada2,$row->salida2,$dura,$cons,$dep,$prof,$row->idturno,$row->fecha,$citas);
+				}
+				if(! intval($row->v3)){
+					$this->Citas_model->actualizar('turnos_detalle',['entrada3'=>$row->entrada3,'salida3'=>$row->salida3],
+						['idturno' => $row->idturno,'fecha'=>$row->fecha]);
+					$this->citashorarios($row->entrada3,$row->salida3,$dura,$cons,$dep,$prof,$row->idturno,$row->fecha,$citas);
+				}
+			}elseif(! intval($row->v1) && ! intval($row->v2) && ! intval($row->v3)){
+				unset($row->v1); unset($row->v2); unset($row->v3);
+				if($this->Citas_model->registrar('turnos_detalle', $row)){
+					$this->citashorarios($row->entrada1,$row->salida1,$dura,$cons,$dep,$prof,$row->idturno,$row->fecha,$citas);
+					$this->citashorarios($row->entrada2,$row->salida2,$dura,$cons,$dep,$prof,$row->idturno,$row->fecha,$citas);
+					$this->citashorarios($row->entrada3,$row->salida3,$dura,$cons,$dep,$prof,$row->idturno,$row->fecha,$citas);
+				}
+			}
+		endforeach;
+		
+		if($this->Citas_model->registrarbatch('citas', $citas)) $msg = 'Horarios Registrados';
+		elseif(!count($citas)) $msg = 'No hay data para Registrar';
 		
 		echo json_encode(['msg' => $msg,'id' => $detalle[0]->idturno]);
+	}
+	public function citashorarios($entrada,$salida,$dura,$cons,$dep,$prof,$idturno,$fecha,&$citas)
+	{
+		$h1 = new DateTime($entrada);
+		$h2 = new DateTime($salida);
+		$dif = $h1->diff($h2);
+		$minutos = (intval($dif->format('%H')) * 60) + intval($dif->format('%i'));
+		$nrocitas = intval($minutos / intval($dura));
+		
+		for($i = 0; $i < $nrocitas; $i++){
+			$hi = $h1->format('H:i');
+			// Variable temporal para formatear la hora final
+			$ht = $h1->modify('+'.$dura.' minutes');
+			$hf = $ht->format('H:i');
+			// Array para insertar los registros en la tabla citas
+			$citas[] = array(
+				'idconsultorio' => $cons,
+				'iddepartamento' => $dep,
+				'idprofesional' => $prof,
+				'idpaciente' => 1,
+				'idturno' => $idturno,
+				'fecha' => $fecha,
+				'entrada' => $hi,
+				'salida' => $hf,
+			);
+		}
+		return 1;
 	}
 	public function citasprof()
 	{

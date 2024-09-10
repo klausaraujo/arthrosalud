@@ -1,3 +1,4 @@
+<?ini_set('date.timezone','America/Lima');?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
