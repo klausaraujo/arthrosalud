@@ -70,9 +70,10 @@
 		<table class="atenciones" width="100%" style="margin-top:1.5em">
 			<tr><th>DESCRIPCIÓN DEL SERVICIO</th><th>CANT.</th><th>U.M</th><th>P.U</th><th>P.T</th></tr>
 		<?
-			$sumacosto = 0;
+			$sumacosto = 0; $total = 0;
 			foreach($detalle as $row):
 				$sumacosto += intval($row->cantidad) * floatval($row->costo);
+				$total += $sumacosto;
 		?>
 			<tr>
 				<td style="width:7cm"><?=$row->descripcion?></td><td style="width:1.8cm;text-align:center"><?=intval($row->cantidad)?></td>
@@ -82,7 +83,7 @@
 			</tr>
 		<?
 			endforeach;
-			
+			$subt = $total / 1.18;
 			for($i = count($detalle);$i <= 20;$i++):
 		?>
 			<tr>
@@ -103,11 +104,14 @@
 		</table>
 		<div style="width:5.8cm;margin-left:auto;padding-right:3mm">
 			<table class="atenciones" style="margin:0">
-				<tr><td style="width:1.8cm;background-color:#eaeded;font-weight:bold" align="right">SUBTOTAL:</td><td style="width:4cm">&nbsp;</td></tr>
-				<tr><td style="background-color:#eaeded;font-weight:bold" align="right">I.G.V:</td><td>&nbsp;</td></tr>
+				<tr><td style="width:1.8cm;background-color:#eaeded;font-weight:bold" align="right">SUBTOTAL:</td>
+					<td style="width:4cm" align="right"><?=number_format($subt,2,'.',',')?></td></tr>
+				<tr><td style="background-color:#eaeded;font-weight:bold" align="right">I.G.V:</td>
+					<td align="right"><?=number_format($subt * 0.18,2,'.',',')?></td></tr>
 				<tr><td style="background-color:#eaeded;font-weight:bold" align="right">ENVÍO:</td><td>&nbsp;</td></tr>
 				<tr><td style="background-color:#eaeded;font-weight:bold" align="right">&nbsp;</td><td>&nbsp;</td></tr>
-				<tr><td style="background-color:#eaeded;font-weight:bold" align="right">TOTAL:</td><td>&nbsp;</td></tr>
+				<tr><td style="background-color:#eaeded;font-weight:bold" align="right">TOTAL:</td>
+					<td align="right"><?=number_format($total,2,'.',',')?></td></tr>
 			</table>
 		</div>
 	</main>
