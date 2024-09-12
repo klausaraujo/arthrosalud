@@ -80,8 +80,7 @@
 															$ce = $cs = $row->valida1? $ce.' disabled' : $ce;
 															$ce1 = $cs1 = $row->valida2? $ce1.' disabled' : $ce1;
 															$ce2 = $cs2 = $row->valida3? $ce2.' disabled' : $ce2;
-															$v1 = $row->valida1? 1 : 0; $v2 = $row->valida2? 1 : 0;
-															$v3 = $row->valida3? 1 : 0;
+															$v1 = $row->valida1? 1 : 0; $v2 = $row->valida2? 1 : 0; $v3 = $row->valida3? 1 : 0;
 														}
 													endforeach;
 											?>

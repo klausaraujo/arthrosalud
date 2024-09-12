@@ -100,6 +100,22 @@ class Pdf extends CI_Controller
 			$this->viewpdf($html, 0);
 		}
 	}
+	public function ocospdf()
+	{
+		$this->load->model('Logistica_model');
+		$orden = null; $odetalle = null;
+		
+		if($this->uri->segment(2) === 'oservicio'){
+			$orden = $this->Logistica_model->ospdf(['idorden' => $this->input->get('id')]);
+			$odetalle = $this->Logistica_model->osdpdf(['idorden' => $this->input->get('id')]);
+		}else{
+			$orden = $this->Logistica_model->ocpdf(['idorden' => $this->input->get('id')]);
+			$odetalle = $this->Logistica_model->ocdpdf(['idorden' => $this->input->get('id')]);
+		}
+		$detalleprov = $this->Logistica_model->detprovpdf(['idproveedor' => $orden->idproveedor]);
+		$html = $this->load->view('logistica/ordenos-pdf', array('orden'=>$orden,'detalle'=>$odetalle,'detprov'=>$detalleprov), true);
+		$this->viewpdf($html, 0);
+	}
 	private function viewpdf($page, $attach)
 	{
 		//Inicializar la clase

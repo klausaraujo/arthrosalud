@@ -227,6 +227,10 @@ $(document).ready(function (){
 		grillappal = $('#tablaOC').DataTable({
 			ajax: {
 				url: base_url + 'logistica/ocompra/lista',
+				type: 'POST',
+				data: function(d){
+					d.empresa = $('#idest').val();
+				}
 			},
 			bAutoWidth:false, bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
 			columns:[
@@ -268,6 +272,10 @@ $(document).ready(function (){
 		grillappal = $('#tablaOS').DataTable({
 			ajax: {
 				url: base_url + 'logistica/oservicio/lista',
+				type: 'POST',
+				data: function(d){
+					d.empresa = $('#idest').val();
+				}
 			},
 			bAutoWidth:false, bDestroy:true, responsive:true, select:false, lengthMenu:[[10, 25, 50, 100, -1], [10, 25, 50, 100, 'Todas']], language: lngDataTable,
 			columns:[
@@ -278,7 +286,7 @@ $(document).ready(function (){
 						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
 						let hrefEdit = 'href="'+base_url+'logistica/oservicio/editar?id='+data.idorden+'"';
 						let hrefAnular = 'href="'+base_url+'logistica/oservicio/anular?id='+data.idorden+'"';
-						let hrefVer = 'href="'+base_url+'logistica/oservicio/veros?id='+data.idorden+'"';
+						let hrefVer = 'href="'+base_url+'logistica/oservicio/ospdf?id='+data.idorden+'"';
 						let btnAccion =
 						'<div class="btn-group">' +
 						/* Boton de edicion */
@@ -576,6 +584,8 @@ $('.idestab').bind('change', function(){
 			
 			$.each(data, function (i, e){ html += '<option value="' + e.idcentro + '">' + e.centro_costos + '</option>'; });
 			$('.centro').html(html);
+			$('#tablaOC').DataTable().ajax.reload();
+			$('#tablaOS').DataTable().ajax.reload();
 		}
 	});
 });

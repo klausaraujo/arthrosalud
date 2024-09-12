@@ -76,7 +76,7 @@ class Logistica_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
-	public function listaoc()
+	public function listaoc($where)
 	{
 		$this->db->select('oc.*,e.razon_social,cc.centro_costos,p.razon_social as provnombre,tp.tipo_pago');
 		$this->db->from('orden_compra oc');
@@ -84,12 +84,12 @@ class Logistica_model extends CI_Model
 		$this->db->join('centro_costos cc','cc.idcentro=oc.idcentro');
 		$this->db->join('proveedor p','p.idproveedor=oc.idproveedor');
 		$this->db->join('tipo_pago tp','tp.idtipopago=oc.idtipopago');
-		$this->db->where(['oc.activo' => 1]);
+		$this->db->where($where);
 		$this->db->order_by('oc.numero','DESC');
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
-	public function listaos()
+	public function listaos($where)
 	{
 		$this->db->select('oc.*,e.razon_social,cc.centro_costos,p.razon_social as provnombre,tp.tipo_pago');
 		$this->db->from('orden_servicio oc');
@@ -97,8 +97,59 @@ class Logistica_model extends CI_Model
 		$this->db->join('centro_costos cc','cc.idcentro=oc.idcentro');
 		$this->db->join('proveedor p','p.idproveedor=oc.idproveedor');
 		$this->db->join('tipo_pago tp','tp.idtipopago=oc.idtipopago');
-		$this->db->where(['oc.activo' => 1]);
+		$this->db->where($where);
 		$this->db->order_by('oc.numero','DESC');
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function ospdf($where)
+	{
+		//$this->db->db_debug = TRUE;
+		$this->db->select('os.*,e.ruc,e.nombre_comercial,e.domicilio,p.numero_ruc,p.razon_social,p.domicilio as dom,p.celular,p.correo');
+		$this->db->from('orden_servicio os');
+		$this->db->join('empresa e','e.idempresa=os.idempresa');
+		$this->db->join('proveedor p','p.idproveedor=os.idproveedor');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->row() : array();
+	}
+	public function osdpdf($where)
+	{
+		$this->db->select('osd.*,s.descripcion,u.unidad_medida');
+		$this->db->from('orden_servicio_detalle osd');
+		$this->db->join('servicios s','s.idservicio=osd.idservicio');
+		$this->db->join('unidad_medida u','u.idunidadmedida=s.idunidadmedida');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function detprovpdf($where)
+	{
+		$this->db->select('pc.*,b.*');
+		$this->db->from('proveedor_cuentas pc');
+		$this->db->join('banco b','b.idbanco=pc.idbanco');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function ocpdf($where)
+	{
+		//$this->db->db_debug = TRUE;
+		$this->db->select('oc.*,e.ruc,e.nombre_comercial,e.domicilio,p.numero_ruc,p.razon_social,p.domicilio as dom,p.celular,p.correo');
+		$this->db->from('orden_compra oc');
+		$this->db->join('empresa e','e.idempresa=oc.idempresa');
+		$this->db->join('proveedor p','p.idproveedor=oc.idproveedor');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->row() : array();
+	}
+	public function ocdpdf($where)
+	{
+		$this->db->select('ocd.*,a.descripcion,u.unidad_medida');
+		$this->db->from('orden_compra_detalle ocd');
+		$this->db->join('articulos a','a.idarticulo=ocd.idarticulo');
+		$this->db->join('unidad_medida u','u.idunidadmedida=a.idunidadmedida');
+		$this->db->where($where);
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}

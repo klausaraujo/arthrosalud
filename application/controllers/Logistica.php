@@ -116,16 +116,16 @@ class Logistica extends CI_Controller
 	public function listaoc()
 	{
 		$this->load->model('Logistica_model');
-		$oc = $this->Logistica_model->listaoc();
+		$oc = $this->Logistica_model->listaoc(['oc.idempresa' => $this->input->post('empresa'),'oc.activo' => 1]);
 		//$data = json_decode(json_encode($empresas, JSON_FORCE_OBJECT));
 		echo json_encode(['data' => $oc]);
 	}
 	public function listaos()
 	{
 		$this->load->model('Logistica_model');
-		$oc = $this->Logistica_model->listaos();
+		$os = $this->Logistica_model->listaos(['oc.idempresa' => $this->input->post('empresa'),'oc.activo' => 1]);
 		//$data = json_decode(json_encode($empresas, JSON_FORCE_OBJECT));
-		echo json_encode(['data' => $oc]);
+		echo json_encode(['data' => $os]);
 	}
 	public function proveedores()
 	{
@@ -151,7 +151,9 @@ class Logistica extends CI_Controller
 	}
 	public function oc()
 	{
-		return $this->load->view('main');
+		$this->load->model('Logistica_model');
+		$empresa = $this->Logistica_model->querysqlwhere('idempresa,nombre_comercial','empresa',['activo' => 1]);
+		return $this->load->view('main',['empresa' => $empresa]);
 	}
 	public function nuevo()
 	{
@@ -514,7 +516,7 @@ class Logistica extends CI_Controller
 		$this->load->model('Logistica_model');
 		$this->session->set_flashdata('claseMsg', 'alert-danger'); date_default_timezone_set('America/Lima');
 		$anio = date('Y'); $numb = 1;
-		$nro = $this->Logistica_model->queryindividual('MAX(numero) as nro','orden_compra',['anio' => $anio]);
+		$nro = $this->Logistica_model->queryindividual('MAX(numero) as nro','orden_compra',['anio' => $anio,'idempresa' => $this->input->post('idempresa')]);
 		if($nro->nro) $numb = intval($nro->nro) + 1;
 		
 		$data = array(
@@ -579,7 +581,7 @@ class Logistica extends CI_Controller
 		$this->load->model('Logistica_model');
 		$this->session->set_flashdata('claseMsg', 'alert-danger'); date_default_timezone_set('America/Lima');
 		$anio = date('Y'); $numb = 1;
-		$nro = $this->Logistica_model->queryindividual('MAX(numero) as nro','orden_servicio',['anio' => $anio]);
+		$nro = $this->Logistica_model->queryindividual('MAX(numero) as nro','orden_compra',['anio' => $anio,'idempresa' => $this->input->post('idempresa')]);
 		if($nro->nro) $numb = intval($nro->nro) + 1;
 		
 		$data = array(
@@ -820,14 +822,6 @@ class Logistica extends CI_Controller
 		}
 		
 		echo json_encode(['msg' => $msg]);
-	}
-	public function verorden()
-	{
-		if($this->uri->segment(2) === 'ocompra'){
-			
-		}elseif($this->uri->segment(2) === 'oservicio'){
-			
-		}
 	}
 	public function fileupload($file, $nmb)
 	{
