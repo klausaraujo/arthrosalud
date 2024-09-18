@@ -135,6 +135,8 @@ $route['logistica/oservicio/editar'] = 'logistica/editos';
 $route['logistica/oservicio/anular'] = 'logistica/anular';
 $route['logistica/ocompra/veroc'] = 'pdf/ocospdf';
 $route['logistica/oservicio/ospdf'] = 'pdf/ocospdf';
+$route['logistica/gentrada/ver'] = 'pdf/gigspdf';
+$route['logistica/gsalida/ver'] = 'pdf/gigspdf';
 
 $route['logistica/findalmacenes'] = 'logistica/findalmacenes';
 $route['logistica/buscaproveedor'] = 'logistica/listaProvServer';

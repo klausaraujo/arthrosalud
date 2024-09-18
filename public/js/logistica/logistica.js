@@ -159,15 +159,15 @@ $(document).ready(function (){
 					render: function(data){
 						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
 						let hrefEdit = 'href="'+base_url+'logistica/gentrada/editar?id='+data.idguia+'"';
-						let hrefAnular = 'href="'+base_url+'logistica/gentrada/anular?id='+data.idguia+'"';
+						let hrefVer = 'href="'+base_url+'logistica/gentrada/ver?id='+data.idguia+'"';
 						let btnAccion =
 						'<div class="btn-group">' +
 						/* Boton de edicion */
-						'<a title="Editar" '+(data.activo === '1' && btnEditServ? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditServ)?
-							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a></div>';
-						/* Boton anular guia 
-						'<a title="Anular Guia" '+(data.activo === '1' && btnAnularServ? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnularServ)
-							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>';*/
+						'<a title="Editar" '+(data.activo === '1' && btnEditGI? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditGI)?
+							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
+						/* Boton ver guia */
+						'<a title="Ver Guia" '+(data.activo === '1' && btnVerGI? hrefVer:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnVerGI)
+							?'disabled':'')+' ver" '+style+' target="_blank"><img src="'+base_url+'public/images/iconos/result_ico.png" width="20"></a></div>';
 						return btnAccion;
 					}
 				},
@@ -197,15 +197,15 @@ $(document).ready(function (){
 					render: function(data){
 						let style = 'style="padding:1px 3px;border:1px solid #bcbcbc"';
 						let hrefEdit = 'href="'+base_url+'logistica/gsalida/editar?id='+data.idguia+'"';
-						//let hrefAnular = 'href="'+base_url+'logistica/gsalida/anular?id='+data.idguia+'"';
+						let hrefVer = 'href="'+base_url+'logistica/gsalida/ver?id='+data.idguia+'"';
 						let btnAccion =
 						'<div class="btn-group">' +
 						/* Boton de edicion */
-						'<a title="Editar" '+(data.activo === '1' && btnEditServ? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditServ)?
-							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a></div>';
-						/* Boton anular guia 
-						'<a title="Anular Guia" '+(data.activo === '1' && btnAnularServ? hrefAnular:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnAnularServ)
-							?'disabled':'')+' anular" '+style+'><img src="'+base_url+'public/images/iconos/cancel_ico.png" width="20"></a></div>*/;
+						'<a title="Editar" '+(data.activo === '1' && btnEditGS? hrefEdit:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnEditGS)?
+							'disabled':'')+' editar" '+style+'><img src="'+base_url+'public/images/iconos/edit_ico.png" width="20"></a>'+
+						/* Boton ver guia */
+						'<a title="Ver Guia" '+(data.activo === '1' && btnVerGS? hrefVer:'')+' class="bg-light btnTable '+((data.activo === '0' || !btnVerGS)
+							?'disabled':'')+' ver" '+style+' target="_blank"><img src="'+base_url+'public/images/iconos/result_ico.png" width="20"></a></div>';
 						return btnAccion;
 					}
 				},

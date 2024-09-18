@@ -153,6 +153,50 @@ class Logistica_model extends CI_Model
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
+	public function guiainpdf($where)
+	{
+		$this->db->db_debug = TRUE;
+		$this->db->select('oc.*,e.ruc,e.nombre_comercial,e.domicilio,p.numero_ruc,p.razon_social,p.domicilio as dom,p.celular,p.correo');
+		$this->db->from('guia_ingreso oc');
+		$this->db->join('proveedor p','p.idproveedor=oc.idproveedor');
+		$this->db->join('almacen a','a.idalmacen=oc.idalmacen');
+		$this->db->join('empresa e','e.idempresa=a.idempresa');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->row() : array();
+	}
+	public function guiaindetpdf($where)
+	{
+		$this->db->select('ocd.*,a.descripcion,u.unidad_medida');
+		$this->db->from('guia_ingreso_detalle ocd');
+		$this->db->join('articulos a','a.idarticulo=ocd.idarticulo');
+		$this->db->join('unidad_medida u','u.idunidadmedida=a.idunidadmedida');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
+	public function guiasapdf($where)
+	{
+		$this->db->db_debug = TRUE;
+		$this->db->select('oc.*,e.ruc,e.nombre_comercial,e.domicilio,p.numero_ruc,p.razon_social,p.domicilio as dom,p.celular,p.correo');
+		$this->db->from('guia_salida oc');
+		$this->db->join('proveedor p','p.idproveedor=oc.idproveedor');
+		$this->db->join('almacen a','a.idalmacen=oc.idalmacen');
+		$this->db->join('empresa e','e.idempresa=a.idempresa');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->row() : array();
+	}
+	public function guiasadetpdf($where)
+	{
+		$this->db->select('ocd.*,a.descripcion,u.unidad_medida');
+		$this->db->from('guia_salida_detalle ocd');
+		$this->db->join('articulos a','a.idarticulo=ocd.idarticulo');
+		$this->db->join('unidad_medida u','u.idunidadmedida=a.idunidadmedida');
+		$this->db->where($where);
+		$result = $this->db->get();
+		return ($result->num_rows() > 0)? $result->result() : array();
+	}
 	public function querysqlwhere($q, $t ,$where)
 	{
 		$query = $this->db->select($q)->from($t)->where($where)->get();

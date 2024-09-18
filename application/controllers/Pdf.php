@@ -116,6 +116,22 @@ class Pdf extends CI_Controller
 		$html = $this->load->view('logistica/ordenos-pdf', array('orden'=>$orden,'detalle'=>$odetalle,'detprov'=>$detalleprov), true);
 		$this->viewpdf($html, 0);
 	}
+	public function gigspdf()
+	{
+		$this->load->model('Logistica_model');
+		$guia = null; $detalle = null;
+		
+		if($this->uri->segment(2) === 'gentrada'){
+			$guia = $this->Logistica_model->guiainpdf(['idguia' => $this->input->get('id')]);
+			$detalle = $this->Logistica_model->guiaindetpdf(['idguia' => $this->input->get('id')]);
+		}else{
+			$guia = $this->Logistica_model->guiasapdf(['idguia' => $this->input->get('id')]);
+			$detalle = $this->Logistica_model->guiasadetpdf(['idguia' => $this->input->get('id')]);
+		}
+		$detalleprov = $this->Logistica_model->detprovpdf(['idproveedor' => $guia->idproveedor]);
+		$html = $this->load->view('logistica/ordenos-pdf', array('orden'=>$guia,'detalle'=>$detalle,'detprov'=>$detalleprov), true);
+		$this->viewpdf($html, 0);
+	}
 	private function viewpdf($page, $attach)
 	{
 		//Inicializar la clase

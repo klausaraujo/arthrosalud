@@ -1,4 +1,11 @@
-<?ob_start();?>
+<?
+	ob_start();
+	$titulo = '';
+	if($this->uri->segment(2)==='oservicio') $titulo = 'ORDEN DE SERVICIO';
+	elseif($this->uri->segment(2)==='ocompra') $titulo = 'ORDEN DE COMPRA';
+	elseif($this->uri->segment(2)==='gentrada') $titulo = 'GU&Iacute;A DE INGRESO';
+	elseif($this->uri->segment(2)==='gsalida') $titulo = 'GU&Iacute;A DE SALIDA';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +40,7 @@
 				<td style="width:2in"><div style="text-align:left"><img src="<?=$_SERVER['DOCUMENT_ROOT']?>/arthrosalud/public/images/logo-white.png" style="width:100%" /></div></td>
 				<td align="center">
 					<div style="">
-						<h2 style="color:#094293"><?=$this->uri->segment(2)==='oservicio'?'ORDEN DE SERVICIO':'ORDEN DE COMPRA'?></h2>
+						<h2 style="color:#094293"><?=$titulo?></h2>
 					</div>
 				</td>
 			</tr>

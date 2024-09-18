@@ -120,7 +120,7 @@
 			let botonesLog = JSON.parse('<?=$this->session->userdata('perLogistica')?>');
 			let btnEdit = false, btnAnular = false, btnEditArt = false, btnArt = false, btnAnularArt = false, btnEditServ = false;
 			let	btnServ = false, btnAnularServ = false, btnEditOC = false, btnAnulaOC = false, btnVerOC = false, btnEditOS = false, btnAnulaOS = false;
-			let btnVerOS = false;
+			let btnVerOS = false, btnEditGI = false, btnEditGS = false, btnVerGI = false, btnVerGS = false;
 			
 			$.each(botonesLog,function(i,e){
 				if(e.idboton === '9') btnEdit = true;
@@ -137,6 +137,10 @@
 				else if(e.idboton === '42') btnEditOS = true;
 				else if(e.idboton === '43') btnAnulaOS = true;
 				else if(e.idboton === '44') btnVerOS = true;
+				else if(e.idboton === '45') btnEditGI = true;
+				else if(e.idboton === '48') btnEditGS = true;
+				else if(e.idboton === '47') btnVerGI = true;
+				else if(e.idboton === '50') btnVerGS = true;
 			});
 			<?
 				$d = '';
