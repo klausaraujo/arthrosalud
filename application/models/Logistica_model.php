@@ -167,11 +167,13 @@ class Logistica_model extends CI_Model
 	}
 	public function guiaindetpdf($where)
 	{
-		$this->db->select('ocd.*,a.descripcion,u.unidad_medida');
+		$this->db->query('SET SESSION sql_mode = ""');
+		$this->db->select('ocd.*,a.descripcion,u.unidad_medida,ocd.fecha_vencimiento,ocd.numero_lote');
 		$this->db->from('guia_ingreso_detalle ocd');
 		$this->db->join('articulos a','a.idarticulo=ocd.idarticulo');
 		$this->db->join('unidad_medida u','u.idunidadmedida=a.idunidadmedida');
 		$this->db->where($where);
+		$this->db->group_by('fecha_vencimiento,numero_lote');
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
@@ -189,11 +191,13 @@ class Logistica_model extends CI_Model
 	}
 	public function guiasadetpdf($where)
 	{
+		$this->db->query('SET SESSION sql_mode = ""');
 		$this->db->select('ocd.*,a.descripcion,u.unidad_medida');
 		$this->db->from('guia_salida_detalle ocd');
 		$this->db->join('articulos a','a.idarticulo=ocd.idarticulo');
 		$this->db->join('unidad_medida u','u.idunidadmedida=a.idunidadmedida');
 		$this->db->where($where);
+		$this->db->group_by('fecha_vencimiento,numero_lote');
 		$result = $this->db->get();
 		return ($result->num_rows() > 0)? $result->result() : array();
 	}
