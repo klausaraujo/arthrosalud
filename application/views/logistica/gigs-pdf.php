@@ -85,8 +85,8 @@
 			<tr>
 				<td style="width:5.5cm"><?=$row->descripcion?></td><td style="width:1.5cm;text-align:center"><?=intval($row->cantidad)?></td>
 				<td style="width:2cm;text-align:center"><?=$row->unidad_medida?></td>
-				<td style="width:2cm;text-align:center"><?=$row->fecha_vencimiento?></td>
 				<td style="width:2cm;text-align:center"><?=$row->numero_lote?></td>
+				<td style="width:2cm;text-align:center"><?=$row->fecha_vencimiento?></td>
 				<td style="width:1.5cm;text-align:right"><?=number_format(floatval($row->costo),2,'.',',')?></td>
 				<td style="text-align:right"><?=number_format(floatval($sumacosto),2,'.',',')?></td>
 			</tr>
